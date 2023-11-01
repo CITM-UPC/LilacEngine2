@@ -1,25 +1,5 @@
-#include <iostream>
-#include <sstream>
-#include <vector>
-#include <chrono>
-#include <thread>
-
-#include <GL/glew.h>
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_opengl.h>
-#include <imgui.h>
-#include <imgui_impl_sdl2.h>
-#include <imgui_impl_opengl3.h>
-
+#include "Globals.h"
 #include "../MyGameEngine/MyGameEngine.h"
-
-using namespace std;
-using namespace chrono;
-
-static const unsigned int WINDOW_WIDTH = 576*4/3;
-static const unsigned int WINDOW_HEIGHT = 576;
-static const unsigned int FPS = 60;
-static const auto FDT = 1.0s / FPS;
 
 static SDL_Window* initSDLWindowWithOpenGL() {
     if(SDL_Init(SDL_INIT_VIDEO)!=0) throw exception(SDL_GetError());

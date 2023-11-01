@@ -21,12 +21,12 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
@@ -94,12 +94,43 @@ $(SolutionDir)\vcpkg\vcpkg.exe install opengl glew sdl2 imgui[opengl3-binding,sd
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Application.cpp" />
+    <ClCompile Include="Configuration.cpp" />
+    <ClCompile Include="Console.cpp" />
+    <ClCompile Include="Hardware.cpp" />
+    <ClCompile Include="Hierarchy.cpp" />
+    <ClCompile Include="Input.cpp" />
+    <ClCompile Include="Inspector.cpp" />
+    <ClCompile Include="Log.cpp" />
+    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Menu.cpp" />
     <ClCompile Include="MyGameEditor.cpp" />
+    <ClCompile Include="Renderer3D.cpp" />
+    <ClCompile Include="Shapes.cpp" />
+    <ClCompile Include="UI.cpp" />
+    <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MyGameEngine\MyGameEngine.vcxproj">
       <Project>{0e04f5b4-d4a2-4f7b-b350-a0edcae8a446}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Application.h" />
+    <ClInclude Include="Configuration.h" />
+    <ClInclude Include="Console.h" />
+    <ClInclude Include="Globals.h" />
+    <ClInclude Include="Hardware.h" />
+    <ClInclude Include="Hierarchy.h" />
+    <ClInclude Include="Input.h" />
+    <ClInclude Include="Inspector.h" />
+    <ClInclude Include="Log.h" />
+    <ClInclude Include="Module.h" />
+    <ClInclude Include="Menu.h" />
+    <ClInclude Include="Renderer3D.h" />
+    <ClInclude Include="Shapes.h" />
+    <ClInclude Include="UI.h" />
+    <ClInclude Include="Window.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
