@@ -1,7 +1,7 @@
 #include "Application.h"
 #include "Window.h"
 
-Window::Window(Application* app) : Module(app), window(nullptr), glContext(nullptr) 
+Window::Window(Application* app) : Module(app), window(nullptr), context(nullptr) 
 {
 
 }
@@ -14,7 +14,7 @@ Window::~Window()
 bool Window::Awake()
 {
     window = initSDLWindowWithOpenGL();
-    glContext = createSdlGlContext(window);
+    context = createSdlGlContext(window);
     initOpenGL();
     return true;
 }
@@ -28,7 +28,7 @@ bool Window::Start()
 
 bool Window::CleanUp()
 {
-    if (glContext) SDL_GL_DeleteContext(glContext);
+    if (context) SDL_GL_DeleteContext(context);
     if (window) SDL_DestroyWindow(window);
     SDL_Quit();
 
@@ -80,4 +80,29 @@ void Window::initOpenGL()
     if (!GLEW_VERSION_3_1) throw exception("OpenGL 3.1 Not Supported!");
     glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
     glClearColor(0.25, 0.25, .25, 1);
+}
+
+void Window::SetTitle(const char* title)
+{
+    SDL_SetWindowTitle(window, title);
+}
+
+void Window::SetWindowBrightness(float brightness) {
+    SDL_SetWindowBrightness(window, brightness);
+}
+
+void Window::SetFullscreen(bool fullscreen) {
+    SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN);
+}
+
+void Window::SetResizable(bool resizable) {
+    SDL_SetWindowResizable(window, (SDL_bool)resizable);
+}
+
+void Window::SetBorderless(bool borderless) {
+    SDL_SetWindowBordered(window, (SDL_bool)borderless);
+}
+
+void Window::SetFullDesktop(bool fullDesktop) {
+    SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN_DESKTOP);
 }

@@ -13,7 +13,7 @@ public:
 	bool Awake();
 	bool Start();
 	bool PreUpdate();
-	bool Update(float dt);
+	bool Update(double dt);
 	bool PostUpdate();
 	bool CleanUp();
 	void HandleInput(SDL_Event* event);

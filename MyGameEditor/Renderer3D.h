@@ -19,11 +19,12 @@ public:
     bool PreUpdate();
     bool Update(double dt);
     bool PostUpdate();
-
     bool CleanUp();
 
+    //void OnResize(int width, int height);
+    void SetVsync(bool vsync);
+
 private:
-    SDL_GLContext context;
     double dtSum = 0;
 };
 

@@ -16,10 +16,10 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(window, true);
 	AddModule(input, true);
 	//AddModule(hardware, true);
+	AddModule(ui, true);
 
 	// Render last to swap buffer
 	AddModule(renderer, true);
-	AddModule(ui, true);
 
 }
 

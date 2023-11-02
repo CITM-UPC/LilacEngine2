@@ -22,9 +22,18 @@ public:
     static SDL_GLContext createSdlGlContext(SDL_Window* window);
     static void initOpenGL();
 
+    // UI
+    void SetTitle(const char* title);
+    void SetWindowBrightness(float brightness);
+    void SetResizable(bool resizable);
+    void SetFullscreen(bool fullscreen);
+    void SetBorderless(bool resizable);
+    void SetFullDesktop(bool fullDesktop);
+    void SetWidth();
+    void SetHeight();
 public:
     SDL_Window* window;
-    SDL_GLContext glContext;
+    SDL_GLContext context;
 };
 
 #endif // !__WINDOW_H__

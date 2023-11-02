@@ -14,22 +14,22 @@ Renderer3D::~Renderer3D()
 
 bool Renderer3D::Awake()
 {
-    App->engine->Awake();
-
+    app->engine->Awake();
+    
     return true;
 }
 
 bool Renderer3D::Start()
 {
-    App->engine->Start();
+    app->engine->Start();
 
-    App->engine->camera.fov = 65;
-    App->engine->camera.aspect = static_cast<double>(WINDOW_WIDTH) / WINDOW_HEIGHT;
-    App->engine->camera.zNear = 0.1;
-    App->engine->camera.zFar = 1500;
-    App->engine->camera.eye = vec3(0, 0, 250);
-    App->engine->camera.center = vec3(0, 0, -100);
-    App->engine->camera.up = vec3(0, 0, 1);
+    app->engine->camera.fov = 65;
+    app->engine->camera.aspect = static_cast<double>(WINDOW_WIDTH) / WINDOW_HEIGHT;
+    app->engine->camera.zNear = 0.1;
+    app->engine->camera.zFar = 1500;
+    app->engine->camera.eye = vec3(0, 0, 250);
+    app->engine->camera.center = vec3(0, 0, -100);
+    app->engine->camera.up = vec3(0, 0, 1);
 
     return true;
 }
@@ -43,7 +43,7 @@ bool Renderer3D::PreUpdate()
 
 bool Renderer3D::Update(double dt)
 {
-    App->engine->Update(dt);
+    app->engine->Update(dt);
 
     // hekbas texting camera movement
     double radius = 950;
@@ -51,17 +51,17 @@ bool Renderer3D::Update(double dt)
     dtSum += dt;
     double speed = 0.6 * dtSum;
 
-    App->engine->camera.eye.x = sin(speed) * radius;
-    App->engine->camera.eye.y = cos(speed) * radius;
+    app->engine->camera.eye.x = sin(speed) * radius;
+    app->engine->camera.eye.y = cos(speed) * radius;
 
     return true;
 }
 
 bool Renderer3D::PostUpdate()
 {
-    App->engine->Render(EngineCore::RenderModes::DEBUG);
+    app->engine->Render(EngineCore::RenderModes::DEBUG);
 
-    App->ui->RenderUI();
+    app->ui->RenderUI();
 
     SDL_GL_SwapWindow(app->window->window);
 
@@ -70,6 +70,9 @@ bool Renderer3D::PostUpdate()
 
 bool Renderer3D::CleanUp()
 {
-
     return true;
+}
+
+void Renderer3D::SetVsync(bool vsync) {
+    //SDL_RenderSetVSync(renderer, vsync);
 }

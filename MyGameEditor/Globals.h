@@ -1,6 +1,7 @@
 #pragma once
 
 #include <windows.h>
+#include <stdlib.h>
 #include <stdio.h>
 #include <chrono>
 #include <iostream>
@@ -18,6 +19,7 @@
 #include <utility>
 #include <algorithm>
 #include <gl/glew.h>
+#include <sstream>
 
 #include <GL/glew.h>
 #include <SDL2/SDL.h>
@@ -36,3 +38,23 @@ static const unsigned int WINDOW_WIDTH = 576 * 4 / 3;
 static const unsigned int WINDOW_HEIGHT = 576;
 static const unsigned int FPS = 60;
 static const auto FDT = 1.0s / FPS;
+
+/// Releasing Memory
+#define RELEASE( x )\
+    {\
+       if( x != nullptr )\
+       {\
+         delete x;\
+	     x = nullptr;\
+       }\
+    }
+
+// Deletes an array of buffers
+#define RELEASE_ARRAY( x )\
+	{\
+	if( x != NULL )\
+		{\
+	  delete[] x;\
+	  x = NULL;\
+		}\
+	}
