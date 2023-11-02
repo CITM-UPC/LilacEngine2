@@ -3,6 +3,7 @@
 #include "Input.h"
 #include "Application.h"
 #include "UI.h"
+#include "..\MyGameEngine\Camera.h"
 
 Input::Input(Application* app) : Module(app)
 {
@@ -47,12 +48,34 @@ bool Input::processSDLEvents()
         app->ui->HandleInput(&event);
         switch (event.type)
         {
-        case SDL_QUIT: return false;
+        case SDL_DROPFILE:
+            dropped_filedir = event.drop.file;
+            LOG("%s was dropped\n", dropped_filedir);
+            SDL_free(dropped_filedir);
+            break;
+        case SDL_MOUSEWHEEL:
+            //mouse_z = event.wheel.y;
+            break;
         case SDL_KEYDOWN:
             switch (event.key.keysym.sym) {
             case SDLK_ESCAPE: return false;
+            case SDLK_w:
+                break;
+            case SDLK_a:
+                break;
+            case SDLK_s:
+                break;
+            case SDLK_d:
+                break;
+            case SDLK_f:
+                break;
+            case SDLK_LSHIFT:
+                break;
+            case SDLK_RSHIFT:
+                break;
             }
             break;
+        case SDL_QUIT: return false;
         }
     }
     return true;

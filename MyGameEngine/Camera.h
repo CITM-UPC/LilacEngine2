@@ -17,5 +17,10 @@ struct Camera
 	mat4 computeLookAt() const;
 
 	Camera();
+
+	// For input
+	float speed;
+	void cameraOrbit();
+	void cameraFocus();
 };
 

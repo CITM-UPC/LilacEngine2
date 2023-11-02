@@ -8,4 +8,10 @@ glm::dmat4 Camera::computeLookAt() const {
 	return glm::lookAt(eye, center, up);
 }
 
+void Camera::cameraOrbit() {
 
+}
+
+void Camera::cameraFocus() {
+
+}
