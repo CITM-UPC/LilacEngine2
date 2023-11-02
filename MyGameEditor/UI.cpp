@@ -16,6 +16,7 @@ UI::~UI() {
 bool UI::Awake()
 {
 	bool ret = true;
+	quit = false;
 
 	return ret;
 }
@@ -69,7 +70,58 @@ bool UI::Update(double dt)
 	// For debugging
 	//ImGui::ShowDemoWindow();
 
-	// Tabs
+	// About tab
+	if (about)
+		showAbout();
+	if (console)
+		showConsole();
+	if (configuration)
+		showConfiguration();
+	if (hierarchy)
+		showHierarchy();
+	if (inspector)
+		showInspector();
+	if (shapes)
+		showLoad();
+	if (menu)
+		showMenu();
+	//if (quit)
+	//	return false;
+	//showGame();
+
+	return ret;
+}
+
+bool UI::PostUpdate()
+{
+	bool ret = true;
+
+	return ret;
+}
+
+bool UI::CleanUp()
+{
+	bool ret = true;
+
+	LOG("Cleaning up IMGUI");
+	ImGui_ImplOpenGL3_Shutdown();
+	ImGui_ImplSDL2_Shutdown();
+	ImGui::DestroyContext();
+
+	return ret;
+}
+
+void UI::HandleInput(SDL_Event* event) {
+	ImGui_ImplSDL2_ProcessEvent(event);
+}
+
+void UI::RenderUI() {
+	ImGui::EndFrame();
+	ImGui::Render();
+	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+}
+
+void UI::showMenu() {
 	ImGui::BeginMainMenuBar();
 	if (ImGui::BeginMenu("General")) {
 		if (ImGui::BeginMenu("Editor")) {
@@ -92,68 +144,17 @@ bool UI::Update(double dt)
 			about = !about;
 		}
 		if (ImGui::MenuItem("Quit")) {
-			return false;
+			quit = true;
 		}
 		ImGui::EndMenu();
 	}
 	ImGui::EndMainMenuBar();
-
-	// About tab
-	if (about)
-		showAbout();
-	if (console)
-		showConsole();
-	if (configuration)
-		showConfiguration();
-	if (hierarchy)
-		showHierarchy();
-	if (inspector)
-		showInspector();
-	if (shapes)
-		showLoad();
-
-	showGame();
-
-	return ret;
-}
-
-bool UI::PostUpdate()
-{
-	bool ret = true;
-
-	return ret;
-}
-
-bool UI::CleanUp()
-{
-	bool ret = true;
-
-	LOG("Cleaning up IMGUI");
-
-	// Cleanup
-	ImGui_ImplOpenGL3_Shutdown();
-	ImGui_ImplSDL2_Shutdown();
-	ImGui::DestroyContext();
-
-	return ret;
-}
-
-void UI::HandleInput(SDL_Event* event) {
-	ImGui_ImplSDL2_ProcessEvent(event);
-}
-
-void UI::RenderUI() {
-	ImGui::EndFrame();
-	ImGui::Render();
-	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-}
-
-void UI::showMenu() {
-
 }
 
 void UI::showConsole() {
-
+	ImGui::Begin("Console");
+	ImGui::EndMenu();
+	ImGui::End();
 }
 
 void UI::showConfiguration() {

@@ -104,7 +104,6 @@ $(SolutionDir)\vcpkg\vcpkg.exe install opengl glew sdl2 imgui[opengl3-binding,sd
     <ClCompile Include="Log.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Menu.cpp" />
-    <ClCompile Include="MyGameEditor.cpp" />
     <ClCompile Include="Renderer3D.cpp" />
     <ClCompile Include="Shapes.cpp" />
     <ClCompile Include="UI.cpp" />

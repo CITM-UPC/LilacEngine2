@@ -31,7 +31,7 @@ public:
 	void calculateFramerate();
 private:
 	//// General
-	bool console = true, configuration = true, hierarchy = true, inspector = true, shapes = true;
+	bool console = true, configuration = true, hierarchy = true, inspector = true, shapes = true, menu = true, quit = false;
 
 	//// Console
 

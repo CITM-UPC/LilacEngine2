@@ -4,6 +4,7 @@
 
 struct Camera
 {
+	// Fov = field of view
 	double fov;
 	double aspect;
 	double zNear;

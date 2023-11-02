@@ -1,6 +1,9 @@
 #include "Application.h"
 #include "Renderer3D.h"
 #include "Globals.h"
+#include "Log.h"
+#include "..\MyGameEngine\GraphicObject.h"
+#include "..\MyGameEngine\Mesh.h"
 
 Renderer3D::Renderer3D(Application* app) : Module(app) 
 {
@@ -14,6 +17,7 @@ Renderer3D::~Renderer3D()
 
 bool Renderer3D::Awake()
 {
+    LOG("Init Renderer 3D");
     app->engine->Awake();
     
     return true;
@@ -27,9 +31,9 @@ bool Renderer3D::Start()
     app->engine->camera.aspect = static_cast<double>(WINDOW_WIDTH) / WINDOW_HEIGHT;
     app->engine->camera.zNear = 0.1;
     app->engine->camera.zFar = 1500;
-    app->engine->camera.eye = vec3(0, 0, 250);
-    app->engine->camera.center = vec3(0, 0, -100);
-    app->engine->camera.up = vec3(0, 0, 1);
+    app->engine->camera.eye = vec3(5, 1.75, 5);
+    app->engine->camera.center = vec3(0, 1, 0);
+    app->engine->camera.up = vec3(0, 1, 0);
 
     return true;
 }
@@ -44,15 +48,6 @@ bool Renderer3D::PreUpdate()
 bool Renderer3D::Update(double dt)
 {
     app->engine->Update(dt);
-
-    // hekbas texting camera movement
-    double radius = 950;
-
-    dtSum += dt;
-    double speed = 0.6 * dtSum;
-
-    app->engine->camera.eye.x = sin(speed) * radius;
-    app->engine->camera.eye.y = cos(speed) * radius;
 
     return true;
 }
@@ -70,6 +65,8 @@ bool Renderer3D::PostUpdate()
 
 bool Renderer3D::CleanUp()
 {
+    LOG("Cleaning Renderer");
+
     return true;
 }
 

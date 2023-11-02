@@ -1,5 +1,6 @@
 #include "Application.h"
 #include "Window.h"
+#include "Log.h"
 
 Window::Window(Application* app) : Module(app), window(nullptr), context(nullptr) 
 {
@@ -13,21 +14,23 @@ Window::~Window()
 
 bool Window::Awake()
 {
+    LOG("Init Window");
     window = initSDLWindowWithOpenGL();
     context = createSdlGlContext(window);
     initOpenGL();
+    
     return true;
 }
 
 bool Window::Start()
 {
-
     return true;
 }
 
 
 bool Window::CleanUp()
 {
+    LOG("Cleaning Window");
     if (context) SDL_GL_DeleteContext(context);
     if (window) SDL_DestroyWindow(window);
     SDL_Quit();

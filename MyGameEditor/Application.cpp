@@ -144,8 +144,8 @@ bool Application::PreUpdate()
 	{
 		if (item->active == false)
 			continue;
-
-		ret = item->PreUpdate();
+		if (item->PreUpdate() == false)
+			return false;
 	}
 
 	return ret;
@@ -161,8 +161,8 @@ bool Application::DoUpdate()
 	{
 		if (item->active == false)
 			continue;
-
-		ret = item->Update(dt);
+		if (item->Update(dt) == false)
+			return false;
 	}
 
 	return ret;
@@ -178,8 +178,8 @@ bool Application::PostUpdate()
 	{
 		if (item->active == false)
 			continue;
-
-		ret = item->PostUpdate();
+		if (item->PostUpdate() == false)
+			return false;
 	}
 
 	return ret;

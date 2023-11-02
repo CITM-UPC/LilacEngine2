@@ -2,6 +2,8 @@
 #include <GL\glew.h>
 #include <glm/ext/matrix_transform.hpp>
 #include <IL/il.h>
+#include "Mesh.h"
+#include "GraphicObject.h"
 
 EngineCore::EngineCore()
 {
@@ -45,20 +47,6 @@ static void drawGrid(int grid_size, int grid_step)
     glColor3ub(128, 128, 128);
 
     glBegin(GL_LINES);
-    for (int i = -grid_size; i <= grid_size; i += grid_step)
-    {
-        //XY plane
-        /*glVertex2i(i, -grid_size);
-        glVertex2i(i,  grid_size);
-        glVertex2i(-grid_size, i);
-        glVertex2i( grid_size, i);*/
-
-        //XZ plane
-        /*glVertex3i(i, 0, -grid_size);
-        glVertex3i(i, 0, grid_size);
-        glVertex3i(-grid_size, 0, i);
-        glVertex3i( grid_size, 0, i);*/
-    }
     glEnd();
 }
 
@@ -89,6 +77,19 @@ void EngineCore::Render(RenderModes renderMode)
     drawGrid(10000, 10);
     drawAxis();
 
+    static auto mesh_ptrs = Mesh::loadFromFile("Assets/BakerHouse.fbx");
 
+    GraphicObject mesh1(mesh_ptrs.front());
+    GraphicObject mesh2(mesh_ptrs.back());
+
+    GraphicObject house;
+
+    house.addChild(std::move(mesh1));
+    house.addChild(std::move(mesh2));
+
+    GraphicObject root;
+    root.addChild(std::move(house));
+
+    root.paint();
     assert(glGetError() == GL_NONE);
 }
