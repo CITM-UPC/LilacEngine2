@@ -13,28 +13,28 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Source Files\UI">
+    <Filter Include="UI">
       <UniqueIdentifier>{2c55c40f-bc37-4621-abab-47743c6fc590}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Console.cpp">
-      <Filter>Source Files\UI</Filter>
+      <Filter>UI</Filter>
     </ClCompile>
     <ClCompile Include="Hierarchy.cpp">
-      <Filter>Source Files\UI</Filter>
+      <Filter>UI</Filter>
     </ClCompile>
     <ClCompile Include="Inspector.cpp">
-      <Filter>Source Files\UI</Filter>
+      <Filter>UI</Filter>
     </ClCompile>
     <ClCompile Include="Configuration.cpp">
-      <Filter>Source Files\UI</Filter>
+      <Filter>UI</Filter>
     </ClCompile>
     <ClCompile Include="Menu.cpp">
-      <Filter>Source Files\UI</Filter>
+      <Filter>UI</Filter>
     </ClCompile>
     <ClCompile Include="Shapes.cpp">
-      <Filter>Source Files\UI</Filter>
+      <Filter>UI</Filter>
     </ClCompile>
     <ClCompile Include="UI.cpp">
       <Filter>Source Files</Filter>
@@ -60,28 +60,28 @@
     <ClCompile Include="Log.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="AssetManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Console.h">
-      <Filter>Source Files\UI</Filter>
+      <Filter>UI</Filter>
     </ClInclude>
     <ClInclude Include="Hierarchy.h">
-      <Filter>Source Files\UI</Filter>
+      <Filter>UI</Filter>
     </ClInclude>
     <ClInclude Include="Inspector.h">
-      <Filter>Source Files\UI</Filter>
+      <Filter>UI</Filter>
     </ClInclude>
     <ClInclude Include="Configuration.h">
-      <Filter>Source Files\UI</Filter>
+      <Filter>UI</Filter>
     </ClInclude>
     <ClInclude Include="Menu.h">
-      <Filter>Source Files\UI</Filter>
+      <Filter>UI</Filter>
     </ClInclude>
     <ClInclude Include="Shapes.h">
-      <Filter>Source Files\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="Module.h">
-      <Filter>Source Files</Filter>
+      <Filter>UI</Filter>
     </ClInclude>
     <ClInclude Include="Hardware.h">
       <Filter>Header Files</Filter>
@@ -105,6 +105,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Input.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AssetManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Module.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
