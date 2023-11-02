@@ -22,5 +22,6 @@ struct Camera
 	float speed;
 	void cameraOrbit();
 	void cameraFocus();
+	void cameraTransform();
 };
 

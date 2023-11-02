@@ -19,11 +19,13 @@
     <ClInclude Include="CubeVertexBuffer.h" />
     <ClInclude Include="CubeWireframeIVBO.h" />
     <ClInclude Include="EngineCore.h" />
+    <ClInclude Include="GameObject.h" />
     <ClInclude Include="Graphic.h" />
     <ClInclude Include="GraphicObject.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="MyGameEngine.h" />
     <ClInclude Include="Texture2D.h" />
+    <ClInclude Include="Transform.h" />
     <ClInclude Include="types.h" />
   </ItemGroup>
   <ItemGroup>
@@ -35,6 +37,7 @@
     <ClCompile Include="CubeVertexBuffer.cpp" />
     <ClCompile Include="CubeWireframeIVBO.cpp" />
     <ClCompile Include="EngineCore.cpp" />
+    <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GraphicObject.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="MyGameEngine.cpp" />
