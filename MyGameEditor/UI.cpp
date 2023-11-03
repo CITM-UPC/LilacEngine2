@@ -85,8 +85,8 @@ bool UI::Update(double dt)
 		showLoad();
 	if (menu)
 		showMenu();
-	//if (quit)
-	//	return false;
+	if (quit)
+		return false;
 	//showGame();
 
 	return ret;
