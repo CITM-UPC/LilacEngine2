@@ -2,11 +2,8 @@
 #define __HARDWARE__
 #pragma once
 
+#include "Globals.h"
 #include "Module.h"
-//#include "../MyGameEngine/Defs.h"
-
-#include <string>
-
 
 struct HardwareInfo
 {
@@ -40,10 +37,10 @@ public:
 	Hardware(Application* app);
 	virtual ~Hardware();
 
-	bool Awake();
-	bool Start();
-
-	bool CleanUp();
+	//bool Awake();
+	//bool Start();
+	//
+	//bool CleanUp();
 
 	const HardwareInfo& GetInfo() const;
 

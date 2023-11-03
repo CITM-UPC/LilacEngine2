@@ -67,7 +67,7 @@ public:
 	// Modules
 	Window* window;
 	Input* input;
-	//Hardware* hardware;
+	Hardware* hardware;
 	UI* ui;
 	Renderer3D* renderer;
 

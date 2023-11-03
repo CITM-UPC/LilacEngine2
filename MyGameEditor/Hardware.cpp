@@ -1,10 +1,10 @@
-#include "Application.h"
 #include "Hardware.h"
+#include "Application.h"
 
 
 Hardware::Hardware(Application* app) : Module(app)
 {
-	// Retrieve Versions
+	// Search the SDL2 version
 	SDL_version version;
 	SDL_GetVersion(&version);
 	sprintf_s(info.sdl_version, 25, "%i.%i.%i", version.major, version.minor, version.patch);
@@ -26,25 +26,9 @@ Hardware::Hardware(Application* app) : Module(app)
 	info.avx2 = SDL_HasAVX2() == SDL_TRUE;
 }
 
-Hardware::~Hardware() {}
-
-bool Hardware::Awake()
+Hardware::~Hardware() 
 {
 
-	return true;
-}
-
-bool Hardware::Start()
-{
-
-	return true;
-}
-
-
-bool Hardware::CleanUp()
-{
-
-	return true;
 }
 
 const HardwareInfo& Hardware::GetInfo() const
