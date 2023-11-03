@@ -3,6 +3,7 @@
 
 #include "Globals.h"
 #include "Module.h"
+#include "Hardware.h"
 
 class UI : public Module
 {
@@ -44,6 +45,7 @@ private:
 	std::vector<float> frame_list;
 	std::vector<float> ms_list;
 
+	Hardware info;
 	// Booleans to activate menus that are not shown
 	// about -> Information about the engine
 	// showcase -> Imgui Demo window
