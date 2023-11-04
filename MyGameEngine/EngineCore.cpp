@@ -74,7 +74,7 @@ void EngineCore::Render(RenderModes renderMode)
         camera.center.x, camera.center.y, camera.center.z,
         camera.up.x, camera.up.y, camera.up.z);
 
-    drawGrid(10000, 10);
+    drawGrid(100000, 10);
     drawAxis();
 
     static auto mesh_ptrs = Mesh::loadFromFile("Assets/BakerHouse.fbx");

@@ -202,8 +202,6 @@ void UI::showConfiguration() {
 
 	//	ImGui::PlotHistogram("##Memory", &Memory[0], Memory.size(), 0, "Memory Consumption", 0.0f, (float)MemoryStats.peakReportedMemory * 1.2f, ImVec2(500, 75));
 
-		//JULS: problems with hardware, debugging
-		showHardwareInfo();
 	}
 	if (ImGui::CollapsingHeader("Window")) {
 		if (ImGui::SliderFloat("Brightness", &v, 0.0, 1.0))
@@ -240,7 +238,8 @@ void UI::showConfiguration() {
 
 	}
 	if (ImGui::CollapsingHeader("Hardware")) {
-
+		//JULS: problems with hardware, debugging
+		showHardwareInfo();
 	}
 	ImGui::EndMenu();
 	ImGui::End();
@@ -351,9 +350,12 @@ void UI::showHardwareInfo() {
 	ImGui::Text("SDL Version:");
 	ImGui::SameLine();
 	ImGui::TextColored(ImVec4(255, 255, 0, 255), "%s", hardware_info.sdl_version);
-	ImGui::Separator();
 
 	// OpenGL Version
+	ImGui::Text("OpenGL Version:");
+	ImGui::SameLine();
+	ImGui::TextColored(ImVec4(255, 255, 0, 255), "%s", hardware_info.opengl_version);
+	ImGui::Separator();
 
 	// CPU 
 	ImGui::Text("CPU Logic Cores:");
@@ -364,6 +366,7 @@ void UI::showHardwareInfo() {
 	ImGui::SameLine();
 	ImGui::TextColored(ImVec4(255, 255, 0, 255), "%i", hardware_info.l1_cachekb);
 
+	// CPU Instruction Support
 	ImGui::Text("CPU Instruction Support:");
 	ImGui::SameLine();
 
@@ -411,23 +414,20 @@ void UI::showHardwareInfo() {
 	ImGui::Text("GPU Vendor");
 	ImGui::SameLine();
 	ImGui::TextColored(ImVec4(255, 255, 0, 255), "%s", hardware_info.gpu_vendor.data());
-
 	ImGui::Text("GPU Model");
 	ImGui::SameLine();
 	ImGui::TextColored(ImVec4(255, 255, 0, 255), "%s", hardware_info.gpu_brand.data());
-
 	ImGui::Text("GPU Driver");
 	ImGui::SameLine();
 	ImGui::TextColored(ImVec4(255, 255, 0, 255), "%s", hardware_info.gpu_driver.data());
 
+	// VRAM
 	ImGui::Text("VRAM Budget");
 	ImGui::SameLine();
 	ImGui::TextColored(ImVec4(255, 255, 0, 255), "%f", hardware_info.vram_mb_budget);
-
 	ImGui::Text("VRAM Available");
 	ImGui::SameLine();
 	ImGui::TextColored(ImVec4(255, 255, 0, 255), "%f", hardware_info.vram_mb_available);
-
 	ImGui::Text("VRAM Usage");
 	ImGui::SameLine();
 	ImGui::TextColored(ImVec4(255, 255, 0, 255), "%f", hardware_info.vram_mb_usage);

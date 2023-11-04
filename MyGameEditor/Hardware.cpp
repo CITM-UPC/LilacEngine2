@@ -10,7 +10,12 @@ Hardware::Hardware(Application* app) : Module(app)
 	sprintf_s(info.sdl_version, 25, "%i.%i.%i", version.major, version.minor, version.patch);
 
 	// Search the OpenGL version
-	// JULS: Probably need to check it with glew
+	// JULS: Probably need to check it with glew, but for now it works like this
+	//int mayor = SDL_GL_GetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, (int*)3);
+	//int minor = SDL_GL_GetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, (int*)1);
+	sprintf_s(info.opengl_version, 25, "3.1.");
+
+	// Search the DevIL version
 
 
 	// Retrieve CPU and Memory 
