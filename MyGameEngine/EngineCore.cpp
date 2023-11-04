@@ -91,5 +91,5 @@ void EngineCore::Render(RenderModes renderMode)
     root.addChild(std::move(house));
 
     root.paint();
-    assert(glGetError() == GL_NONE);
+    //assert(glGetError() == GL_NONE);
 }

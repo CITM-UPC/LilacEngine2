@@ -6,8 +6,8 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 
 	window = new Window(this);
 	input = new Input(this);
-	ui = new UI(this);
 	hardware = new Hardware(this);
+	ui = new UI(this);
 	renderer = new Renderer3D(this);
 
 	// Ordered for awake / Start / Update
@@ -20,7 +20,6 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 
 	// Render last to swap buffer
 	AddModule(renderer, true);
-
 }
 
 Application::~Application()
@@ -73,7 +72,7 @@ bool Application::Start()
 {
 	bool ret = true;
 
-	dt = 0.016; //hekbas
+	dt = 0.016;
 
 	for (const auto& item : modules)
 	{
@@ -214,7 +213,7 @@ const char* Application::GetArgv(int index) const
 		return NULL;
 }
 
-//
+// Get deltatime
 float Application::GetDT()
 {
 	return dt;

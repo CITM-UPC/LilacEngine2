@@ -9,6 +9,10 @@ Hardware::Hardware(Application* app) : Module(app)
 	SDL_GetVersion(&version);
 	sprintf_s(info.sdl_version, 25, "%i.%i.%i", version.major, version.minor, version.patch);
 
+	// Search the OpenGL version
+	// JULS: Probably need to check it with glew
+
+
 	// Retrieve CPU and Memory 
 	info.ram_gb = (float)SDL_GetSystemRAM() / (1024.f);
 	info.cpu_count = SDL_GetCPUCount();

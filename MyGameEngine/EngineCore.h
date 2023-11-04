@@ -2,17 +2,9 @@
 #define __ENGINE_CORE_H__
 #pragma once
 
-
-// hekbas: Include here all headers needed in Editor
 // Include in Editor when needed: #include "../TheOneEngine/EngineCore.h"
-//#include "Defs.h"
 #include "Camera.h"
-//#include "Asset.h"
-//#include "AssetMesh.h"
 #include "Texture2D.h"
-
-#include <chrono>
-
 
 class EngineCore
 {

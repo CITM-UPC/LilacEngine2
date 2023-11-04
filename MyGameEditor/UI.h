@@ -30,6 +30,7 @@ public:
 	void showAbout();
 	void showGame();
 	void calculateFramerate();
+	void showHardwareInfo();
 private:
 	//// General
 	bool console = true, configuration = true, hierarchy = true, inspector = true, shapes = true, menu = true, quit = false;
@@ -45,7 +46,6 @@ private:
 	std::vector<float> frame_list;
 	std::vector<float> ms_list;
 
-	Hardware info;
 	// Booleans to activate menus that are not shown
 	// about -> Information about the engine
 	// showcase -> Imgui Demo window
