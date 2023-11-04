@@ -38,13 +38,6 @@ static const unsigned int WINDOW_HEIGHT = 576;
 static const unsigned int FPS = 60;
 static const auto FDT = 1.0s / FPS;
 
-enum update_status
-{
-	UPDATE_CONTINUE = 1,
-	UPDATE_STOP,
-	UPDATE_ERROR
-};
-
 /// Releasing Memory
 #define RELEASE( x )\
     {\
