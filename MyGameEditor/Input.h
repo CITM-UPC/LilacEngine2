@@ -12,9 +12,10 @@ public:
 
     bool Awake();
     bool PreUpdate();
-
+    
     bool processSDLEvents();
-    //void drag
+    void InputCamera(double dt);
+    
 private:
     int mouse_x;
     int mouse_y;
