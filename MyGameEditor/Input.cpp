@@ -140,9 +140,11 @@ bool Input::processSDLEvents()
 
     return UPDATE_CONTINUE;
 }
-// Called before quitting
-//bool ModuleInput::CleanUp()
-//{
-//
-//    return true;
-//}
+ //Called before quitting
+bool Input::CleanUp()
+{
+
+    LOG("Quitting SDL input event subsystem");
+    SDL_QuitSubSystem(SDL_INIT_EVENTS);
+    return true;
+}

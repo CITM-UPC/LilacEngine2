@@ -26,7 +26,7 @@ public:
 
     bool processSDLEvents();
     //void drag
-	//bool CleanUp();
+	bool CleanUp();
 
 	KEY_STATE GetKey(int id) const
 	{
