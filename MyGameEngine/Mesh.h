@@ -8,6 +8,10 @@
 #include "Graphic.h"
 #include "Texture2D.h"
 
+//enum Normals {
+//	TRIANGLES,
+//	FACES
+//};
 
 class Mesh : public Graphic
 {

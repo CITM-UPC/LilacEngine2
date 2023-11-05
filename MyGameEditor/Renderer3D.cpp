@@ -27,13 +27,13 @@ bool Renderer3D::Start()
 {
     app->engine->Start();
 
-    app->engine->camera.fov = 65;
-    app->engine->camera.aspect = static_cast<double>(WINDOW_WIDTH) / WINDOW_HEIGHT;
-    app->engine->camera.zNear = 0.1;
-    app->engine->camera.zFar = 1500;
-    app->engine->camera.eye = vec3(5, 1.75, 5);
-    app->engine->camera.center = vec3(0, 1, 0);
-    app->engine->camera.up = vec3(0, 1, 0);
+    //app->engine->camera.fov = 65;
+    //app->engine->camera.aspect = static_cast<double>(WINDOW_WIDTH) / WINDOW_HEIGHT;
+    //app->engine->camera.zNear = 0.1;
+    //app->engine->camera.zFar = 1500;
+    //app->engine->camera.eye = vec3(5, 1.75, 5);
+    //app->engine->camera.center = vec3(0, 1, 0);
+    //app->engine->camera.up = vec3(0, 1, 0);
 
     return true;
 }

@@ -51,6 +51,7 @@ public:
     void InputCamera(double dt);
 
 private:
+    
     int mouse_x;
     int mouse_y;
     int mouse_z;
@@ -59,6 +60,8 @@ private:
     char* dropped_filedir;
     KEY_STATE mouse_buttons[MAX_MOUSE_BUTTONS];
     KEY_STATE* keyboard;
+    float radius = 10.0f;
+    double dtSum = 0;
 };
 
 #endif // __INPUT_H__

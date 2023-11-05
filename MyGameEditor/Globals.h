@@ -10,7 +10,6 @@
 #include <thread>
 #include <shellapi.h>
 #include <set>
-#include <memory>
 #include <vector>
 #include <array>
 #include <filesystem>
@@ -20,6 +19,7 @@
 #include <algorithm>
 #include <gl/glew.h>
 #include <sstream>
+#include <string>
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_opengl.h>

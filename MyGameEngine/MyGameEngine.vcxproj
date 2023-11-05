@@ -23,7 +23,6 @@
     <ClInclude Include="Graphic.h" />
     <ClInclude Include="GraphicObject.h" />
     <ClInclude Include="Mesh.h" />
-    <ClInclude Include="MyGameEngine.h" />
     <ClInclude Include="Texture2D.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="types.h" />
@@ -40,7 +39,6 @@
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GraphicObject.cpp" />
     <ClCompile Include="Mesh.cpp" />
-    <ClCompile Include="MyGameEngine.cpp" />
     <ClCompile Include="Texture2D.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

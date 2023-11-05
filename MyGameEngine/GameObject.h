@@ -5,13 +5,19 @@
 #include "Mesh.h"
 #include "Texture2D.h"
 
-class GameObject {
-	GameObject();
-	~GameObject();
-	std::string name;
-	
+struct Components {
 	Transform transform;
 	Mesh mesh;
 	Texture2D tex;
+};
 
+class GameObject {
+public:
+	GameObject();
+	~GameObject();
+
+
+public:
+	std::string name;
+	Components components;
 };

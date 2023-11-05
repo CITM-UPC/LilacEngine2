@@ -3,7 +3,9 @@
 #include "Input.h"
 #include "Application.h"
 #include "UI.h"
-#include "..\MyGameEngine\Camera.h"
+#include <glm/ext/matrix_transform.hpp>
+#include "../MyGameEngine/Camera.h"
+#include "../MyGameEngine/glmath.h"
 
 #define MAX_KEYS 300
 #define SCREEN_SIZE 1
@@ -17,6 +19,7 @@ Input::Input(Application* app) : Module(app)
 
 Input::~Input()
 {
+    delete[] keyboard;
 }
 
 bool Input::Awake()
@@ -112,8 +115,16 @@ bool Input::processSDLEvents()
             SDL_free(dropped_filedir);
             break;
         case SDL_MOUSEWHEEL:
-            //mouse_z = event.wheel.y;
+            mouse_z = event.wheel.y;
             break;
+        case SDL_MOUSEMOTION:
+            mouse_x = event.motion.x / SCREEN_SIZE;
+            mouse_y = event.motion.y / SCREEN_SIZE;
+
+            mouse_x_motion = event.motion.xrel / SCREEN_SIZE;
+            mouse_y_motion = event.motion.yrel / SCREEN_SIZE;
+            break;
+
         case SDL_KEYDOWN:
             switch (event.key.keysym.sym) {
             case SDLK_ESCAPE: return false;
@@ -140,29 +151,14 @@ void Input::InputCamera(double dt) {
 
     if (GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT)
     {
-        ///* MOUSE CAMERA MOVEMENT */
-        //// Compute mouse input displacement
-        //float mouseSensitivity = 10.0f * dt;
-        //int deltaX = GetMouseXMotion();
-        //int deltaY = -GetMouseYMotion();
-        //
-        //app->engine->camera.yaw += deltaX * mouseSensitivity;
-        //app->engine->camera.pitch += deltaY * mouseSensitivity;
-        //
-        //// Limiting Camera Pitch to prevent flipping
-        //if (app->engine->camera.pitch > 89.0f)
-        //    app->engine->camera.pitch = 89.0f;
-        //if (app->engine->camera.pitch < -89.0f)
-        //    app->engine->camera.pitch = -89.0f;
-
-        if (GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
-            app->engine->camera.eye += app->engine->camera.center * speed;
-        if (GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
-            app->engine->camera.eye -= app->engine->camera.center * speed;
-        if (GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
-            app->engine->camera.eye -= app->engine->camera.cameraRight * speed;
-        if (GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
-            app->engine->camera.eye += app->engine->camera.cameraRight * speed;
+        //if (GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
+        //    app->engine->camera.eye += app->engine->camera.center * speed;
+        //if (GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
+        //    app->engine->camera.eye -= app->engine->camera.center * speed;
+        //if (GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+        //    app->engine->camera.eye -= app->engine->camera.cameraRight * speed;
+        //if (GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+        //    app->engine->camera.eye += app->engine->camera.cameraRight * speed;
     }
 
     ////Zooming Camera Input
@@ -172,19 +168,42 @@ void Input::InputCamera(double dt) {
     //if (app->engine->camera.fov > 115.0f)
     //    app->engine->camera.fov = 115.0f;*/
     //
-    //    //Orbit Object with Alt_Left + Left Click
-    if (GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT && GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN)
+    
+    //Orbit Object with Alt_Left + Left Click
+    if (GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT && GetMouseButton(SDL_BUTTON_LEFT) == KEY_REPEAT)
     {
-        float mouseSensitivity = 10.0f * dt;
-        int deltaX = GetMouseXMotion();
-        int deltaY = -GetMouseYMotion();
-        float radius = 10.0f;
-        double dtSum = 0;
-        dtSum += dt;
-        speed = 0.6 * dtSum;
-        app->engine->camera.eye.x = sin(speed) * radius;
-        app->engine->camera.eye.z = cos(speed) * radius;
+        int dx = -App->input->GetMouseXMotion();
+        int dy = -App->input->GetMouseYMotion();
+
+        float Sensitivity = 0.25f;
+
+        app->engine->camera.Position -= app->engine->camera.Reference;
+
+        if (dx != 0)
+        {
+            float DeltaX = (float)dx * Sensitivity;
+
+            app->engine->camera.X = rotate(app->engine->camera.X, DeltaX, vec3(0.0f, 1.0f, 0.0f));
+            app->engine->camera.Y = rotate(app->engine->camera.Y, DeltaX, vec3(0.0f, 1.0f, 0.0f));
+            app->engine->camera.Z = rotate(app->engine->camera.Z, DeltaX, vec3(0.0f, 1.0f, 0.0f));
+        }
+
+        if (dy != 0)
+        {
+            float DeltaY = (float)dy * Sensitivity;
+
+            app->engine->camera.Y = rotate(app->engine->camera.Y, DeltaY, app->engine->camera.X);
+            app->engine->camera.Z = rotate(app->engine->camera.Z, DeltaY, app->engine->camera.X);
+
+            if (app->engine->camera.Y.y < 0.0f)
+            {
+                app->engine->camera.Z = vec3(0.0f, app->engine->camera.Z.y > 0.0f ? 1.0f : -1.0f, 0.0f);
+                app->engine->camera.Y = cross(app->engine->camera.Z, app->engine->camera.X);
+            }
+        }
+
+        app->engine->camera.Position = app->engine->camera.Reference + app->engine->camera.Z * length(app->engine->camera.Position);
     }
 
-    app->engine->camera.cameraUpdate();
+    app->engine->camera.CalculateViewMatrix();
 }

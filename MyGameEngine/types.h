@@ -1,5 +1,7 @@
 #pragma once
 
+#define M_PI 3.14159265358979323846   // pi
+
 #include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
 #include <glm/vec4.hpp>

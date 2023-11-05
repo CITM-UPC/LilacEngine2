@@ -1,5 +1,5 @@
 #include "EngineCore.h"
-#include <GL\glew.h>
+#include <GL/glew.h>
 #include <glm/ext/matrix_transform.hpp>
 #include <IL/il.h>
 #include "Mesh.h"
@@ -86,13 +86,10 @@ void EngineCore::Render(RenderModes renderMode)
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
     glEnable(GL_COLOR_MATERIAL);
+
     //glEnable(GL_LIGHTING);
 
-    gluPerspective(camera.fov, camera.aspect, camera.zNear, camera.zFar);
-
-    gluLookAt(camera.eye.x, camera.eye.y, camera.eye.z,
-        camera.center.x, camera.center.y, camera.center.z,
-        camera.up.x, camera.up.y, camera.up.z);
+    glLoadMatrixf(camera.GetViewMatrix());
 
     drawGrid(100, 10);
     drawAxis();
