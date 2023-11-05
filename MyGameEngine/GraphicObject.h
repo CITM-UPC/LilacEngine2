@@ -52,17 +52,17 @@ private:
 
 class GraphicObject : public Tree<GraphicObject>
 {
-	mat4 _transform;
+	mat4d _transform;
 	std::shared_ptr<Graphic> _graphic;
 
 public:
 
-	inline vec3& pos() { return (vec3&)(_transform[3]); }
+	inline vec3d& pos() { return (vec3d&)(_transform[3]); }
 	
 	GraphicObject();
 	GraphicObject(std::shared_ptr<Graphic> graphic);
 	
-	inline void rotate(double rads, const vec3& axis) { _transform = glm::rotate(_transform, rads, axis); }
+	inline void rotate(double rads, const vec3d& axis) { _transform = glm::rotate(_transform, rads, axis); }
 
 	void paint() const;
 };

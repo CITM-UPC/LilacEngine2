@@ -1,6 +1,6 @@
 #pragma once
 
-//#include "types.h"
+#include "types.h"
 #include "glmath.h"
 
 struct Camera
@@ -11,16 +11,17 @@ public:
 	//mat4 computeLookAt() const;
 	//void cameraUpdate();
 
-	void Look(const vec3& Position, const vec3& Reference, bool RotateAroundReference = false);
-	void LookAt(const vec3& Spot);
-	void Move(const vec3& Movement);
+	void Look(const vec3d& Position, const vec3d& Reference, bool RotateAroundReference = false);
+	void LookAt(const vec3d& Spot);
+	void Move(const vec3d& Movement);
+	vec3d Rotate(vec3d& u, float angle, vec3d& v);
 	//vec3 Rotate2VectorsFloat(const vec3& u, float angle, const vec3& v);
 	//mat4x4 RotationMatrix(float angle, const vec3& u);
 	float* GetViewMatrix();
 	void CalculateViewMatrix();
 
 public:
-	vec3 X, Y, Z, Position, Reference;
+	vec3d X, Y, Z, Position, Reference;
 
 private:
 	mat4x4 ViewMatrix, ViewMatrixInverse;

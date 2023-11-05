@@ -1,8 +1,8 @@
 #include "GraphicObject.h"
 #include <GL/glew.h>
 
-GraphicObject::GraphicObject() : _transform(glm::identity<mat4>()) {}
-GraphicObject::GraphicObject(std::shared_ptr<Graphic> graphic) : _transform(glm::identity<mat4>()), _graphic(graphic) {}
+GraphicObject::GraphicObject() : _transform(glm::identity<glm::dmat4>()) {}
+GraphicObject::GraphicObject(std::shared_ptr<Graphic> graphic) : _transform(glm::identity<glm::dmat4>()), _graphic(graphic) {}
 
 void GraphicObject::paint() const {
 	glPushMatrix();

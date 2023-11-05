@@ -9,7 +9,7 @@ CubeWireframeIVBO::CubeWireframeIVBO() :
 
     glGenBuffers(1, &_buffer_id);
     glBindBuffer(GL_ARRAY_BUFFER, _buffer_id);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vec3) * 8, &a, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vec3d) * 8, &a, GL_STATIC_DRAW);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
     const int NUM_EDGES = 12;

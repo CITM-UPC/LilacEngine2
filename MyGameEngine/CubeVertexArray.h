@@ -5,8 +5,8 @@
 
 class CubeVertexArray : public Cube
 {
-	std::array<vec3, NUM_VERTEXS> _vertex_data;
-	std::array<vec3, NUM_VERTEXS> _color_data;
+	std::array<vec3d, NUM_VERTEXS> _vertex_data;
+	std::array<vec3d, NUM_VERTEXS> _color_data;
 
 public:
 	CubeVertexArray();

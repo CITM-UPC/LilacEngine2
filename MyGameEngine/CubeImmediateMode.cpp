@@ -1,7 +1,7 @@
 #include "CubeImmediateMode.h"
 #include <GL/glew.h>
 
-static void drawQuadFaceTriangles(vec3 a, vec3 b, vec3 c, vec3 d) {
+static void drawQuadFaceTriangles(vec3d a, vec3d b, vec3d c, vec3d d) {
     glTexCoord2d( 0, 1);
     glVertex3dv(&a.x);
     glTexCoord2d(1, 1);

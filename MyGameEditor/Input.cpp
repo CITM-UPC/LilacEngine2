@@ -6,6 +6,7 @@
 #include <glm/ext/matrix_transform.hpp>
 #include "../MyGameEngine/Camera.h"
 #include "../MyGameEngine/glmath.h"
+#include "../MyGameEngine/types.h"
 
 #define MAX_KEYS 300
 #define SCREEN_SIZE 1
@@ -183,11 +184,11 @@ void Input::InputCamera(double dt) {
         {
             float DeltaX = (float)dx * Sensitivity;
 
-            app->engine->camera.X = rotate(app->engine->camera.X, DeltaX, vec3(0.0f, 1.0f, 0.0f));
-            app->engine->camera.Y = rotate(app->engine->camera.Y, DeltaX, vec3(0.0f, 1.0f, 0.0f));
-            app->engine->camera.Z = rotate(app->engine->camera.Z, DeltaX, vec3(0.0f, 1.0f, 0.0f));
+            app->engine->camera.X = app->engine->camera.Rotate(app->engine->camera.X, DeltaX, vec3(0.0f, 1.0f, 0.0f));
+            app->engine->camera.Y = app->engine->camera.Rotate(app->engine->camera.Y, DeltaX, vec3(0.0f, 1.0f, 0.0f));
+            app->engine->camera.Z = app->engine->camera.Rotate(app->engine->camera.Z, DeltaX, vec3(0.0f, 1.0f, 0.0f));
         }
-
+        glm:
         if (dy != 0)
         {
             float DeltaY = (float)dy * Sensitivity;
@@ -197,7 +198,7 @@ void Input::InputCamera(double dt) {
 
             if (app->engine->camera.Y.y < 0.0f)
             {
-                app->engine->camera.Z = vec3(0.0f, app->engine->camera.Z.y > 0.0f ? 1.0f : -1.0f, 0.0f);
+                app->engine->camera.Z = vec3d(0.0f, app->engine->camera.Z.y > 0.0f ? 1.0f : -1.0f, 0.0f);
                 app->engine->camera.Y = cross(app->engine->camera.Z, app->engine->camera.X);
             }
         }
