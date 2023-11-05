@@ -108,8 +108,17 @@ bool Input::processSDLEvents()
         {
         case SDL_DROPFILE:
             dropped_filedir = event.drop.file;
-            LOG("%s was dropped\n", dropped_filedir);
-            SDL_free(dropped_filedir);
+            LOG("%s was dropped\n", dropped_filedir.c_str());
+            
+            //if (filesystem::file_status::type == )
+            if (dropped_filedir.ends_with(".fbx")) {
+                filesystem::copy(dropped_filedir, "Assets");
+            }
+            else if (dropped_filedir.ends_with(".png") || dropped_filedir.ends_with(".dds")) {
+                filesystem::copy(dropped_filedir, "Assets");
+            }
+            //SDL_free(dropped_filedir);
+            //SDL_free(dropped_filedir);
             break;
         case SDL_MOUSEWHEEL:
             //mouse_z = event.wheel.y;

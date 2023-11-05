@@ -56,7 +56,7 @@ private:
     int mouse_z;
     int mouse_x_motion;
     int mouse_y_motion;
-    char* dropped_filedir;
+    std::string dropped_filedir;
     KEY_STATE mouse_buttons[MAX_MOUSE_BUTTONS];
     KEY_STATE* keyboard;
 };
