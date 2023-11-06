@@ -3,9 +3,9 @@
 #include "Input.h"
 #include "Application.h"
 #include "UI.h"
-#include "..\MyGameEngine\Camera.h"
 
 #define MAX_KEYS 300
+#define NUM_MOUSE_BUTTONS 5
 #define SCREEN_SIZE 1
 
 Input::Input(Application* app) : Module(app)
@@ -81,24 +81,15 @@ bool Input::processSDLEvents()
 
     mouse_x /= SCREEN_SIZE;
     mouse_y /= SCREEN_SIZE;
-    mouse_z = 0;
+    mouse_WheelScroll = 0;
 
-    for (int i = 0; i < 5; ++i)
+    for (int i = 0; i < NUM_MOUSE_BUTTONS; ++i)
     {
-        if (buttons & SDL_BUTTON(i))
-        {
-            if (mouse_buttons[i] == KEY_IDLE)
-                mouse_buttons[i] = KEY_DOWN;
-            else
-                mouse_buttons[i] = KEY_REPEAT;
-        }
-        else
-        {
-            if (mouse_buttons[i] == KEY_REPEAT || mouse_buttons[i] == KEY_DOWN)
-                mouse_buttons[i] = KEY_UP;
-            else
-                mouse_buttons[i] = KEY_IDLE;
-        }
+        if (mouse_buttons[i] == KEY_DOWN)
+            mouse_buttons[i] = KEY_REPEAT;
+
+        if (mouse_buttons[i] == KEY_UP)
+            mouse_buttons[i] = KEY_IDLE;
     }
 
     while (SDL_PollEvent(&event) != 0)
@@ -108,18 +99,31 @@ bool Input::processSDLEvents()
         {
         case SDL_DROPFILE:
             dropped_filedir = event.drop.file;
-            LOG("%s was dropped\n", dropped_filedir.c_str());
-   
+            
             // Manage whether if the file extension is fine and if it has been already dropped
+            LOG("%s was dropped\n", dropped_filedir.c_str());
             manageFileSystem(dropped_filedir);
-            break;
-        case SDL_MOUSEWHEEL:
-            mouse_z = event.wheel.y;
             break;
         case SDL_KEYDOWN:
             switch (event.key.keysym.sym) {
             case SDLK_ESCAPE: return false;
             }
+            break;
+        case SDL_MOUSEBUTTONDOWN:
+            mouse_buttons[event.button.button - 1] = KEY_DOWN;
+            //LOG("Mouse button %d down", event.button.button-1);
+            break;
+
+        case SDL_MOUSEBUTTONUP:
+            mouse_buttons[event.button.button - 1] = KEY_UP;
+            //LOG("Mouse button %d up", event.button.button-1);
+            break;
+        case SDL_MOUSEMOTION:
+            mouse_x = event.motion.x / SCREEN_SIZE;
+            mouse_y = event.motion.y / SCREEN_SIZE;
+            break;
+        case SDL_MOUSEWHEEL:
+            mouse_WheelScroll = event.wheel.y;
             break;
         case SDL_QUIT: return false;
         }
@@ -129,16 +133,10 @@ bool Input::processSDLEvents()
 }
 
 void Input::InputCamera(double dt) {
+    double speed = 10 * dt;
+    
     // CAMERA MOVEMENT
     // - “WASD” fps-like movement and free look around must be enabled
-    // - Mouse wheel should zoom in and out
-    // - Alt+Left click should orbit the object
-    // - F should focus the camera around the geometry
-    // - Holding SHIFT duplicates movement speed
-
-    double speed = 10 * dt;
-    if (GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT || GetKey(SDL_SCANCODE_RSHIFT) == KEY_REPEAT)
-        speed = 45 * dt;
 
     if (GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT)
     {
@@ -167,27 +165,40 @@ void Input::InputCamera(double dt) {
             app->engine->camera.eye += app->engine->camera.cameraRight * speed;
     }
 
-    ////Zooming Camera Input
-    //app->engine->camera.eye += GetMouseZ();
-    ///*if (app->engine->camera.fov < 1.0f)
-    //    app->engine->camera.fov = 1.0f;
-    //if (app->engine->camera.fov > 115.0f)
-    //    app->engine->camera.fov = 115.0f;*/
-    //
-    //    //Orbit Object with Alt_Left + Left Click
-    if (GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT && GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN)
+    // - Mouse wheel should zoom in and out
+    if (GetMouseWheelScroll() != 0) {
+        app->engine->camera.cameraZoom(GetMouseWheelScroll());
+    }
+    
+      // - Alt+Left click should orbit the object
+    if (GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT && GetMouseButton(SDL_BUTTON_LEFT) == KEY_REPEAT)
     {
-        float mouseSensitivity = 10.0f * dt;
-        int deltaX = GetMouseXMotion();
-        int deltaY = -GetMouseYMotion();
-        float radius = 10.0f;
-        double dtSum = 0;
-        dtSum += dt;
-        speed = 0.6 * dtSum;
-        app->engine->camera.eye.x = sin(speed) * radius;
-        app->engine->camera.eye.z = cos(speed) * radius;
+        app->engine->camera.cameraOrbit(GetMouseMotion());
+
+        // JULS: I thought it was supposed to orbit around the object, this code won't do the work
+        //float mouseSensitivity = 10.0f * dt;
+        //int deltaX = GetMouseXMotion();
+        //int deltaY = -GetMouseYMotion();
+        //float radius = 10.0f;
+        //double dtSum = 0;
+        //dtSum += dt;
+        //speed = 0.6 * dtSum;
+        //app->engine->camera.eye.x = sin(speed) * radius;
+        //app->engine->camera.eye.z = cos(speed) * radius;
     }
 
+    // - F should focus the camera around the geometry
+    if (GetKey(SDL_SCANCODE_F) == KEY_REPEAT) {
+        vec3 localZ = app->engine->camera.eye - app->engine->camera.center;
+        //app->engine->camera.center = focusPoint;
+        //app->engine->camera.eye = app->engine->camera.center + ((glm::normalize(localZ)) * 10.0 /*distance*/);
+    }
+
+    // - Holding SHIFT duplicates movement speed
+    if (GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT || GetKey(SDL_SCANCODE_RSHIFT) == KEY_REPEAT)
+        speed = 45 * dt;
+
+    // Compute the camera coordinates
     app->engine->camera.cameraUpdate();
 }
 
@@ -225,3 +236,9 @@ void Input::manageFileSystem(std::string dropped_filedir) {
         LOG("Unsupported file format: %s\n", dropped_filedir.c_str());
     }
 }
+
+//bool CleanUp() {
+//
+//    //delete[] keyboard;
+//    return true;
+//}

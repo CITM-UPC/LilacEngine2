@@ -30,6 +30,9 @@ public:
 	// Euler angles, yaw pitch roll
 	double yaw, pitch;
 
-	float zoom;
+public:
+	void cameraZoom(double amount);
+	void cameraOrbit(vec2 motion);
+	void cameraFocus(vec2 motion);
 };
 
