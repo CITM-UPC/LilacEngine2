@@ -1,0 +1,93 @@
+﻿  Downloading https://github.com/microsoft/vcpkg-tool/releases/download/2023-09-15/vcpkg.exe -> C:\Users\julia\OneDrive\Documents\GitHub\LilacEngine2\vcpkg\vcpkg.exe... done.
+  Validating signature... done.
+  
+  versi├│n del programa de administraci├│n de paquetes vcpkg 2023-09-15-ac02a9f660977426b8ec6392919fbb1d51b10998
+  
+  Consulte LICENSE.txt para obtener informaci├│n sobre la licencia.
+  Telemetry
+  ---------
+  vcpkg collects usage data in order to help us improve your experience.
+  The data collected by Microsoft is anonymous.
+  You can opt-out of telemetry by re-running the bootstrap-vcpkg script with -disableMetrics,
+  passing --disable-metrics to vcpkg on the command line,
+  or by setting the VCPKG_DISABLE_METRICS environment variable.
+  
+  Read more about vcpkg telemetry at docs/about/privacy.md
+  Calculando plan de instalaci├│n...
+  Los siguientes paquetes ya est├ín instalados:
+      assimp:x64-windows -> 5.3.1
+      devil[core,tiff,openexr,libpng,libjpeg,lcms,jasper]:x64-windows -> 1.8.0#11
+      glew:x64-windows -> 2.2.0#3
+      glm:x64-windows -> 2023-06-08
+      opengl:x64-windows -> 2022-12-04#3
+  assimp:x64-windows ya est├í instalado
+  devil:x64-windows ya est├í instalado
+  glew:x64-windows ya est├í instalado
+  glm:x64-windows ya est├í instalado
+  opengl:x64-windows ya est├í instalado
+  Tiempo total de instalaci├│n: 40.4 us
+  assimp proporciona destinos de CMake:
+  
+    # esto se genera de forma heur├¡stica y puede que no sea correcto
+    find_package(assimp CONFIG REQUIRED)
+    target_link_libraries(main PRIVATE assimp::assimp)
+  
+  The package glew is compatible with built-in CMake targets:
+  
+      find_package(GLEW REQUIRED)
+      target_link_libraries(main PRIVATE GLEW::GLEW)
+  
+  glm provides CMake targets:
+  
+      find_package(glm CONFIG REQUIRED)
+      target_link_libraries(main PRIVATE glm::glm)
+  
+  The package opengl is compatible with built-in CMake targets via CMake v3.7 and prior syntax
+  
+      find_package(OpenGL REQUIRED)
+      target_link_libraries(main PRIVATE ${OPENGL_LIBRARIES})
+      target_include_directories(main PRIVATE ${OPENGL_INCLUDE_DIR})
+  
+  and the CMake v3.8 and beyond imported target syntax
+  
+      find_package(OpenGL REQUIRED)
+      target_link_libraries(main PRIVATE OpenGL::GL)
+  
+  introduction of various components
+  
+      find_package(OpenGL REQUIRED COMPONENTS GL      # v3.8
+                                              GLU     # v3.8
+                                              GLX     # v3.10
+                                              EGL     # v3.10
+                                              OpenGL) # v3.10
+  
+  The OpenGL SDK is highly platform dependent and is usually an OS component. It's not realistic to build from source for every platform.
+  
+      WINDOWS: is part of the Windows SDK which this package installs.
+      LINUX: the SDK may be installed from your distro's repo or from 3rd parties manually. There are too many to count.
+      APPLE: consult your distribution vendor on the state of OpenGL support: https://support.apple.com/en-us/HT202823
+  
+  Camera.cpp
+C:\Users\julia\OneDrive\Documents\GitHub\LilacEngine2\MyGameEngine\Camera.cpp(17,42): warning C4244: '=': conversión de 'double' a 'T'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+C:\Users\julia\OneDrive\Documents\GitHub\LilacEngine2\MyGameEngine\Camera.cpp(18,22): warning C4244: '=': conversión de 'double' a 'T'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+C:\Users\julia\OneDrive\Documents\GitHub\LilacEngine2\MyGameEngine\Camera.cpp(19,42): warning C4244: '=': conversión de 'double' a 'T'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+  EngineCore.cpp
+  GameObject.cpp
+  Generando código...
+GLU32.lib(GLU32.dll) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR ya se definió en OpenGL32.lib(OPENGL32.dll); segunda definición omitida
+DevIL.lib(DevIL.dll) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR ya se definió en OpenGL32.lib(OPENGL32.dll); segunda definición omitida
+assimp-vc143-mt.lib(assimp-vc143-mt.dll) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR ya se definió en OpenGL32.lib(OPENGL32.dll); segunda definición omitida
+Mesh.obj : warning LNK4006: "public: enum aiReturn __cdecl aiMaterial::GetTexture(enum aiTextureType,unsigned int,struct aiString *,enum aiTextureMapping *,unsigned int *,float *,enum aiTextureOp *,enum aiTextureMapMode *)const " (?GetTexture@aiMaterial@@QEBA?AW4aiReturn@@W4aiTextureType@@IPEAUaiString@@PEAW4aiTextureMapping@@PEAIPEAMPEAW4aiTextureOp@@PEAW4aiTextureMapMode@@@Z) ya se definió en assimp-vc143-mt.lib(assimp-vc143-mt.dll); segunda definición omitida
+  MyGameEngine.vcxproj -> C:\Users\julia\OneDrive\Documents\GitHub\LilacEngine2\x64\Debug\MyGameEngine.lib
