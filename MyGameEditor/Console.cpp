@@ -14,10 +14,10 @@ bool Console::Draw()
 	ImGuiWindowFlags consoleFlags = 0;
 	consoleFlags |= ImGuiWindowFlags_NoFocusOnAppearing;
 
-	if (ImGui::Begin("Console", &enabled, consoleFlags))
+	if (ImGui::Begin("Console"))
 	{
 		if (ImGui::SmallButton("Clear"))
-			App->CleanLogs();
+			App->ClearLogs();
 
 		ImGui::Separator();
 
@@ -33,10 +33,8 @@ bool Console::Draw()
 
 			for (const auto& log : App->GetLogs())
 			{
-				switch (log.type) {
-					case LogType::LOG_INFO
-				}
-
+				
+				
 				ImGui::TextUnformatted(log.data());
 				ImGui::PopStyleColor();
 			}

@@ -219,3 +219,18 @@ float Application::GetDT()
 {
 	return dt;
 }
+
+void Application::AddLog(string l)
+{
+	logs.push_back(l);
+}
+
+vector<string> Application::GetLogs()
+{
+	return logs;
+}
+
+void Application::ClearLogs()
+{
+	logs.clear();
+}
