@@ -109,19 +109,12 @@ bool Input::processSDLEvents()
         case SDL_DROPFILE:
             dropped_filedir = event.drop.file;
             LOG("%s was dropped\n", dropped_filedir.c_str());
-            
-            //if (filesystem::file_status::type == )
-            if (dropped_filedir.ends_with(".fbx")) {
-                filesystem::copy(dropped_filedir, "Assets");
-            }
-            else if (dropped_filedir.ends_with(".png") || dropped_filedir.ends_with(".dds")) {
-                filesystem::copy(dropped_filedir, "Assets");
-            }
-            //SDL_free(dropped_filedir);
-            //SDL_free(dropped_filedir);
+   
+            // Manage whether if the file extension is fine and if it has been already dropped
+            manageFileSystem(dropped_filedir);
             break;
         case SDL_MOUSEWHEEL:
-            //mouse_z = event.wheel.y;
+            mouse_z = event.wheel.y;
             break;
         case SDL_KEYDOWN:
             switch (event.key.keysym.sym) {
@@ -196,4 +189,39 @@ void Input::InputCamera(double dt) {
     }
 
     app->engine->camera.cameraUpdate();
+}
+
+void Input::manageFileSystem(std::string dropped_filedir) {
+    // Extract the file name from the dropped_filedir
+    filesystem::path filePath(dropped_filedir);
+    std::string fileName = filePath.filename().string();
+
+    // Specify the directory where you want to copy the file
+    std::filesystem::path destinationDirectory = "Assets";
+
+    if (fileName.ends_with(".fbx") || fileName.ends_with(".png") || fileName.ends_with(".dds")) {
+        //Combine the destination directory and the file name to get the full destination path
+        std::filesystem::path destinationPath = destinationDirectory / fileName;
+        
+        // Check if the filealready exists
+        std::error_code ec;
+        std::filesystem::copy(filePath, destinationPath, ec);
+        
+        if (!ec) {
+            if (dropped_filedir.ends_with(".fbx")) {
+                LOG("New mesh has been successfully copied: %s\n", dropped_filedir.c_str());
+            }
+            else if (dropped_filedir.ends_with(".png") || dropped_filedir.ends_with(".dds")) {
+                LOG("New texture has been successfully copied: %s\n", dropped_filedir.c_str());
+
+                // here should be applied to put the texture in the selected GameObject 
+            }
+        }
+        else {
+            LOG("Error copying file: %s\n", ec.message().c_str());
+        }
+    }
+    else {
+        LOG("Unsupported file format: %s\n", dropped_filedir.c_str());
+    }
 }

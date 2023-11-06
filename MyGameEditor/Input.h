@@ -27,7 +27,6 @@ public:
     bool processSDLEvents();
 
     // Camera
-
     KEY_STATE GetMouseButton(int id) 
     {
         return mouse_buttons[id];
@@ -49,6 +48,9 @@ public:
     }
 
     void InputCamera(double dt);
+
+    // File System
+    void manageFileSystem(std::string dropped_filedir);
 
 private:
     int mouse_x;
