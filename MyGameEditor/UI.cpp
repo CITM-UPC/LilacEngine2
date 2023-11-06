@@ -157,6 +157,20 @@ void UI::showMenu() {
 
 void UI::showConsole() {
 	ImGui::Begin("Console");
+	
+		if (ImGui::Button("Clear")) {
+			app->ClearLogs();
+		}
+		ImGui::Separator();
+
+		
+		vector<string> editorLogs = app->GetLogs();
+
+		for (auto it = editorLogs.begin(); it != editorLogs.end(); ++it) {
+			ImGui::Text((*it).c_str());
+		}
+		
+
 	ImGui::EndMenu();
 	ImGui::End();
 }

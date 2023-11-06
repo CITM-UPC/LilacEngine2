@@ -43,6 +43,12 @@ public:
 
 	float GetDT();
 
+	void AddLog(string l);
+
+	vector<string> GetLogs();
+
+	void ClearLogs();
+
 private:
 
 	// Call modules before each loop iteration
@@ -59,6 +65,8 @@ private:
 
 	// Call modules after each loop iteration
 	bool PostUpdate();
+
+	vector<string> logs;
 
 public:
 
