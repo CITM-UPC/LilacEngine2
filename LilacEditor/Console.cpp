@@ -4,9 +4,9 @@
 
 #include "Log.h"
 
-Console::Console(){}
-
-Console::~Console() {}
+//Console::Console(){}
+//
+//Console::~Console() {}
 
 /*bool Console::Draw()
 {

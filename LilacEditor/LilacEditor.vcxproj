@@ -112,7 +112,7 @@ $(SolutionDir)\vcpkg\vcpkg.exe install opengl glew sdl2 imgui[opengl3-binding,sd
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MyGameEngine\MyGameEngine.vcxproj">
+    <ProjectReference Include="..\LilacEngine\LilacEngine.vcxproj">
       <Project>{0e04f5b4-d4a2-4f7b-b350-a0edcae8a446}</Project>
     </ProjectReference>
   </ItemGroup>

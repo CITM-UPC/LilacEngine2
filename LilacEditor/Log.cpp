@@ -1,7 +1,6 @@
 #include "Log.h"
-
-#include <windows.h>
-#include <stdio.h>
+#include "Application.h"
+#include "Globals.h"
 
 void Log(const char file[], int line, const char* format, ...)
 {
@@ -16,4 +15,11 @@ void Log(const char file[], int line, const char* format, ...)
 	sprintf_s(tmpString2, 4096, "\n%s(%d) : %s", file, line, tmpString1);
 
 	OutputDebugString(tmpString2);
+
+	// Log to Editor Console
+	if (app != nullptr)
+	{
+		sprintf_s(tmpString2, BUFFER_SIZE, "%s", tmpString1);
+		app->AddLog(tmpString2);
+	}
 }

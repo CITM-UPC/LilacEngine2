@@ -4,14 +4,14 @@
 
 #include "Globals.h"
 #include "Module.h"
+#include "Log.h"
+#include "..\LilacEngine\EngineCore.h"
 
-#include "Window.h"
-#include "Input.h"
-#include "Hardware.h"
-#include "UI.h"
-#include "Renderer3D.h"
-
-#include "..\MyGameEngine\EngineCore.h"
+class Window;
+class Input;
+class Hardware;
+class UI;
+class Renderer3D;
 
 class Application
 {
@@ -43,14 +43,13 @@ public:
 
 	float GetDT();
 
-	void AddLog(string l);
+	void AddLog(static char* log);
 
 	vector<string> GetLogs();
 
 	void ClearLogs();
 
 private:
-
 	// Call modules before each loop iteration
 	void PrepareUpdate();
 
@@ -69,7 +68,6 @@ private:
 	vector<string> logs;
 
 public:
-
 	EngineCore* engine;
 	
 	// Modules
@@ -83,7 +81,6 @@ public:
 	int sfxValue = 100;
 
 private:
-
 	int argc;
 	char** args;
 	string title;
@@ -98,6 +95,6 @@ private:
 	double dt;
 };
 
-extern Application* App;
+extern Application* app;
 
 #endif	// !__APP_H__

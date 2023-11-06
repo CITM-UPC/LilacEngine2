@@ -3,7 +3,8 @@
 #include "UI.h"
 #include "Log.h"
 #include "Window.h"
-#include "..\MyGameEngine\Camera.h"
+#include "Renderer3D.h"
+#include "..\LilacEngine\Camera.h"
 
 UI::UI(Application* app) : Module(app)
 {
@@ -67,12 +68,11 @@ bool UI::Update(double dt)
 	bool ret = true;
 
 	ImGuiIO& io = ImGui::GetIO();
+	HardwareInfo hardware_info = app->hardware->GetInfo();
 
 #pragma region UI
 	// For debugging
 	//ImGui::ShowDemoWindow();
-
-	HardwareInfo hardware_info = app->hardware->GetInfo();
 
 	// About tab
 	if (about)
@@ -92,6 +92,8 @@ bool UI::Update(double dt)
 	if (quit)
 		return false;
 	//showGame();
+
+#pragma endregion
 
 	return ret;
 }
@@ -163,13 +165,13 @@ void UI::showConsole() {
 	{
 		if (ImGui::SmallButton("Clear"))
 			app->ClearLogs();
-
+		
 		ImGui::Separator();
-
+	
 		ImGuiWindowFlags scrollFlags = 0;
 		scrollFlags |= ImGuiWindowFlags_HorizontalScrollbar;
 		scrollFlags |= ImGuiWindowFlags_AlwaysVerticalScrollbar;
-
+	
 		if (ImGui::BeginChild("Scrollbar", ImVec2(0, 0), false, scrollFlags))
 		{
 			ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(2, 1));
@@ -178,32 +180,21 @@ void UI::showConsole() {
 				ImGui::TextUnformatted(log.data());
 				ImGui::PopStyleColor();
 			}
-
+		
 			ImGui::PopStyleVar();
-
+		
 			if (ImGui::GetScrollY() >= ImGui::GetScrollMaxY())
 				ImGui::SetScrollHereY(1.0f);
-
+		
 			ImGui::EndChild();
 		}
-
+		ImGui::EndMenu();
 		ImGui::End();
 	}
-
-	vector<string> editorLogs = app->GetLogs();
-
-	for (auto it = editorLogs.begin(); it != editorLogs.end(); ++it) {
-		ImGui::Text((*it).c_str());
-	}
-
-	ImGui::EndMenu();
-	ImGui::End();
 }
 
 void UI::showConfiguration(HardwareInfo hardware_info) {
 	ImGuiIO& io = ImGui::GetIO();
-
-
 	ImGui::Begin("Configuration");
 	if (ImGui::CollapsingHeader("Application")) {
 		//	// --- Organization name ---

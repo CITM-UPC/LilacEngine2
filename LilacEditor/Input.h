@@ -3,7 +3,7 @@
 #pragma once
 
 #include "Module.h"
-#include "..\MyGameEngine\Camera.h"
+#include "..\LilacEngine\Camera.h"
 #define MAX_MOUSE_BUTTONS 5
 
 enum KEY_STATE

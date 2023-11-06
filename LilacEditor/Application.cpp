@@ -1,4 +1,10 @@
 #include "Application.h"
+#include "Log.h"
+#include "Window.h"
+#include "Input.h"
+#include "Hardware.h"
+#include "UI.h"
+#include "Renderer3D.h"
 
 Application::Application(int argc, char* args[]) : argc(argc), args(args)
 {
@@ -219,9 +225,9 @@ float Application::GetDT()
 	return dt;
 }
 
-void Application::AddLog(string l)
+void Application::AddLog(static char* log)
 {
-	logs.push_back(l);
+	logs.push_back(log);
 }
 
 vector<string> Application::GetLogs()
