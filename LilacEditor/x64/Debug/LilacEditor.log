@@ -1,0 +1,105 @@
+﻿C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(531,5): warning MSB8028: El directorio intermedio (x64\Debug\) contiene archivos compartidos de otro proyecto (MyGameEditor.vcxproj). Esto puede dar lugar a un comportamiento incorrecto de limpieza y recompilación.
+  Downloading https://github.com/microsoft/vcpkg-tool/releases/download/2023-09-15/vcpkg.exe -> C:\Users\julia\OneDrive\Documents\GitHub\LilacEngine2\vcpkg\vcpkg.exe... done.
+  Validating signature... done.
+  
+  versi├│n del programa de administraci├│n de paquetes vcpkg 2023-09-15-ac02a9f660977426b8ec6392919fbb1d51b10998
+  
+  Consulte LICENSE.txt para obtener informaci├│n sobre la licencia.
+  Telemetry
+  ---------
+  vcpkg collects usage data in order to help us improve your experience.
+  The data collected by Microsoft is anonymous.
+  You can opt-out of telemetry by re-running the bootstrap-vcpkg script with -disableMetrics,
+  passing --disable-metrics to vcpkg on the command line,
+  or by setting the VCPKG_DISABLE_METRICS environment variable.
+  
+  Read more about vcpkg telemetry at docs/about/privacy.md
+  Calculando plan de instalaci├│n...
+  Los siguientes paquetes ya est├ín instalados:
+      glew:x64-windows -> 2.2.0#3
+      imgui[core,sdl2-binding,opengl3-binding,docking-experimental]:x64-windows -> 1.89.9
+      opengl:x64-windows -> 2022-12-04#3
+      sdl2[core,base]:x64-windows -> 2.28.3#1
+  glew:x64-windows ya est├í instalado
+  imgui:x64-windows ya est├í instalado
+  opengl:x64-windows ya est├í instalado
+  sdl2:x64-windows ya est├í instalado
+  Tiempo total de instalaci├│n: 46.6 us
+  The package glew is compatible with built-in CMake targets:
+  
+      find_package(GLEW REQUIRED)
+      target_link_libraries(main PRIVATE GLEW::GLEW)
+  
+  imgui proporciona destinos de CMake:
+  
+    # esto se genera de forma heur├¡stica y puede que no sea correcto
+    find_package(imgui CONFIG REQUIRED)
+    target_link_libraries(main PRIVATE imgui::imgui)
+  
+  The package opengl is compatible with built-in CMake targets via CMake v3.7 and prior syntax
+  
+      find_package(OpenGL REQUIRED)
+      target_link_libraries(main PRIVATE ${OPENGL_LIBRARIES})
+      target_include_directories(main PRIVATE ${OPENGL_INCLUDE_DIR})
+  
+  and the CMake v3.8 and beyond imported target syntax
+  
+      find_package(OpenGL REQUIRED)
+      target_link_libraries(main PRIVATE OpenGL::GL)
+  
+  introduction of various components
+  
+      find_package(OpenGL REQUIRED COMPONENTS GL      # v3.8
+                                              GLU     # v3.8
+                                              GLX     # v3.10
+                                              EGL     # v3.10
+                                              OpenGL) # v3.10
+  
+  The OpenGL SDK is highly platform dependent and is usually an OS component. It's not realistic to build from source for every platform.
+  
+      WINDOWS: is part of the Windows SDK which this package installs.
+      LINUX: the SDK may be installed from your distro's repo or from 3rd parties manually. There are too many to count.
+      APPLE: consult your distribution vendor on the state of OpenGL support: https://support.apple.com/en-us/HT202823
+  
+  sdl2 provides CMake targets:
+  
+      find_package(SDL2 CONFIG REQUIRED)
+      target_link_libraries(main
+          PRIVATE
+          $<TARGET_NAME_IF_EXISTS:SDL2::SDL2main>
+          $<IF:$<TARGET_EXISTS:SDL2::SDL2>,SDL2::SDL2,SDL2::SDL2-static>
+      )
+  
+C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(531,5): warning MSB8028: El directorio intermedio (x64\Debug\) contiene archivos compartidos de otro proyecto (MyGameEngine.vcxproj). Esto puede dar lugar a un comportamiento incorrecto de limpieza y recompilación.
+  UI.cpp
+C:\Users\julia\OneDrive\Documents\GitHub\LilacEngine2\LilacEditor\Application.h(46,30): warning C4042: 'log': tiene una clase de almacenamiento incorrecta
+C:\Users\julia\OneDrive\Documents\GitHub\LilacEngine2\LilacEditor\UI.cpp(348,43): warning C4305: 'argumento': truncamiento de 'double' a 'float'
+C:\Users\julia\OneDrive\Documents\GitHub\LilacEngine2\LilacEditor\UI.cpp(348,36): warning C4305: 'argumento': truncamiento de 'double' a 'float'
+C:\Users\julia\OneDrive\Documents\GitHub\LilacEngine2\LilacEditor\UI.cpp(348,29): warning C4305: 'argumento': truncamiento de 'double' a 'float'
+  LilacEditor.vcxproj -> C:\Users\julia\OneDrive\Documents\GitHub\LilacEngine2\x64\Debug\LilacEditor.exe
+  C:\Users\julia\OneDrive\Documents\GitHub\LilacEngine2\\vcpkg\installed\x64-windows\bin\assimp-vc143-mt.dll
+  C:\Users\julia\OneDrive\Documents\GitHub\LilacEngine2\\vcpkg\installed\x64-windows\bin\DevIL.dll
+  C:\Users\julia\OneDrive\Documents\GitHub\LilacEngine2\\vcpkg\installed\x64-windows\bin\freeglut.dll
+  C:\Users\julia\OneDrive\Documents\GitHub\LilacEngine2\\vcpkg\installed\x64-windows\bin\glew32.dll
+  C:\Users\julia\OneDrive\Documents\GitHub\LilacEngine2\\vcpkg\installed\x64-windows\bin\Iex-3_1.dll
+  C:\Users\julia\OneDrive\Documents\GitHub\LilacEngine2\\vcpkg\installed\x64-windows\bin\IlmThread-3_1.dll
+  C:\Users\julia\OneDrive\Documents\GitHub\LilacEngine2\\vcpkg\installed\x64-windows\bin\ILU.dll
+  C:\Users\julia\OneDrive\Documents\GitHub\LilacEngine2\\vcpkg\installed\x64-windows\bin\ILUT.dll
+  C:\Users\julia\OneDrive\Documents\GitHub\LilacEngine2\\vcpkg\installed\x64-windows\bin\Imath-3_1.dll
+  C:\Users\julia\OneDrive\Documents\GitHub\LilacEngine2\\vcpkg\installed\x64-windows\bin\jasper.dll
+  C:\Users\julia\OneDrive\Documents\GitHub\LilacEngine2\\vcpkg\installed\x64-windows\bin\jpeg62.dll
+  C:\Users\julia\OneDrive\Documents\GitHub\LilacEngine2\\vcpkg\installed\x64-windows\bin\jpeg62.pdb
+  C:\Users\julia\OneDrive\Documents\GitHub\LilacEngine2\\vcpkg\installed\x64-windows\bin\lcms2.dll
+  C:\Users\julia\OneDrive\Documents\GitHub\LilacEngine2\\vcpkg\installed\x64-windows\bin\liblzma.dll
+  C:\Users\julia\OneDrive\Documents\GitHub\LilacEngine2\\vcpkg\installed\x64-windows\bin\libpng16.dll
+  C:\Users\julia\OneDrive\Documents\GitHub\LilacEngine2\\vcpkg\installed\x64-windows\bin\minizip.dll
+  C:\Users\julia\OneDrive\Documents\GitHub\LilacEngine2\\vcpkg\installed\x64-windows\bin\OpenEXR-3_1.dll
+  C:\Users\julia\OneDrive\Documents\GitHub\LilacEngine2\\vcpkg\installed\x64-windows\bin\OpenEXRCore-3_1.dll
+  C:\Users\julia\OneDrive\Documents\GitHub\LilacEngine2\\vcpkg\installed\x64-windows\bin\OpenEXRUtil-3_1.dll
+  C:\Users\julia\OneDrive\Documents\GitHub\LilacEngine2\\vcpkg\installed\x64-windows\bin\pugixml.dll
+  C:\Users\julia\OneDrive\Documents\GitHub\LilacEngine2\\vcpkg\installed\x64-windows\bin\SDL2.dll
+  C:\Users\julia\OneDrive\Documents\GitHub\LilacEngine2\\vcpkg\installed\x64-windows\bin\tiff.dll
+  C:\Users\julia\OneDrive\Documents\GitHub\LilacEngine2\\vcpkg\installed\x64-windows\bin\turbojpeg.dll
+  C:\Users\julia\OneDrive\Documents\GitHub\LilacEngine2\\vcpkg\installed\x64-windows\bin\turbojpeg.pdb
+  C:\Users\julia\OneDrive\Documents\GitHub\LilacEngine2\\vcpkg\installed\x64-windows\bin\zlib1.dll
+         25 archivo(s) copiado(s).
