@@ -156,20 +156,45 @@ void UI::showMenu() {
 }
 
 void UI::showConsole() {
-	ImGui::Begin("Console");
-	
-		if (ImGui::Button("Clear")) {
+	ImGuiWindowFlags consoleFlags = 0;
+	consoleFlags |= ImGuiWindowFlags_NoFocusOnAppearing;
+
+	if (ImGui::Begin("Console"))
+	{
+		if (ImGui::SmallButton("Clear"))
 			app->ClearLogs();
-		}
+
 		ImGui::Separator();
 
-		
-		vector<string> editorLogs = app->GetLogs();
+		ImGuiWindowFlags scrollFlags = 0;
+		scrollFlags |= ImGuiWindowFlags_HorizontalScrollbar;
+		scrollFlags |= ImGuiWindowFlags_AlwaysVerticalScrollbar;
 
-		for (auto it = editorLogs.begin(); it != editorLogs.end(); ++it) {
-			ImGui::Text((*it).c_str());
+		if (ImGui::BeginChild("Scrollbar", ImVec2(0, 0), false, scrollFlags))
+		{
+			ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(2, 1));
+			for (const auto& log : app->GetLogs())
+			{
+				ImGui::TextUnformatted(log.data());
+				ImGui::PopStyleColor();
+			}
+
+			ImGui::PopStyleVar();
+
+			if (ImGui::GetScrollY() >= ImGui::GetScrollMaxY())
+				ImGui::SetScrollHereY(1.0f);
+
+			ImGui::EndChild();
 		}
-		
+
+		ImGui::End();
+	}
+
+	vector<string> editorLogs = app->GetLogs();
+
+	for (auto it = editorLogs.begin(); it != editorLogs.end(); ++it) {
+		ImGui::Text((*it).c_str());
+	}
 
 	ImGui::EndMenu();
 	ImGui::End();

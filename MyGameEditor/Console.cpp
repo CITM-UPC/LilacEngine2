@@ -1,15 +1,14 @@
 #include "Console.h"
-#include "Application.h"
+#include "Module.h"
 #include "UI.h"
-#include "imgui.h"
 
-#include "log.h"
+#include "Log.h"
 
 Console::Console(){}
 
 Console::~Console() {}
 
-bool Console::Draw()
+/*bool Console::Draw()
 {
 	ImGuiWindowFlags consoleFlags = 0;
 	consoleFlags |= ImGuiWindowFlags_NoFocusOnAppearing;
@@ -17,7 +16,7 @@ bool Console::Draw()
 	if (ImGui::Begin("Console"))
 	{
 		if (ImGui::SmallButton("Clear"))
-			App->ClearLogs();
+			app->ClearLogs();
 
 		ImGui::Separator();
 
@@ -31,7 +30,7 @@ bool Console::Draw()
 
 
 
-			for (const auto& log : App->GetLogs())
+			for (const auto& log : app->GetLogs())
 			{
 				
 				
@@ -51,4 +50,4 @@ bool Console::Draw()
 	}
 
 	return true;
-}
+}*/
