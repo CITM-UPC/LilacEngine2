@@ -6,6 +6,7 @@
 #include "Texture2D.h"
 
 class GameObject {
+public:
 	GameObject();
 	~GameObject();
 	std::string name;
@@ -14,4 +15,7 @@ class GameObject {
 	Mesh mesh;
 	Texture2D tex;
 
+public:
+	GameObject importGameObject(const std::string& path);
+	std::vector<GameObject> getGameObject();
 };

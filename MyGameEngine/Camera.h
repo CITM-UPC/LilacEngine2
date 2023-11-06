@@ -30,6 +30,12 @@ public:
 	// Euler angles, yaw pitch roll
 	double yaw, pitch;
 
-	float zoom;
+public:
+	void cameraMoveVertical(vec3 vector);
+	void cameraMoveHorizontal(vec3 vector);
+	void cameraZoom(double amount);
+	void cameraOrbit(vec2 motion);
+	// JULS: Focus can only be done with GameObject
+	void cameraFocus(vec2 motion);
 };
 

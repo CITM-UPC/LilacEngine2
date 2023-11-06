@@ -3,9 +3,9 @@
 #include "Input.h"
 #include "Application.h"
 #include "UI.h"
-#include "..\MyGameEngine\Camera.h"
 
 #define MAX_KEYS 300
+#define NUM_MOUSE_BUTTONS 5
 #define SCREEN_SIZE 1
 
 Input::Input(Application* app) : Module(app)
@@ -81,24 +81,15 @@ bool Input::processSDLEvents()
 
     mouse_x /= SCREEN_SIZE;
     mouse_y /= SCREEN_SIZE;
-    mouse_z = 0;
+    mouse_WheelScroll = 0;
 
-    for (int i = 0; i < 5; ++i)
+    for (int i = 0; i < NUM_MOUSE_BUTTONS; ++i)
     {
-        if (buttons & SDL_BUTTON(i))
-        {
-            if (mouse_buttons[i] == KEY_IDLE)
-                mouse_buttons[i] = KEY_DOWN;
-            else
-                mouse_buttons[i] = KEY_REPEAT;
-        }
-        else
-        {
-            if (mouse_buttons[i] == KEY_REPEAT || mouse_buttons[i] == KEY_DOWN)
-                mouse_buttons[i] = KEY_UP;
-            else
-                mouse_buttons[i] = KEY_IDLE;
-        }
+        if (mouse_buttons[i] == KEY_DOWN)
+            mouse_buttons[i] = KEY_REPEAT;
+
+        if (mouse_buttons[i] == KEY_UP)
+            mouse_buttons[i] = KEY_IDLE;
     }
 
     while (SDL_PollEvent(&event) != 0)
@@ -108,25 +99,31 @@ bool Input::processSDLEvents()
         {
         case SDL_DROPFILE:
             dropped_filedir = event.drop.file;
-            LOG("%s was dropped\n", dropped_filedir.c_str());
             
-            //if (filesystem::file_status::type == )
-            if (dropped_filedir.ends_with(".fbx")) {
-                filesystem::copy(dropped_filedir, "Assets");
-            }
-            else if (dropped_filedir.ends_with(".png") || dropped_filedir.ends_with(".dds")) {
-                filesystem::copy(dropped_filedir, "Assets");
-            }
-            //SDL_free(dropped_filedir);
-            //SDL_free(dropped_filedir);
-            break;
-        case SDL_MOUSEWHEEL:
-            //mouse_z = event.wheel.y;
+            // Manage whether if the file extension is fine and if it has been already dropped
+            LOG("%s was dropped\n", dropped_filedir.c_str());
+            manageFileSystem(dropped_filedir);
             break;
         case SDL_KEYDOWN:
             switch (event.key.keysym.sym) {
             case SDLK_ESCAPE: return false;
             }
+            break;
+        case SDL_MOUSEBUTTONDOWN:
+            mouse_buttons[event.button.button - 1] = KEY_DOWN;
+            //LOG("Mouse button %d down", event.button.button-1);
+            break;
+
+        case SDL_MOUSEBUTTONUP:
+            mouse_buttons[event.button.button - 1] = KEY_UP;
+            //LOG("Mouse button %d up", event.button.button-1);
+            break;
+        case SDL_MOUSEMOTION:
+            mouse_x = event.motion.x / SCREEN_SIZE;
+            mouse_y = event.motion.y / SCREEN_SIZE;
+            break;
+        case SDL_MOUSEWHEEL:
+            mouse_WheelScroll = event.wheel.y;
             break;
         case SDL_QUIT: return false;
         }
@@ -136,16 +133,10 @@ bool Input::processSDLEvents()
 }
 
 void Input::InputCamera(double dt) {
+    double speed = 10 * dt;
+    
     // CAMERA MOVEMENT
     // - “WASD” fps-like movement and free look around must be enabled
-    // - Mouse wheel should zoom in and out
-    // - Alt+Left click should orbit the object
-    // - F should focus the camera around the geometry
-    // - Holding SHIFT duplicates movement speed
-
-    double speed = 10 * dt;
-    if (GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT || GetKey(SDL_SCANCODE_RSHIFT) == KEY_REPEAT)
-        speed = 45 * dt;
 
     if (GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT)
     {
@@ -165,35 +156,78 @@ void Input::InputCamera(double dt) {
         //    app->engine->camera.pitch = -89.0f;
 
         if (GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
-            app->engine->camera.eye += app->engine->camera.center * speed;
+            app->engine->camera.cameraMoveVertical(vec3(0, 0, -speed));
         if (GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
-            app->engine->camera.eye -= app->engine->camera.center * speed;
+            app->engine->camera.cameraMoveVertical(vec3(0, 0, speed));
         if (GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
-            app->engine->camera.eye -= app->engine->camera.cameraRight * speed;
+            app->engine->camera.cameraMoveHorizontal(vec3(-speed, 0, 0));
         if (GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
-            app->engine->camera.eye += app->engine->camera.cameraRight * speed;
+            app->engine->camera.cameraMoveHorizontal(vec3(speed, 0, 0));
     }
 
-    ////Zooming Camera Input
-    //app->engine->camera.eye += GetMouseZ();
-    ///*if (app->engine->camera.fov < 1.0f)
-    //    app->engine->camera.fov = 1.0f;
-    //if (app->engine->camera.fov > 115.0f)
-    //    app->engine->camera.fov = 115.0f;*/
-    //
-    //    //Orbit Object with Alt_Left + Left Click
-    if (GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT && GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN)
+    // - Mouse wheel should zoom in and out
+    if (GetMouseWheelScroll() != 0) {
+        app->engine->camera.cameraZoom(GetMouseWheelScroll());
+    }
+    
+      // - Alt+Left click should orbit the object
+    if (GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT && GetMouseButton(SDL_BUTTON_LEFT) == KEY_REPEAT)
     {
-        float mouseSensitivity = 10.0f * dt;
-        int deltaX = GetMouseXMotion();
-        int deltaY = -GetMouseYMotion();
-        float radius = 10.0f;
-        double dtSum = 0;
-        dtSum += dt;
-        speed = 0.6 * dtSum;
-        app->engine->camera.eye.x = sin(speed) * radius;
-        app->engine->camera.eye.z = cos(speed) * radius;
+        app->engine->camera.cameraOrbit(GetMouseMotion());
     }
 
+    // - F should focus the camera around the geometry
+    if (GetKey(SDL_SCANCODE_F) == KEY_REPEAT) {
+        vec3 localZ = app->engine->camera.eye - app->engine->camera.center;
+        //app->engine->camera.center = focusPoint;
+        //app->engine->camera.eye = app->engine->camera.center + ((glm::normalize(localZ)) * 10.0 /*distance*/);
+    }
+
+    // - Holding SHIFT duplicates movement speed
+    if (GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT || GetKey(SDL_SCANCODE_RSHIFT) == KEY_REPEAT)
+        speed = 45 * dt;
+
+    // Compute the camera coordinates
     app->engine->camera.cameraUpdate();
 }
+
+void Input::manageFileSystem(std::string dropped_filedir) {
+    // Extract the file name from the dropped_filedir
+    filesystem::path filePath(dropped_filedir);
+    std::string fileName = filePath.filename().string();
+
+    // Specify the directory where you want to copy the file
+    std::filesystem::path destinationDirectory = "Assets";
+
+    if (fileName.ends_with(".fbx") || fileName.ends_with(".png") || fileName.ends_with(".dds")) {
+        //Combine the destination directory and the file name to get the full destination path
+        std::filesystem::path destinationPath = destinationDirectory / fileName;
+        
+        // Check if the filealready exists
+        std::error_code ec;
+        std::filesystem::copy(filePath, destinationPath, ec);
+        
+        if (!ec) {
+            if (dropped_filedir.ends_with(".fbx")) {
+                LOG("New mesh has been successfully copied: %s\n", dropped_filedir.c_str());
+            }
+            else if (dropped_filedir.ends_with(".png") || dropped_filedir.ends_with(".dds")) {
+                LOG("New texture has been successfully copied: %s\n", dropped_filedir.c_str());
+
+                // here should be applied to put the texture in the selected GameObject 
+            }
+        }
+        else {
+            LOG("Error copying file: %s\n", ec.message().c_str());
+        }
+    }
+    else {
+        LOG("Unsupported file format: %s\n", dropped_filedir.c_str());
+    }
+}
+
+//bool CleanUp() {
+//
+//    //delete[] keyboard;
+//    return true;
+//}

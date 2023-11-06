@@ -37,12 +37,13 @@ bool UI::Start()
 	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
 	io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
 	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;         // IF using Docking Branch
-	//io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;       // Enable Multi-Viewport / Platform Windows
+	//io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;     // Enable Multi-Viewport / Platform Windows
 
 	// Setup Platform/Renderer backends
 	ImGui_ImplSDL2_InitForOpenGL(app->window->window, app->window->context);
 	ImGui_ImplOpenGL3_Init("#version 330 core");
 
+	// JULS: COLORS IMGUI REMINDER => Values go from 0 - 1, not from 0 - 225
 	ImGui::StyleColorsDark();
 
 	return ret;
@@ -71,19 +72,21 @@ bool UI::Update(double dt)
 	// For debugging
 	//ImGui::ShowDemoWindow();
 
+	HardwareInfo hardware_info = app->hardware->GetInfo();
+
 	// About tab
 	if (about)
-		showAbout();
+		showAbout(hardware_info);
 	if (console)
 		showConsole();
 	if (configuration)
-		showConfiguration();
+		showConfiguration(hardware_info);
 	if (hierarchy)
 		showHierarchy();
 	if (inspector)
 		showInspector();
 	if (shapes)
-		showLoad();
+		showResources();
 	if (menu)
 		showMenu();
 	if (quit)
@@ -158,7 +161,7 @@ void UI::showConsole() {
 	ImGui::End();
 }
 
-void UI::showConfiguration() {
+void UI::showConfiguration(HardwareInfo hardware_info) {
 	ImGuiIO& io = ImGui::GetIO();
 
 
@@ -228,7 +231,7 @@ void UI::showConfiguration() {
 		ImGui::Text("Mouse wheel: %.1f", io.MouseWheel);
 	}
 	if (ImGui::CollapsingHeader("Audio")) {
-		ImGui::Text("No audio applied for now!", io.MousePos.x, io.MousePos.y);
+		ImGui::Text("No audio applied for now!");
 		//if (ImGui::SliderFloat("Music", &v, 0.0, 1.0))
 		//
 		//if (ImGui::SliderFloat("Fx", &v, 0.0, 1.0))
@@ -239,7 +242,7 @@ void UI::showConfiguration() {
 	}
 	if (ImGui::CollapsingHeader("Hardware")) {
 		//JULS: problems with hardware, debugging
-		showHardwareInfo();
+		showHardwareInfo(hardware_info);
 	}
 	ImGui::EndMenu();
 	ImGui::End();
@@ -247,6 +250,9 @@ void UI::showConfiguration() {
 
 void UI::showHierarchy() {
 	ImGui::Begin("Hierarchy");
+	if (ImGui::TreeNodeEx("")) {
+
+	}
 	ImGui::EndMenu();
 	ImGui::End();
 }
@@ -280,22 +286,45 @@ void UI::showInspector() {
 	//}
 }
 
-void UI::showLoad() {
+void UI::showResources() {
 	ImGui::Begin("Load");
+	if (ImGui::CollapsingHeader("Textures")) {
+
+	}
+	if (ImGui::CollapsingHeader("Meshes")) {
+
+	}
+	if (ImGui::CollapsingHeader("Audio")) {
+		ImGui::Text("No audio files saved...");
+	}
+	if (ImGui::CollapsingHeader("Scenes")) {
+		ImGui::Text("No scenes saved...");
+	}
+	if (ImGui::CollapsingHeader("Bones")) {
+		ImGui::Text("No bone files saved...");
+	}
+	if (ImGui::CollapsingHeader("Animation")) {
+		ImGui::Text("No animations saved...");
+	}
 	ImGui::EndMenu();
 	ImGui::End();
 }
 
-void UI::showAbout() {
+void UI::showAbout(HardwareInfo hardware_info) {
+	hardware_info = app->hardware->GetInfo();
+
 	ImGui::OpenPopup("About");
 	if (ImGui::BeginPopupModal("About", NULL, ImGuiWindowFlags_AlwaysAutoResize)) {
-		ImGui::Text("Lilac Engine");
+		ImGui::TextColored(ImVec4(0.784, 0.635, 0.784, 1), "LILAC ENGINE");
 		ImGui::Text("An engine in development");
 		ImGui::Text("by Júlia Serra Trujillo and Joel Chaves Moreno\n\n");
 		ImGui::Text("3rd Party Libraries used:");
 		// Need to change this
-		ImGui::Text("- SDL 2");
-		ImGui::Text("- ImGui\n\n");
+		ImGui::Text("- SDL 2 %s\n", hardware_info.sdl_version);
+		ImGui::Text("- ImGui %s\n", IMGUI_VERSION);
+		ImGui::Text("- OpenGL %\n\n", hardware_info.opengl_version);
+		//ImGui::Text("- DevIL %s\n\n", (string)IMGUI_VERSION);
+
 		ImGui::Text("License:\n\n");
 		ImGui::Text("MIT License\n\n");
 		// 1st Paragraph
@@ -344,8 +373,7 @@ void UI::calculateFramerate() {
 
 }
 
-void UI::showHardwareInfo() {
-	HardwareInfo hardware_info = app->hardware->GetInfo();
+void UI::showHardwareInfo(HardwareInfo hardware_info) {
 	// SDL Version
 	ImGui::Text("SDL Version:");
 	ImGui::SameLine();

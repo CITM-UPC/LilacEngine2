@@ -3,7 +3,7 @@
 #pragma once
 
 #include "Module.h"
-
+#include "..\MyGameEngine\Camera.h"
 #define MAX_MOUSE_BUTTONS 5
 
 enum KEY_STATE
@@ -23,14 +23,13 @@ public:
     bool Awake();
     bool PreUpdate();
     bool Update(double dt);
-
+    //bool CleanUp();
     bool processSDLEvents();
 
-    // Camera
-
+    // Mouse
     KEY_STATE GetMouseButton(int id) 
     {
-        return mouse_buttons[id];
+        return mouse_buttons[id - 1];
     }
 
     KEY_STATE GetKey(int id) 
@@ -38,27 +37,40 @@ public:
         return keyboard[id];
     }
 
+    vec2 GetMouseMotion() {
+        return vec2(mouse_x, mouse_y);
+    }
+
     int GetMouseXMotion() 
     {
-        return mouse_x_motion;
+        return mouse_x;
     }
 
     int GetMouseYMotion() 
     {
-        return mouse_y_motion;
+        return mouse_y;
     }
 
+    int GetMouseWheelScroll() {
+        return mouse_WheelScroll;
+    }
+
+    // Camera
     void InputCamera(double dt);
 
+    // File System
+    void manageFileSystem(std::string dropped_filedir);
+
 private:
+    // Mouse
     int mouse_x;
     int mouse_y;
-    int mouse_z;
-    int mouse_x_motion;
-    int mouse_y_motion;
-    std::string dropped_filedir;
+    int	mouse_WheelScroll;
     KEY_STATE mouse_buttons[MAX_MOUSE_BUTTONS];
-    KEY_STATE* keyboard;
+    KEY_STATE* keyboard; 
+    
+    // File System
+    std::string dropped_filedir;
 };
 
 #endif // __INPUT_H__

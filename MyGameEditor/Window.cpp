@@ -30,7 +30,7 @@ bool Window::Start()
 
 bool Window::CleanUp()
 {
-    LOG("Cleaning Window");
+    LOG("Cleaning Window\n");
     if (context) SDL_GL_DeleteContext(context);
     if (window) SDL_DestroyWindow(window);
     SDL_Quit();
