@@ -3,6 +3,7 @@
 #include "UI.h"
 #include "Log.h"
 #include "Window.h"
+#include "..\MyGameEngine\Camera.h"
 
 UI::UI(Application* app) : Module(app)
 {
@@ -160,6 +161,7 @@ void UI::showConsole() {
 void UI::showConfiguration() {
 	ImGuiIO& io = ImGui::GetIO();
 
+
 	ImGui::Begin("Configuration");
 	if (ImGui::CollapsingHeader("Application")) {
 		//	// --- Organization name ---
@@ -175,7 +177,7 @@ void UI::showConfiguration() {
 			//if (ImGui::SliderInt("Max FPS", &maxFramerate, 0, App->window->GetDisplayRefreshRate()))
 			//	App->time->SetMaxFramerate(maxFramerate);
 
-		char title[25];
+		//char title[25];
 		//sprintf_s(title, 25, "Framerate %.1f", FPS_Tracker[FPS_Tracker.size() - 1]);
 		//ImGui::PlotHistogram("##Framerate", &FPS_Tracker[0], FPS_Tracker.size(), 0, title, 0.0f, 100.0f, ImVec2(500, 75));
 		//sprintf_s(title, 25, "Milliseconds %0.1f", MS_Tracker[MS_Tracker.size() - 1]);
@@ -200,15 +202,6 @@ void UI::showConfiguration() {
 
 	//	ImGui::PlotHistogram("##Memory", &Memory[0], Memory.size(), 0, "Memory Consumption", 0.0f, (float)MemoryStats.peakReportedMemory * 1.2f, ImVec2(500, 75));
 
-	//	ImGui::Text("Total Reported Memory: %u", MemoryStats.totalReportedMemory);
-	//	ImGui::Text("Total Actual Memory: %u", MemoryStats.totalActualMemory);
-	//	ImGui::Text("Peak Reported Memory: %u", MemoryStats.peakReportedMemory);
-	//	ImGui::Text("Peak Actual Memory: %u", MemoryStats.peakActualMemory);
-	//	ImGui::Text("Accumulated Reported Memory: %u", MemoryStats.accumulatedReportedMemory);
-	//	ImGui::Text("Accumulated Actual Memory: %u", MemoryStats.accumulatedActualMemory);
-	//	ImGui::Text("Accumulated Alloc Unit Count: %u", MemoryStats.accumulatedAllocUnitCount);
-	//	ImGui::Text("Total Alloc Unit Count: %u", MemoryStats.totalAllocUnitCount);
-	//	ImGui::Text("Peak Alloc Unit Count: %u", MemoryStats.peakAllocUnitCount);
 	}
 	if (ImGui::CollapsingHeader("Window")) {
 		if (ImGui::SliderFloat("Brightness", &v, 0.0, 1.0))
@@ -245,7 +238,8 @@ void UI::showConfiguration() {
 
 	}
 	if (ImGui::CollapsingHeader("Hardware")) {
-
+		//JULS: problems with hardware, debugging
+		showHardwareInfo();
 	}
 	ImGui::EndMenu();
 	ImGui::End();
@@ -348,4 +342,93 @@ void UI::showGame() {
 
 void UI::calculateFramerate() {
 
+}
+
+void UI::showHardwareInfo() {
+	HardwareInfo hardware_info = app->hardware->GetInfo();
+	// SDL Version
+	ImGui::Text("SDL Version:");
+	ImGui::SameLine();
+	ImGui::TextColored(ImVec4(255, 255, 0, 255), "%s", hardware_info.sdl_version);
+
+	// OpenGL Version
+	ImGui::Text("OpenGL Version:");
+	ImGui::SameLine();
+	ImGui::TextColored(ImVec4(255, 255, 0, 255), "%s", hardware_info.opengl_version);
+	ImGui::Separator();
+
+	// CPU 
+	ImGui::Text("CPU Logic Cores:");
+	ImGui::SameLine();
+	ImGui::TextColored(ImVec4(255, 255, 0, 255), "%i", hardware_info.cpu_count);
+
+	ImGui::Text("CPU L1 Cache (Kb):");
+	ImGui::SameLine();
+	ImGui::TextColored(ImVec4(255, 255, 0, 255), "%i", hardware_info.l1_cachekb);
+
+	// CPU Instruction Support
+	ImGui::Text("CPU Instruction Support:");
+	ImGui::SameLine();
+
+	if (hardware_info.rdtsc)
+		ImGui::TextColored(ImVec4(255, 255, 0, 255), "%s", "rdtsc");
+	ImGui::SameLine();
+	if (hardware_info.altivec)
+		ImGui::TextColored(ImVec4(255, 255, 0, 255), "%s", "altivec");
+	ImGui::SameLine();
+	if (hardware_info.now3d)
+		ImGui::TextColored(ImVec4(255, 255, 0, 255), "%s", "now3d");
+	ImGui::SameLine();
+	if (hardware_info.mmx)
+		ImGui::TextColored(ImVec4(255, 255, 0, 255), "%s", "mmx");
+	ImGui::SameLine();
+	if (hardware_info.sse)
+		ImGui::TextColored(ImVec4(255, 255, 0, 255), "%s", "sse");
+	ImGui::SameLine();
+	if (hardware_info.sse2)
+		ImGui::TextColored(ImVec4(255, 255, 0, 255), "%s", "sse2");
+	ImGui::SameLine();
+	if (hardware_info.sse3)
+		ImGui::TextColored(ImVec4(255, 255, 0, 255), "%s", "sse3");
+	ImGui::SameLine();
+	if (hardware_info.sse41)
+		ImGui::TextColored(ImVec4(255, 255, 0, 255), "%s", "sse41");
+	ImGui::SameLine();
+	if (hardware_info.sse42)
+		ImGui::TextColored(ImVec4(255, 255, 0, 255), "%s", "sse42");
+	ImGui::SameLine();
+	if (hardware_info.avx)
+		ImGui::TextColored(ImVec4(255, 255, 0, 255), "%s", "avx");
+	ImGui::SameLine();
+	if (hardware_info.avx2)
+		ImGui::TextColored(ImVec4(255, 255, 0, 255), "%s", "avx2");
+
+	// RAM 
+	ImGui::Separator();
+	ImGui::Text("RAM Memory (Gb)");
+	ImGui::SameLine();
+	ImGui::TextColored(ImVec4(255, 255, 0, 255), "%f", hardware_info.ram_gb);
+
+	// GPU
+	ImGui::Separator();
+	ImGui::Text("GPU Vendor");
+	ImGui::SameLine();
+	ImGui::TextColored(ImVec4(255, 255, 0, 255), "%s", hardware_info.gpu_vendor.data());
+	ImGui::Text("GPU Model");
+	ImGui::SameLine();
+	ImGui::TextColored(ImVec4(255, 255, 0, 255), "%s", hardware_info.gpu_brand.data());
+	ImGui::Text("GPU Driver");
+	ImGui::SameLine();
+	ImGui::TextColored(ImVec4(255, 255, 0, 255), "%s", hardware_info.gpu_driver.data());
+
+	// VRAM
+	ImGui::Text("VRAM Budget");
+	ImGui::SameLine();
+	ImGui::TextColored(ImVec4(255, 255, 0, 255), "%f", hardware_info.vram_mb_budget);
+	ImGui::Text("VRAM Available");
+	ImGui::SameLine();
+	ImGui::TextColored(ImVec4(255, 255, 0, 255), "%f", hardware_info.vram_mb_available);
+	ImGui::Text("VRAM Usage");
+	ImGui::SameLine();
+	ImGui::TextColored(ImVec4(255, 255, 0, 255), "%f", hardware_info.vram_mb_usage);
 }

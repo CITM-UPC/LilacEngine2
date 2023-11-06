@@ -71,5 +71,6 @@ bool Renderer3D::CleanUp()
 }
 
 void Renderer3D::SetVsync(bool vsync) {
-    //SDL_RenderSetVSync(renderer, vsync);
+    //if (vsync)
+    //    SDL_RenderSetVSync(, vsync);
 }

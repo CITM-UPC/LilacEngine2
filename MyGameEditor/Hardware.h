@@ -7,7 +7,13 @@
 
 struct HardwareInfo
 {
+	// SDL
 	char sdl_version[64] = "";
+
+	// OpenGL
+	char opengl_version[64] = "";
+
+	//
 	float ram_gb = 0.f;
 	uint cpu_count = 0;
 	uint l1_cachekb = 0;

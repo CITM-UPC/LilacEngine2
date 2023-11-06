@@ -8,69 +8,57 @@
 
 enum KEY_STATE
 {
-	KEY_IDLE = 0,
-	KEY_DOWN,
-	KEY_REPEAT,
-	KEY_UP
+    KEY_IDLE = 0,
+    KEY_DOWN,
+    KEY_REPEAT,
+    KEY_UP
 };
-
 
 class Input : public Module
 {
 public:
-    Input(Application* app, bool start_enabled = true);
+    Input(Application* app);
     virtual ~Input();
 
     bool Awake();
     bool PreUpdate();
+    bool Update(double dt);
 
     bool processSDLEvents();
-    //void drag
-	bool CleanUp();
 
-	KEY_STATE GetKey(int id) const
-	{
-		return keyboard[id];
-	}
+    // Camera
 
-	KEY_STATE GetMouseButton(int id) const
-	{
-		return mouse_buttons[id];
-	}
+    KEY_STATE GetMouseButton(int id) 
+    {
+        return mouse_buttons[id];
+    }
 
-	int GetMouseX() const
-	{
-		return mouse_x;
-	}
+    KEY_STATE GetKey(int id) 
+    {
+        return keyboard[id];
+    }
 
-	int GetMouseY() const
-	{
-		return mouse_y;
-	}
+    int GetMouseXMotion() 
+    {
+        return mouse_x_motion;
+    }
 
-	int GetMouseZ() const
-	{
-		return mouse_z;
-	}
+    int GetMouseYMotion() 
+    {
+        return mouse_y_motion;
+    }
 
-	int GetMouseXMotion() const
-	{
-		return mouse_x_motion;
-	}
-
-	int GetMouseYMotion() const
-	{
-		return mouse_y_motion;
-	}
+    void InputCamera(double dt);
 
 private:
-	KEY_STATE* keyboard;
-	KEY_STATE mouse_buttons[MAX_MOUSE_BUTTONS];
     int mouse_x;
     int mouse_y;
     int mouse_z;
     int mouse_x_motion;
     int mouse_y_motion;
-    char* dropped_filedir;
+    std::string dropped_filedir;
+    KEY_STATE mouse_buttons[MAX_MOUSE_BUTTONS];
+    KEY_STATE* keyboard;
 };
+
 #endif // __INPUT_H__

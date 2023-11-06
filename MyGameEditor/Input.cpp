@@ -6,17 +6,17 @@
 #include "..\MyGameEngine\Camera.h"
 
 #define MAX_KEYS 300
+#define SCREEN_SIZE 1
 
-Input::Input(Application* app, bool start_enabled) : Module(app, start_enabled)
+Input::Input(Application* app) : Module(app)
 {
     keyboard = new KEY_STATE[MAX_KEYS];
     memset(keyboard, KEY_IDLE, sizeof(KEY_STATE) * MAX_KEYS);
-    //memset(mouse_buttons, KEY_IDLE, sizeof(KEY_STATE) * MAX_MOUSE_BUTTONS);
+    memset(mouse_buttons, KEY_IDLE, sizeof(KEY_STATE) * MAX_MOUSE_BUTTONS);
 }
 
 Input::~Input()
 {
-    delete[] keyboard;
 }
 
 bool Input::Awake()
@@ -43,11 +43,21 @@ bool Input::PreUpdate()
     return ret;
 }
 
+bool Input::Update(double dt)
+{   
+    bool ret = true;
+
+    InputCamera(dt);
+
+    return ret;
+}
+
 bool Input::processSDLEvents()
 {
+    // Initialize
     SDL_PumpEvents();
-
     const Uint8* keys = SDL_GetKeyboardState(NULL);
+    static SDL_Event event;
 
     for (int i = 0; i < MAX_KEYS; ++i)
     {
@@ -69,8 +79,8 @@ bool Input::processSDLEvents()
 
     Uint32 buttons = SDL_GetMouseState(&mouse_x, &mouse_y);
 
-    mouse_x /= WINDOW_WIDTH;
-    mouse_y /= WINDOW_HEIGHT;
+    mouse_x /= SCREEN_SIZE;
+    mouse_y /= SCREEN_SIZE;
     mouse_z = 0;
 
     for (int i = 0; i < 5; ++i)
@@ -91,60 +101,99 @@ bool Input::processSDLEvents()
         }
     }
 
-    mouse_x_motion = mouse_y_motion = 0;
-
-    bool quit = false;
-    static SDL_Event e;
-    while (SDL_PollEvent(&e) != 0)
+    while (SDL_PollEvent(&event) != 0)
     {
-        app->ui->HandleInput(&e);
-        switch (e.type)
+        app->ui->HandleInput(&event);
+        switch (event.type)
         {
         case SDL_DROPFILE:
-            dropped_filedir = e.drop.file;
-            LOG("%s was dropped\n", dropped_filedir);
-            SDL_free(dropped_filedir);
+            dropped_filedir = event.drop.file;
+            LOG("%s was dropped\n", dropped_filedir.c_str());
+            
+            //if (filesystem::file_status::type == )
+            if (dropped_filedir.ends_with(".fbx")) {
+                filesystem::copy(dropped_filedir, "Assets");
+            }
+            else if (dropped_filedir.ends_with(".png") || dropped_filedir.ends_with(".dds")) {
+                filesystem::copy(dropped_filedir, "Assets");
+            }
+            //SDL_free(dropped_filedir);
+            //SDL_free(dropped_filedir);
             break;
         case SDL_MOUSEWHEEL:
-            mouse_z = e.wheel.y;
+            //mouse_z = event.wheel.y;
             break;
-        case SDL_MOUSEMOTION:
-            mouse_x = e.motion.x / WINDOW_WIDTH;
-            mouse_y = e.motion.y / WINDOW_HEIGHT;
-
-            mouse_x_motion = e.motion.xrel / WINDOW_WIDTH;
-            mouse_y_motion = e.motion.yrel / WINDOW_HEIGHT;
+        case SDL_KEYDOWN:
+            switch (event.key.keysym.sym) {
+            case SDLK_ESCAPE: return false;
+            }
             break;
-
-        case SDL_QUIT:
-            quit = true;
-            break;
-
-        /*case SDL_WINDOWEVENT:
-        {
-            if (e.window.event == SDL_WINDOWEVENT_RESIZED)
-                App->renderer->OnResize(e.window.data1, e.window.data2);
-        }*/
-
-        // Initialize mouse in ImGui
-            ImGui_ImplSDL2_ProcessEvent(&e);
-            if (e.type == SDL_QUIT)
-                return UPDATE_STOP;
-            if (e.type == SDL_WINDOWEVENT && e.window.event == SDL_WINDOWEVENT_CLOSE && e.window.windowID == SDL_GetWindowID(App->window->window))
-                return UPDATE_STOP;
+        case SDL_QUIT: return false;
         }
     }
-    if (quit == true || keyboard[SDL_SCANCODE_ESCAPE] == KEY_UP)
-        return UPDATE_STOP;
 
-
-    return UPDATE_CONTINUE;
-}
- //Called before quitting
-bool Input::CleanUp()
-{
-
-    LOG("Quitting SDL input event subsystem");
-    SDL_QuitSubSystem(SDL_INIT_EVENTS);
     return true;
+}
+
+void Input::InputCamera(double dt) {
+    // CAMERA MOVEMENT
+    // - “WASD” fps-like movement and free look around must be enabled
+    // - Mouse wheel should zoom in and out
+    // - Alt+Left click should orbit the object
+    // - F should focus the camera around the geometry
+    // - Holding SHIFT duplicates movement speed
+
+    double speed = 10 * dt;
+    if (GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT || GetKey(SDL_SCANCODE_RSHIFT) == KEY_REPEAT)
+        speed = 45 * dt;
+
+    if (GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT)
+    {
+        ///* MOUSE CAMERA MOVEMENT */
+        //// Compute mouse input displacement
+        //float mouseSensitivity = 10.0f * dt;
+        //int deltaX = GetMouseXMotion();
+        //int deltaY = -GetMouseYMotion();
+        //
+        //app->engine->camera.yaw += deltaX * mouseSensitivity;
+        //app->engine->camera.pitch += deltaY * mouseSensitivity;
+        //
+        //// Limiting Camera Pitch to prevent flipping
+        //if (app->engine->camera.pitch > 89.0f)
+        //    app->engine->camera.pitch = 89.0f;
+        //if (app->engine->camera.pitch < -89.0f)
+        //    app->engine->camera.pitch = -89.0f;
+
+        if (GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
+            app->engine->camera.eye += app->engine->camera.center * speed;
+        if (GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
+            app->engine->camera.eye -= app->engine->camera.center * speed;
+        if (GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+            app->engine->camera.eye -= app->engine->camera.cameraRight * speed;
+        if (GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+            app->engine->camera.eye += app->engine->camera.cameraRight * speed;
+    }
+
+    ////Zooming Camera Input
+    //app->engine->camera.eye += GetMouseZ();
+    ///*if (app->engine->camera.fov < 1.0f)
+    //    app->engine->camera.fov = 1.0f;
+    //if (app->engine->camera.fov > 115.0f)
+    //    app->engine->camera.fov = 115.0f;*/
+    //
+    //    //Orbit Object with Alt_Left + Left Click
+    if (GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT && GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN)
+    {
+        float mouseSensitivity = 10.0f * dt;
+        int deltaX = GetMouseXMotion();
+        int deltaY = -GetMouseYMotion();
+        float radius = 10.0f;
+        double dtSum = 0;
+        dtSum += dt;
+        speed = 0.6 * dtSum;
+        app->engine->camera.eye.x = sin(speed) * radius;
+        app->engine->camera.eye.z = cos(speed) * radius;
+    }
+
+    app->engine->camera.cameraUpdate();
 }
