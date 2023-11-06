@@ -23,14 +23,14 @@ public:
 	// JULS: Temporal functions, this will be moved into files 
 	void showMenu();
 	void showConsole();
-	void showConfiguration();
+	void showConfiguration(HardwareInfo hardware_info);
 	void showHierarchy();
 	void showInspector();
-	void showLoad();
-	void showAbout();
+	void showResources();
+	void showAbout(HardwareInfo hardware_info);
 	void showGame();
 	void calculateFramerate();
-	void showHardwareInfo();
+	void showHardwareInfo(HardwareInfo hardware_info);
 private:
 	//// General
 	bool console = true, configuration = true, hierarchy = true, inspector = true, shapes = true, menu = true, quit = false;

@@ -22,6 +22,34 @@ void Camera::cameraUpdate() {
     up = glm::normalize(glm::cross(cameraRight, center));
 }
 
+void Camera::cameraMoveVertical(vec3 vector) {
+	vec3 localZ = glm::normalize(eye - center);
+	vec3 localY = glm::normalize(up);
+	vec3 localX = glm::normalize(glm::cross(localY, localZ));
+
+	vec3 localTranslation = glm::dmat3(localX, localY, localZ) * vector;
+
+	center += localTranslation;
+	eye += localTranslation;
+}
+
+void Camera::cameraMoveHorizontal(vec3 vector) {
+	// Calculate local axes
+	vec3 localZ = glm::normalize(eye - center);
+	vec3 localY = glm::normalize(up);
+	vec3 localX = glm::normalize(glm::cross(localY, localZ));
+
+	// Separate translation along local X and local Z axes
+	vec3 localTranslationX = localX * vector.x;
+	vec3 localTranslationZ = localZ * vector.z;
+
+	// Calculate the final translation vector
+	vec3 localTranslation = localTranslationX + localTranslationZ;
+
+	center += localTranslation;
+	eye += localTranslation;
+}
+
 void Camera::cameraZoom(double amount) {
     double distanceToCenter = glm::distance(eye, center);
     vec3 localZ = glm::normalize(eye - center);

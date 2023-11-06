@@ -156,13 +156,13 @@ void Input::InputCamera(double dt) {
         //    app->engine->camera.pitch = -89.0f;
 
         if (GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
-            app->engine->camera.eye += app->engine->camera.center * speed;
+            app->engine->camera.cameraMoveVertical(vec3(0, 0, -speed));
         if (GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
-            app->engine->camera.eye -= app->engine->camera.center * speed;
+            app->engine->camera.cameraMoveVertical(vec3(0, 0, speed));
         if (GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
-            app->engine->camera.eye -= app->engine->camera.cameraRight * speed;
+            app->engine->camera.cameraMoveHorizontal(vec3(-speed, 0, 0));
         if (GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
-            app->engine->camera.eye += app->engine->camera.cameraRight * speed;
+            app->engine->camera.cameraMoveHorizontal(vec3(speed, 0, 0));
     }
 
     // - Mouse wheel should zoom in and out
@@ -174,17 +174,6 @@ void Input::InputCamera(double dt) {
     if (GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT && GetMouseButton(SDL_BUTTON_LEFT) == KEY_REPEAT)
     {
         app->engine->camera.cameraOrbit(GetMouseMotion());
-
-        // JULS: I thought it was supposed to orbit around the object, this code won't do the work
-        //float mouseSensitivity = 10.0f * dt;
-        //int deltaX = GetMouseXMotion();
-        //int deltaY = -GetMouseYMotion();
-        //float radius = 10.0f;
-        //double dtSum = 0;
-        //dtSum += dt;
-        //speed = 0.6 * dtSum;
-        //app->engine->camera.eye.x = sin(speed) * radius;
-        //app->engine->camera.eye.z = cos(speed) * radius;
     }
 
     // - F should focus the camera around the geometry
