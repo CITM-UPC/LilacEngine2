@@ -29,14 +29,13 @@ bool Console::Draw()
 		{
 			ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(2, 1));
 
+
+
 			for (const auto& log : App->GetLogs())
 			{
-				if (log[1] == *LOG_ERROR)
-					ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(255, 0, 0, 255));
-				else if (log[1] == *LOG_WARNING)
-					ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(255, 255, 0, 255));
-				else
-					ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(255, 255, 255, 255));
+				switch (log.type) {
+					case LogType::LOG_INFO
+				}
 
 				ImGui::TextUnformatted(log.data());
 				ImGui::PopStyleColor();

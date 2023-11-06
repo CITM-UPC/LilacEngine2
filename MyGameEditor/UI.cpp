@@ -153,6 +153,11 @@ void UI::showMenu() {
 
 void UI::showConsole() {
 	ImGui::Begin("Console");
+	if (ImGui::BeginPopup) {
+		ImGui::Text("This is a message from the console");
+		ImGui::Text("You added", Console.Toggle());
+		app->engine->Render();
+	}
 	ImGui::EndMenu();
 	ImGui::End();
 }
