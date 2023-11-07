@@ -8,22 +8,15 @@
 
 #include <list>
 #include <string>
+#include <filesystem>
+#include <fstream>
+//#include <vector>
 
 
 class GameObject {
 public:
-	GameObject();
-	~GameObject();
 	std::string name;
-
-	Transform transform;
-	Mesh mesh;
-	Texture2D tex;
-
-
-public:
-	
-	std::vector<std::shared_ptr<Component>> components;
+	bool isActive = true;
 
 private:
 
@@ -38,6 +31,16 @@ private:
 
 	void UpdateComponents();
 
+public:
+	GameObject();
+	~GameObject();
+	//std::string name;
 
+	/*Transform transform;
+	Mesh mesh;
+	Texture2D tex;*/
 
+	std::vector<std::shared_ptr<Component>> components;
+
+	void drawComp();
 };
