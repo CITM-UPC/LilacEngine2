@@ -22,9 +22,11 @@ private:
 
 	std::shared_ptr<Component> GetComponent(Component::Type componentType);
 	std::vector<std::shared_ptr<Component>> GetComponents();
-	void AddComponent(Component::Type component);
-	void AddComponent(std::shared_ptr<Mesh> component);
+	void AddComp(Component::Type component);
+	void AddComp(std::shared_ptr<Mesh> component);
 	void UpdateComponents();
+
+	std::vector<std::shared_ptr<Component>> components;
 
 public:
 	GameObject();
@@ -35,5 +37,4 @@ public:
 	Mesh mesh;
 	Texture2D tex;*/
 
-	std::vector<std::shared_ptr<Component>> components;
 };

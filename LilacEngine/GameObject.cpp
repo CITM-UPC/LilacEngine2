@@ -37,27 +37,28 @@ std::vector<std::shared_ptr<Component>> GameObject::GetComponents()
 	return components;
 }
 
-void GameObject::AddComponent(Component::Type component) {
-	/*std::shared_ptr<Component> newComponent;
+void GameObject::AddComp(Component::Type component) {
+	std::shared_ptr<Component> newComponent;
 
-	switch (component) {
-	case Component::Type::MESH:
-		newComponent = std::make_shared<Mesh>();
-		break;
-	case Component::Type::TRANSFORM:
-		newComponent = std::make_shared<Transform>();
-		break;
-	case Component::Type::TEXTURE:
-		newComponent = std::make_shared<Texture2D>();
-		break;
-	}
+	/*switch (component) {
+		case Component::Type::MESH:
+			newComponent = std::make_shared<Mesh>();
+			break;
+		case Component::Type::TRANSFORM:
+			newComponent = std::make_shared<Transform>();
+			break;
+		case Component::Type::TEXTURE:
+			newComponent = std::make_shared<Texture2D>();
+			break;
+	}*/
 
-	components.push_back(newComponent);*/
+	components.push_back(newComponent);
 }
 
-void GameObject::AddComponent(std::shared_ptr<Mesh> component)
+void GameObject::AddComp(std::shared_ptr<Mesh> component)
 {
 	//components.push_back(component);
+
 }
 
 void GameObject::UpdateComponents()

@@ -1,5 +1,6 @@
 #pragma once
 #include <memory>
+#include "GameObject.h"
 
 class GameObject;
 
@@ -13,6 +14,7 @@ public:
 	GameObject* gameObject;
 
 public:
+	Component();
 	virtual void Update();
 	virtual Type getType() const = 0;
 };
