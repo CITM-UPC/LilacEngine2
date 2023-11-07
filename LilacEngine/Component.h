@@ -10,7 +10,6 @@ public:
 	};
 
 	bool isActve = true;
-
 	GameObject* gameObject;
 
 public:

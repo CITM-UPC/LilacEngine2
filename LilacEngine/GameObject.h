@@ -24,11 +24,6 @@ private:
 	std::vector<std::shared_ptr<Component>> GetComponents();
 	void AddComponent(Component::Type component);
 	void AddComponent(std::shared_ptr<Mesh> component);
-	void RemoveComponent(Component::Type component);
-	void Rename(std::string Rename, std::list<GameObject> gameObjectList);
-
-	static GameObject* Find(std::string name, std::list<GameObject> gameObjectList);
-
 	void UpdateComponents();
 
 public:
@@ -41,6 +36,4 @@ public:
 	Texture2D tex;*/
 
 	std::vector<std::shared_ptr<Component>> components;
-
-	void drawComp();
 };
