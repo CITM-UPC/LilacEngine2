@@ -1,71 +1,71 @@
 #include "GameObject.h"
-#include "Mesh.h"
-#include "Texture2D.h"
-#include "Transform.h"
-
-#include <filesystem>
-#include <fstream>
+#include "ComponentTransform.h"
+#include "ComponentMesh.h"
+#include "ComponentTexture.h"
+#include "Component.h"
 #include <memory>
 #include <vector>
 
 using namespace std;
-namespace fs = filesystem;
 
-GameObject::GameObject() {
-
+GameObject::GameObject() 
+{
 	name = "";
-	//components.push_back(std::make_shared<Transform>());
+	AddComponent(ComponentType::TRANSFORM);
+	AddComponent(ComponentType::MESH);
+	AddComponent(ComponentType::TEXTURE);
+}
+
+GameObject::GameObject(std::string name) {
+	this->name = name;
+	AddComponent(ComponentType::TRANSFORM);
+	AddComponent(ComponentType::MESH);
+	AddComponent(ComponentType::TEXTURE);
 }
 
 GameObject::~GameObject() {} 
 
-std::shared_ptr<Component> GameObject::GetComponent(Component::Type componentType)
+Component* GameObject::GetComponent(ComponentType componentType)
 {
-	for (auto& comp : components)
-	{
-		if (comp->getType() == componentType)
-		{
-			return comp;
+	for (auto i = components.begin(); i != components.end(); ++i) {
+		if ((*i)->componentType == componentType) {
+			return *i;
 		}
 	}
-
 	return nullptr;
 }
 
-std::vector<std::shared_ptr<Component>> GameObject::GetComponents()
+std::list<Component*> GameObject::GetComponents()
 {
 	return components;
 }
 
-void GameObject::AddComp(Component::Type component) {
-	std::shared_ptr<Component> newComponent;
+void GameObject::AddComponent(ComponentType componentType) {
+	Component* newComponent = nullptr;
 
-	/*switch (component) {
-		case Component::Type::MESH:
-			newComponent = std::make_shared<Mesh>();
-			break;
-		case Component::Type::TRANSFORM:
-			newComponent = std::make_shared<Transform>();
-			break;
-		case Component::Type::TEXTURE:
-			newComponent = std::make_shared<Texture2D>();
-			break;
-	}*/
+	switch (componentType) {
+	case ComponentType::TRANSFORM:
+		newComponent = new ComponentTransform();
+		break;	
+	case ComponentType::MESH:
+		newComponent = new ComponentMesh();
+		break;
+	case ComponentType::TEXTURE:
+		newComponent = new ComponentTexture();
+		break;
+	}
 
 	components.push_back(newComponent);
 }
 
-void GameObject::AddComp(std::shared_ptr<Mesh> component)
-{
-	//components.push_back(component);
-
+void GameObject::AddChild(GameObject* child) {
+	if (child->_parent == this) return;
+	if (child->_parent) child->_parent->RemoveChild(child);
+	children.push_back(child);
+	child->_parent = this;
 }
 
-void GameObject::UpdateComponents()
-{
-	for (auto& comp : components)
-	{
-		comp->Update();
-	}
+void GameObject::RemoveChild(GameObject* child) {
+	children.remove(child);
+	child->_parent = nullptr;
 }
-

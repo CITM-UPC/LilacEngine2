@@ -1,40 +1,36 @@
 #pragma once
 
 #include "types.h"
-#include "Transform.h"
+#include "Component.h"
+#include <string>
+#include <list>
 #include "Mesh.h"
 #include "Texture2D.h"
-#include "Component.h"
 
-#include <list>
-#include <string>
-#include <filesystem>
-#include <fstream>
-//#include <vector>
 
+class Component;
 
 class GameObject {
 public:
+	GameObject();
+	GameObject(std::string name);
+	
+	~GameObject();
 	std::string name;
 	bool isActive = true;
 
 private:
+	// Components
+	Component* GetComponent(ComponentType componentType);
+	std::list<Component*> GetComponents();
+	void AddComponent(ComponentType componentType);
+	//void UpdateComponents();
 
-	std::shared_ptr<Component> GetComponent(Component::Type componentType);
-	std::vector<std::shared_ptr<Component>> GetComponents();
-	void AddComp(Component::Type component);
-	void AddComp(std::shared_ptr<Mesh> component);
-	void UpdateComponents();
+	std::list<Component*> components;
 
-	std::vector<std::shared_ptr<Component>> components;
-
-public:
-	GameObject();
-	~GameObject();
-	//std::string name;
-
-	/*Transform transform;
-	Mesh mesh;
-	Texture2D tex;*/
-
+	// Child
+	GameObject* _parent;
+	std::list<GameObject*> children;
+	void AddChild(GameObject* child);
+	void RemoveChild(GameObject* child);
 };

@@ -3,7 +3,7 @@
 #include <glm/ext/matrix_transform.hpp>
 #include <glm/gtx/rotate_vector.hpp> // this is where we can find the function rotate, similar to the one we used last year in Physics
 
-Camera::Camera() : fov(60), aspect(4.0/3.0), zNear(0.1), zFar(100), eye(0, 0, 0), center(0, 0, -1), up(0, 1, 0), yaw(-90) 
+Camera::Camera() : fov(60), aspect(4.0/3.0), zNear(0.1), zFar(100), eye(0, 0, 0), center(0, 0, 0), up(0, 1, 0), yaw(-90) 
 {
     WorldUp = up;
 	cameraUpdate();
@@ -21,7 +21,7 @@ void Camera::cameraUpdate() {
     center = glm::normalize(direction);
 	//
 	forward = glm::normalize(eye - center);
-	center = eye + forward;
+	//center = eye + forward;
     cameraRight = glm::normalize(glm::cross(center, WorldUp));
     up = glm::normalize(glm::cross(cameraRight, center));
 }
@@ -57,7 +57,7 @@ void Camera::cameraZoom(double amount) {
 }
 
 void Camera::cameraOrbit(vec2 motion) {
-	double sensibility = 0.005;
+	double sensibility = 0.001;
 
 	if (motion.x != 0)
 	{

@@ -13,6 +13,8 @@
   <ItemGroup>
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Component.h" />
+    <ClInclude Include="ComponentMesh.h" />
+    <ClInclude Include="ComponentTexture.h" />
     <ClInclude Include="Cube.h" />
     <ClInclude Include="CubeImmediateMode.h" />
     <ClInclude Include="CubeInterleavedVBO.h" />
@@ -25,7 +27,7 @@
     <ClInclude Include="GraphicObject.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Texture2D.h" />
-    <ClInclude Include="Transform.h" />
+    <ClInclude Include="ComponentTransform.h" />
     <ClInclude Include="types.h" />
   </ItemGroup>
   <ItemGroup>
