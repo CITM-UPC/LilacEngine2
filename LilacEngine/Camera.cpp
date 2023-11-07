@@ -6,6 +6,7 @@
 Camera::Camera() : fov(60), aspect(4.0/3.0), zNear(0.1), zFar(100), eye(0, 0, 0), center(0, 0, -1), up(0, 1, 0), yaw(-90) 
 {
     WorldUp = up;
+	cameraUpdate();
 }
 
 glm::dmat4 Camera::computeLookAt() const {
@@ -18,33 +19,31 @@ void Camera::cameraUpdate() {
     direction.y = sin(glm::radians(pitch));
     direction.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
     center = glm::normalize(direction);
+	//
+	forward = glm::normalize(eye - center);
+	center = eye + forward;
     cameraRight = glm::normalize(glm::cross(center, WorldUp));
     up = glm::normalize(glm::cross(cameraRight, center));
 }
 
-void Camera::cameraMoveVertical(vec3 vector) {
+void Camera::cameraMoveZ(vec3 vector) {
 	vec3 localZ = glm::normalize(eye - center);
 	vec3 localY = glm::normalize(up);
-	vec3 localX = glm::normalize(glm::cross(localY, localZ));
+	vec3 localX = glm::normalize(cameraRight);
 
 	vec3 localTranslation = glm::dmat3(localX, localY, localZ) * vector;
 
-	center += localTranslation;
+	//center += localTranslation;
 	eye += localTranslation;
 }
 
-void Camera::cameraMoveHorizontal(vec3 vector) {
+void Camera::cameraMoveX(vec3 vector) {
 	// Calculate local axes
 	vec3 localZ = glm::normalize(eye - center);
 	vec3 localY = glm::normalize(up);
-	vec3 localX = glm::normalize(glm::cross(localY, localZ));
+	vec3 localX = glm::normalize(cameraRight);
 
-	// Separate translation along local X and local Z axes
-	vec3 localTranslationX = localX * vector.x;
-	vec3 localTranslationZ = localZ * vector.z;
-
-	// Calculate the final translation vector
-	vec3 localTranslation = localTranslationX + localTranslationZ;
+	vec3 localTranslation = glm::dmat3(localX, localY, localZ) * vector;
 
 	center += localTranslation;
 	eye += localTranslation;

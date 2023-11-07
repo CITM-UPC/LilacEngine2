@@ -80,6 +80,10 @@ public:
 	int musicValue = 100;
 	int sfxValue = 100;
 
+	// Graphs ImGui
+	std::vector<float> fps_log;
+	std::vector<float> ms_log;
+
 private:
 	int argc;
 	char** args;

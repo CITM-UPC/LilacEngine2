@@ -137,6 +137,11 @@ void Application::FinishUpdate()
 
 		//dt = targetFrameDuration.count();
 	}
+
+	//// Update the fps Log
+	//fps_log.push_back(app_framerate.prev_sec_frame_count);
+	//if (fps_log.size() > 100)
+	//	fps_log.erase(fps_log.begin());
 }
 
 // Call modules before each loop iteration

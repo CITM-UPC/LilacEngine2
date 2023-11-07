@@ -26,13 +26,14 @@ public:
 	vec3 direction;
 	vec3 cameraRight;
 	vec3 WorldUp;
+	vec3 forward;
 
 	// Euler angles, yaw pitch roll
 	double yaw, pitch;
 
 public:
-	void cameraMoveVertical(vec3 vector);
-	void cameraMoveHorizontal(vec3 vector);
+	void cameraMoveZ(vec3 vector);
+	void cameraMoveX(vec3 vector);
 	void cameraZoom(double amount);
 	void cameraOrbit(vec2 motion);
 	// JULS: Focus can only be done with GameObject
