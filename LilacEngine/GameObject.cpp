@@ -4,8 +4,9 @@
 //
 //}
 
-GameObject::~GameObject() {
 
+GameObject::~GameObject() {
+	
 }
 
-//GameObject::
+//std::shared_ptr<Component> GameObject::GetComponent(Component::Type componentType);
