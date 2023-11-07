@@ -4,6 +4,7 @@
 #include "Log.h"
 #include "Window.h"
 #include "Renderer3D.h"
+#include <imgui_impl_opengl3.h>
 
 UI::UI(Application* app) : Module(app)
 {
@@ -282,6 +283,9 @@ void UI::showConfiguration(HardwareInfo hardware_info) {
 		//JULS: problems with hardware, debugging
 		showHardwareInfo(hardware_info);
 	}
+	if(ImGui::CollapsingHeader("FPS")) {
+		calculateFramerate();
+	}
 	ImGui::EndMenu();
 	ImGui::End();
 }
@@ -412,7 +416,15 @@ void UI::showGame() {
 }
 
 void UI::calculateFramerate() {
+	
+	static float fps[50] = {};
+	static int index = 0;
 
+	
+	fps[index] = ImGui::GetIO().Framerate;
+	index = (index + 1) % 100;
+
+	ImGui::PlotHistogram("", fps, 100, index, "FPS", 0.0f, 100.0f, ImVec2(300, 100));
 }
 
 void UI::showHardwareInfo(HardwareInfo hardware_info) {
