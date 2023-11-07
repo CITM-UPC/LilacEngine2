@@ -40,7 +40,7 @@ std::vector<std::shared_ptr<Component>> GameObject::GetComponents()
 void GameObject::AddComponent(Component::Type component) {
 	Component* newComponent = nullptr;
 
-	switch(component) {
+	/*switch(component) {
 	case Component::Type::MESH:
 		newComponent = Mesh();
 		break;
@@ -52,7 +52,7 @@ void GameObject::AddComponent(Component::Type component) {
 		break;
 	}
 
-	components.push_back(newComponent);
+	components.push_back(newComponent);*/
 }
 
 void GameObject::AddComponent(std::shared_ptr<Mesh> component)
