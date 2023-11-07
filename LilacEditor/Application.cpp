@@ -1,4 +1,5 @@
 #include "Application.h"
+#include "Globals.h"
 #include "Log.h"
 #include "Window.h"
 #include "Input.h"
@@ -26,6 +27,9 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 
 	// Render last to swap buffer
 	AddModule(renderer, true);
+
+	title = TITLE;
+	organization = ORGANIZATION;
 }
 
 Application::~Application()
@@ -137,6 +141,11 @@ void Application::FinishUpdate()
 
 		//dt = targetFrameDuration.count();
 	}
+
+	//// Update the fps Log
+	//fps_log.push_back(app_framerate.prev_sec_frame_count);
+	//if (fps_log.size() > 100)
+	//	fps_log.erase(fps_log.begin());
 }
 
 // Call modules before each loop iteration
@@ -217,6 +226,25 @@ const char* Application::GetArgv(int index) const
 		return args[index];
 	else
 		return NULL;
+}
+
+// Get App data
+const char* Application::GetTitle()
+{
+	return title.c_str();
+}
+
+const char* Application::GetOrganization() 
+{
+	return organization.c_str();
+}
+
+void Application::SetTitle(string name) {
+	title = name;
+}
+
+void Application::SetOrganization(string name) {
+	organization = name;
 }
 
 // Get deltatime

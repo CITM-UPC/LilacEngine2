@@ -28,7 +28,10 @@
 #include <imgui_impl_opengl3.h>
 
 // Definitions
-#define BUFFER_SIZE 4096
+#define BUFFER_SIZE 4096 // logs
+#define TITLE "Lilac Engine"
+#define ORGANIZATION "CITM"
+
 
 // Important
 typedef unsigned int uint;

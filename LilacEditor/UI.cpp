@@ -4,7 +4,6 @@
 #include "Log.h"
 #include "Window.h"
 #include "Renderer3D.h"
-#include "..\LilacEngine\Camera.h"
 
 UI::UI(Application* app) : Module(app)
 {
@@ -46,7 +45,7 @@ bool UI::Start()
 
 	// JULS: COLORS IMGUI REMINDER => Values go from 0 - 1, not from 0 - 225
 	ImGui::StyleColorsDark();
-
+	selected = NULL;
 	return ret;
 }
 
@@ -84,7 +83,7 @@ bool UI::Update(double dt)
 	if (hierarchy)
 		showHierarchy();
 	if (inspector)
-		showInspector();
+		showInspector(selected);
 	if (shapes)
 		showResources();
 	if (menu)
@@ -144,7 +143,7 @@ void UI::showMenu() {
 			ImGui::EndMenu();
 		}
 		if (ImGui::MenuItem("Github page")) {
-			ShellExecute(0, 0, "https://github.com/CITM-UPC/LilacEngine", 0, 0, SW_SHOW);
+			ShellExecute(0, 0, "https://github.com/CITM-UPC/LilacEngine2", 0, 0, SW_SHOW);
 		}
 		if (ImGui::MenuItem("About")) {
 			about = !about;
@@ -197,12 +196,21 @@ void UI::showConfiguration(HardwareInfo hardware_info) {
 	ImGuiIO& io = ImGui::GetIO();
 	ImGui::Begin("Configuration");
 	if (ImGui::CollapsingHeader("Application")) {
-		//	// --- Organization name ---
-		//	static char orgName[100];
-		//	if (App->GetOrganizationName() != nullptr)
-		//		strcpy_s(orgName, 100, App->GetOrganizationName());
-		//	if (ImGui::InputText("Organization Name", orgName, 100, ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
-		//		App->SetOrganizationName(orgName);
+		// --- Title ---
+		static char titleName[100];
+		ImGui::Text("Name:");
+		if (app->GetTitle() != nullptr)
+			strcpy_s(titleName, 100, app->GetTitle());
+		if (ImGui::InputText("", titleName, 100, ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
+			app->SetOrganization(titleName);
+		
+		// --- Organization name ---
+		static char orgName[100];
+		ImGui::Text("Name:");
+		if (app->GetOrganization() != nullptr)
+			strcpy_s(orgName, 100, app->GetOrganization());
+		if (ImGui::InputText("", orgName, 100, ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
+			app->SetOrganization(orgName);
 
 		//	ImGui::Separator();
 		//	// --- Cap frames ---
@@ -287,33 +295,37 @@ void UI::showHierarchy() {
 	ImGui::End();
 }
 
-void UI::showInspector() {
+void UI::showInspector(GameObject* selected) {
 	ImGui::Begin("Inspector");
-	//if () {
-	if (ImGui::TreeNode("Transform")) {
-		ImGui::SeparatorText("Position");
-		ImGui::DragFloat("X", &f, 0.2f, 2.0f, 100.0f, "%.0f");
-		ImGui::DragFloat("Y", &f, 0.2f, 2.0f, 100.0f, "%.0f");
-		ImGui::DragFloat("Z", &f, 0.2f, 2.0f, 100.0f, "%.0f");
-		ImGui::SeparatorText("Rotate");
-		ImGui::DragFloat("X", &f, 0.2f, 2.0f, 100.0f, "%.0f");
-		ImGui::DragFloat("Y", &f, 0.2f, 2.0f, 100.0f, "%.0f");
-		ImGui::DragFloat("Z", &f, 0.2f, 2.0f, 100.0f, "%.0f");
-		ImGui::SeparatorText("Scale");
-		ImGui::DragFloat("X", &f, 0.2f, 2.0f, 100.0f, "%.0f");
-		ImGui::DragFloat("Y", &f, 0.2f, 2.0f, 100.0f, "%.0f");
-		ImGui::DragFloat("Z", &f, 0.2f, 2.0f, 100.0f, "%.0f");
-		ImGui::TreePop();
-	}
-	if (ImGui::TreeNode("Mesh")) {
-		ImGui::TreePop();
-	}
-	if (ImGui::TreeNode("Texture")) {
-		ImGui::TreePop();
+	if (selected != nullptr) {
+		if (ImGui::TreeNode("Transform")) {
+			ImGui::SeparatorText("Position");
+			ImGui::DragFloat("X", &transform.x, 0.2f, 2.0f, 100.0f, "%.0f");
+			ImGui::DragFloat("Y", &transform.y, 0.2f, 2.0f, 100.0f, "%.0f");
+			ImGui::DragFloat("Z", &transform.z, 0.2f, 2.0f, 100.0f, "%.0f");
+			ImGui::SeparatorText("Rotate");
+			ImGui::DragFloat("X", &rotate.x, 0.2f, 2.0f, 100.0f, "%.0f");
+			ImGui::DragFloat("Y", &rotate.y, 0.2f, 2.0f, 100.0f, "%.0f");
+			ImGui::DragFloat("Z", &rotate.z, 0.2f, 2.0f, 100.0f, "%.0f");
+			ImGui::SeparatorText("Scale");
+			ImGui::DragFloat("X", &scale.x, 0.2f, 2.0f, 100.0f, "%.0f");
+			ImGui::DragFloat("Y", &scale.x, 0.2f, 2.0f, 100.0f, "%.0f");
+			ImGui::DragFloat("Z", &scale.x, 0.2f, 2.0f, 100.0f, "%.0f");
+			ImGui::TreePop();
+		}
+		if (ImGui::TreeNode("Mesh")) {
+			//if (ImGui::Checkbox("")) {
+			//
+			//}
+			ImGui::TreePop();
+		}
+		if (ImGui::TreeNode("Texture")) {
+			ImGui::TreePop();
+		}
 	}
 	ImGui::EndMenu();
 	ImGui::End();
-	//}
+	
 }
 
 void UI::showResources() {
