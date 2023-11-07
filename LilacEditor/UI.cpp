@@ -144,7 +144,7 @@ void UI::showMenu() {
 			ImGui::EndMenu();
 		}
 		if (ImGui::MenuItem("Github page")) {
-			ShellExecute(0, 0, "https://github.com/CITM-UPC/LilacEngine", 0, 0, SW_SHOW);
+			ShellExecute(0, 0, "https://github.com/CITM-UPC/LilacEngine2", 0, 0, SW_SHOW);
 		}
 		if (ImGui::MenuItem("About")) {
 			about = !about;
