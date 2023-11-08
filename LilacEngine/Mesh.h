@@ -8,7 +8,6 @@
 #include "Graphic.h"
 #include "Texture2D.h"
 
-
 class Mesh : public Graphic
 {
 public:
@@ -41,5 +40,9 @@ public:
 private:
 	Mesh(const Mesh& cpy);
 	Mesh& operator=(const Mesh&);
+
+public:
+	void normalsTriangle();
+	void normalsFace();
 };
 

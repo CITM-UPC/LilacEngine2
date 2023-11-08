@@ -30,7 +30,7 @@ bool Window::Start()
 
 bool Window::CleanUp()
 {
-    LOG("Cleaning Window\n");
+    LOG("Cleaning Window");
     if (context) SDL_GL_DeleteContext(context);
     if (window) SDL_DestroyWindow(window);
     SDL_Quit();
@@ -61,7 +61,8 @@ SDL_Window* Window::initSDLWindowWithOpenGL()
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
 
-    auto window = SDL_CreateWindow("TITLE", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_OPENGL);
+    //JULS: need to see why this does not work
+    auto window = SDL_CreateWindow(TITLE, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_OPENGL);
     if (!window) throw exception(SDL_GetError());
 
     return window;

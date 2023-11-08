@@ -9,29 +9,11 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
     </Filter>
-    <Filter Include="UI">
+    <Filter Include="Header Files\UI">
       <UniqueIdentifier>{2c55c40f-bc37-4621-abab-47743c6fc590}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Console.cpp">
-      <Filter>UI</Filter>
-    </ClCompile>
-    <ClCompile Include="Hierarchy.cpp">
-      <Filter>UI</Filter>
-    </ClCompile>
-    <ClCompile Include="Inspector.cpp">
-      <Filter>UI</Filter>
-    </ClCompile>
-    <ClCompile Include="Configuration.cpp">
-      <Filter>UI</Filter>
-    </ClCompile>
-    <ClCompile Include="Menu.cpp">
-      <Filter>UI</Filter>
-    </ClCompile>
-    <ClCompile Include="Shapes.cpp">
-      <Filter>UI</Filter>
-    </ClCompile>
     <ClCompile Include="UI.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -62,22 +44,22 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Console.h">
-      <Filter>UI</Filter>
+      <Filter>Header Files\UI</Filter>
     </ClInclude>
     <ClInclude Include="Hierarchy.h">
-      <Filter>UI</Filter>
+      <Filter>Header Files\UI</Filter>
     </ClInclude>
     <ClInclude Include="Inspector.h">
-      <Filter>UI</Filter>
+      <Filter>Header Files\UI</Filter>
     </ClInclude>
     <ClInclude Include="Configuration.h">
-      <Filter>UI</Filter>
+      <Filter>Header Files\UI</Filter>
     </ClInclude>
     <ClInclude Include="Menu.h">
-      <Filter>UI</Filter>
+      <Filter>Header Files\UI</Filter>
     </ClInclude>
     <ClInclude Include="Shapes.h">
-      <Filter>UI</Filter>
+      <Filter>Header Files\UI</Filter>
     </ClInclude>
     <ClInclude Include="Hardware.h">
       <Filter>Header Files</Filter>

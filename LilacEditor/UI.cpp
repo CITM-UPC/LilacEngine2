@@ -4,7 +4,7 @@
 #include "Log.h"
 #include "Window.h"
 #include "Renderer3D.h"
-#include "..\LilacEngine\Camera.h"
+#include <imgui_impl_opengl3.h>
 
 UI::UI(Application* app) : Module(app)
 {
@@ -46,7 +46,7 @@ bool UI::Start()
 
 	// JULS: COLORS IMGUI REMINDER => Values go from 0 - 1, not from 0 - 225
 	ImGui::StyleColorsDark();
-
+	selected = NULL;
 	return ret;
 }
 
@@ -84,7 +84,7 @@ bool UI::Update(double dt)
 	if (hierarchy)
 		showHierarchy();
 	if (inspector)
-		showInspector();
+		showInspector(selected);
 	if (shapes)
 		showResources();
 	if (menu)
@@ -144,7 +144,7 @@ void UI::showMenu() {
 			ImGui::EndMenu();
 		}
 		if (ImGui::MenuItem("Github page")) {
-			ShellExecute(0, 0, "https://github.com/CITM-UPC/LilacEngine", 0, 0, SW_SHOW);
+			ShellExecute(0, 0, "https://github.com/CITM-UPC/LilacEngine2", 0, 0, SW_SHOW);
 		}
 		if (ImGui::MenuItem("About")) {
 			about = !about;
@@ -197,44 +197,23 @@ void UI::showConfiguration(HardwareInfo hardware_info) {
 	ImGuiIO& io = ImGui::GetIO();
 	ImGui::Begin("Configuration");
 	if (ImGui::CollapsingHeader("Application")) {
-		//	// --- Organization name ---
-		//	static char orgName[100];
-		//	if (App->GetOrganizationName() != nullptr)
-		//		strcpy_s(orgName, 100, App->GetOrganizationName());
-		//	if (ImGui::InputText("Organization Name", orgName, 100, ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
-		//		App->SetOrganizationName(orgName);
-
-		//	ImGui::Separator();
-		//	// --- Cap frames ---
-			//int maxFramerate = App->time->GetMaxFramerate();
-			//if (ImGui::SliderInt("Max FPS", &maxFramerate, 0, App->window->GetDisplayRefreshRate()))
-			//	App->time->SetMaxFramerate(maxFramerate);
-
-		//char title[25];
-		//sprintf_s(title, 25, "Framerate %.1f", FPS_Tracker[FPS_Tracker.size() - 1]);
-		//ImGui::PlotHistogram("##Framerate", &FPS_Tracker[0], FPS_Tracker.size(), 0, title, 0.0f, 100.0f, ImVec2(500, 75));
-		//sprintf_s(title, 25, "Milliseconds %0.1f", MS_Tracker[MS_Tracker.size() - 1]);
-		//ImGui::PlotHistogram("##Milliseconds", &MS_Tracker[0], MS_Tracker.size(), 0, title, 0.0f, 40.0f, ImVec2(500, 75));
-
-	//	sMStats MemoryStats = m_getMemoryStatistics(); // Using mmgr 
-	//	static int speed = 0;
-	//	static std::vector<float> Memory(100); // Hom many units/lines we want in the plot
-	//	if (++speed > 25) // How fast the plot is plotted :)
-	//	{
-	//		speed = 0;
-	//		if (Memory.size() == 100)
-	//		{
-	//			for (uint i = 0; i < 100 - 1; ++i)
-	//				Memory[i] = Memory[i + 1];
-
-	//			Memory[100 - 1] = (float)MemoryStats.totalReportedMemory;
-	//		}
-	//		else
-	//			Memory.push_back((float)MemoryStats.totalReportedMemory);
-	//	}
-
-	//	ImGui::PlotHistogram("##Memory", &Memory[0], Memory.size(), 0, "Memory Consumption", 0.0f, (float)MemoryStats.peakReportedMemory * 1.2f, ImVec2(500, 75));
-
+		// --- Title ---
+		static char titleName[100];
+		ImGui::Text("Name:");
+		if (app->GetTitle() != nullptr)
+			strcpy_s(titleName, 100, app->GetTitle());
+		if (ImGui::InputText("", titleName, 100, ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
+			app->SetOrganization(titleName);
+		
+		// --- Organization name ---
+		static char orgName[100];
+		ImGui::Text("Name:");
+		if (app->GetOrganization() != nullptr)
+			strcpy_s(orgName, 100, app->GetOrganization());
+		if (ImGui::InputText("", orgName, 100, ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
+			app->SetOrganization(orgName);
+		
+		//calculateFramerate();
 	}
 	if (ImGui::CollapsingHeader("Window")) {
 		if (ImGui::SliderFloat("Brightness", &v, 0.0, 1.0))
@@ -287,37 +266,48 @@ void UI::showHierarchy() {
 	ImGui::End();
 }
 
-void UI::showInspector() {
+void UI::showInspector(GameObject* selected) {
 	ImGui::Begin("Inspector");
-	//if () {
-	if (ImGui::TreeNode("Transform")) {
-		ImGui::SeparatorText("Position");
-		ImGui::DragFloat("X", &f, 0.2f, 2.0f, 100.0f, "%.0f");
-		ImGui::DragFloat("Y", &f, 0.2f, 2.0f, 100.0f, "%.0f");
-		ImGui::DragFloat("Z", &f, 0.2f, 2.0f, 100.0f, "%.0f");
-		ImGui::SeparatorText("Rotate");
-		ImGui::DragFloat("X", &f, 0.2f, 2.0f, 100.0f, "%.0f");
-		ImGui::DragFloat("Y", &f, 0.2f, 2.0f, 100.0f, "%.0f");
-		ImGui::DragFloat("Z", &f, 0.2f, 2.0f, 100.0f, "%.0f");
-		ImGui::SeparatorText("Scale");
-		ImGui::DragFloat("X", &f, 0.2f, 2.0f, 100.0f, "%.0f");
-		ImGui::DragFloat("Y", &f, 0.2f, 2.0f, 100.0f, "%.0f");
-		ImGui::DragFloat("Z", &f, 0.2f, 2.0f, 100.0f, "%.0f");
-		ImGui::TreePop();
-	}
-	if (ImGui::TreeNode("Mesh")) {
-		ImGui::TreePop();
-	}
-	if (ImGui::TreeNode("Texture")) {
-		ImGui::TreePop();
+	if (selected != nullptr) {
+		if (ImGui::TreeNode("Transform")) {
+			ImGui::SeparatorText("Position");
+			ImGui::DragFloat("X", &transform.x, 0.2f, 2.0f, 100.0f, "%.0f");
+			ImGui::DragFloat("Y", &transform.y, 0.2f, 2.0f, 100.0f, "%.0f");
+			ImGui::DragFloat("Z", &transform.z, 0.2f, 2.0f, 100.0f, "%.0f");
+			ImGui::SeparatorText("Rotate");
+			ImGui::DragFloat("X", &rotate.x, 0.2f, 2.0f, 100.0f, "%.0f");
+			ImGui::DragFloat("Y", &rotate.y, 0.2f, 2.0f, 100.0f, "%.0f");
+			ImGui::DragFloat("Z", &rotate.z, 0.2f, 2.0f, 100.0f, "%.0f");
+			ImGui::SeparatorText("Scale");
+			ImGui::DragFloat("X", &scale.x, 0.2f, 2.0f, 100.0f, "%.0f");
+			ImGui::DragFloat("Y", &scale.x, 0.2f, 2.0f, 100.0f, "%.0f");
+			ImGui::DragFloat("Z", &scale.x, 0.2f, 2.0f, 100.0f, "%.0f");
+			ImGui::TreePop();
+		}
+		if (ImGui::TreeNode("Mesh")) {
+			if (ImGui::Checkbox("Display normals per-triangle", &triangles)) {
+			
+			}
+			if (ImGui::Checkbox("Display normals per-face", &faces)) {
+
+			}
+			ImGui::TreePop();
+		}
+		if (ImGui::TreeNode("Texture")) {
+			ImGui::TreePop();
+			if (ImGui::Checkbox("View the checkers texture: ", &checkerstexture)) {
+
+			}
+		}
 	}
 	ImGui::EndMenu();
 	ImGui::End();
-	//}
 }
 
+//void UI::
+
 void UI::showResources() {
-	ImGui::Begin("Load");
+	ImGui::Begin("Resources");
 	if (ImGui::CollapsingHeader("Textures")) {
 
 	}
@@ -400,7 +390,14 @@ void UI::showGame() {
 }
 
 void UI::calculateFramerate() {
+	
+	static float fps[50] = {};
+	static int index = 0;
 
+	fps[index] = ImGui::GetIO().Framerate;
+	index = (index + 1) % 100;
+
+	ImGui::PlotHistogram("", fps, 100, index, "FPS", 0.0f, 100.0f, ImVec2(300, 100));
 }
 
 void UI::showHardwareInfo(HardwareInfo hardware_info) {

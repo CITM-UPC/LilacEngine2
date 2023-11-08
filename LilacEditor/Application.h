@@ -41,12 +41,18 @@ public:
 	int GetArgc() const;
 	const char* GetArgv(int index) const;
 
+	// App information
+	const char* GetTitle();
+	const char* GetOrganization();
+	void SetTitle(string name);
+	void SetOrganization(string name);
+
+	// Dt
 	float GetDT();
 
+	// Logs
 	void AddLog(static char* log);
-
 	vector<string> GetLogs();
-
 	void ClearLogs();
 
 private:
@@ -79,6 +85,10 @@ public:
 
 	int musicValue = 100;
 	int sfxValue = 100;
+
+	// Graphs ImGui
+	std::vector<float> fps_log;
+	std::vector<float> ms_log;
 
 private:
 	int argc;

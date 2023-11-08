@@ -156,13 +156,13 @@ void Input::InputCamera(double dt) {
         //    app->engine->camera.pitch = -89.0f;
 
         if (GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
-            app->engine->camera.cameraMoveVertical(vec3(0, 0, -speed));
+            app->engine->camera.cameraMoveZ(vec3(0, 0, -speed));
         if (GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
-            app->engine->camera.cameraMoveVertical(vec3(0, 0, speed));
+            app->engine->camera.cameraMoveZ(vec3(0, 0, speed));
         if (GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
-            app->engine->camera.cameraMoveHorizontal(vec3(-speed, 0, 0));
+            app->engine->camera.cameraMoveX(vec3(-speed, 0, 0));
         if (GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
-            app->engine->camera.cameraMoveHorizontal(vec3(speed, 0, 0));
+            app->engine->camera.cameraMoveX(vec3(speed, 0, 0));
     }
 
     // - Mouse wheel should zoom in and out

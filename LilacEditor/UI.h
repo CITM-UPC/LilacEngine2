@@ -4,6 +4,7 @@
 #include "Globals.h"
 #include "Module.h"
 #include "Hardware.h"
+#include "..\LilacEngine\GameObject.h"
 
 class UI : public Module
 {
@@ -25,7 +26,7 @@ public:
 	void showConsole();
 	void showConfiguration(HardwareInfo hardware_info);
 	void showHierarchy();
-	void showInspector();
+	void showInspector(GameObject* selected);
 	void showResources();
 	void showAbout(HardwareInfo hardware_info);
 	void showGame();
@@ -34,7 +35,7 @@ public:
 private:
 	//// General
 	bool console = true, configuration = true, hierarchy = true, inspector = true, shapes = true, menu = true, quit = false;
-
+	GameObject* selected;
 	//// Console
 
 	//// Configuration
@@ -59,9 +60,11 @@ private:
 	bool vsync;
 
 	//// Hierarchy
+	bool triangles, faces, checkerstexture;
 
 	//// Inspector
-	float f = 12.0;
+	// JULS: Temporal -> this should be 
+	vec3f transform, rotate, scale;
 
 	//// Shapes
 
