@@ -35,7 +35,7 @@ public:
 
 	void loadTextureToMesh(const std::string& path);
 	Texture2D::Ptr texture;
-	//vector<Texture2D::Ptr> textures;
+	Texture2D::Ptr checkboard = std::shared_ptr<Texture2D>(new Texture2D);
 
 	Mesh(Formats format, const void* vertex_data, unsigned int numVerts, const unsigned int* indexs_data=nullptr, unsigned int numIndexs=0);
 	Mesh(Mesh&& b) noexcept;

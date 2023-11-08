@@ -89,8 +89,8 @@ bool UI::Update(double dt)
 		showHierarchy();
 	if (inspector)
 		showInspector(selected);
-	if (shapes)
-		showResources();
+	//if (shapes)
+	//	showResources();
 	if (menu)
 		showMenu();
 	if (quit)
@@ -184,6 +184,19 @@ void UI::showMenu() {
 
 			ComponentTransform* meshtransform = (ComponentTransform*)teapot->GetComponent(ComponentType::TRANSFORM);
 			meshtransform->rotate(0, vec3(0, 1, 0));
+			meshtransform->translate(vec3(5, 0, 0));
+			meshtransform->scale(vec3(1, 1, 1));
+		}
+		if (ImGui::MenuItem("Mug")) {
+			LOG("Adding Tea Mug to the scene");
+			GameObject* mug = app->engine->scene->AddGameObject("Mug");
+			auto mesh_ptrs = Mesh::loadFromFile("Assets\\mug.fbx", "Assets\\");
+			mug->AddMeshWithTexture(mesh_ptrs);
+			//defaultTexture =
+			ComponentMesh* meshComp = (ComponentMesh*)mug->GetComponent(ComponentType::MESH);
+
+			ComponentTransform* meshtransform = (ComponentTransform*)mug->GetComponent(ComponentType::TRANSFORM);
+			meshtransform->rotate(1.5708, vec3(1, 0, 0));
 			meshtransform->translate(vec3(5, 0, 0));
 			meshtransform->scale(vec3(1, 1, 1));
 		}
@@ -282,9 +295,9 @@ void UI::showConfiguration(HardwareInfo hardware_info) {
 		//if (ImGui::SliderFloat("Fx", &v, 0.0, 1.0))
 		//
 	}
-	if (ImGui::CollapsingHeader("Textures")) {
-
-	}
+	//if (ImGui::CollapsingHeader("Textures")) {
+	//
+	//}
 	if (ImGui::CollapsingHeader("Hardware")) {
 		//JULS: problems with hardware, debugging
 		showHardwareInfo(hardware_info);
