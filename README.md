@@ -32,7 +32,7 @@ Drag and drop allows the user to directly drop FBX assets and textures in the sc
 
 ### Top Bar
 General:
-* Editor: Choose to open and colose the different windows of the scene.
+* Editor: Choose to open and close the different windows of the scene.
   * Console
   * Configuration
   * Hierarchy
@@ -57,7 +57,7 @@ Load:
 Displays the different game objects that are in scene. Each of these is displayed with all its components.
 
 ### Shapes
-Shows different porperties of the game object thats is selected.
+Shows different properties of the game object thats is selected.
 
 ### Console
 Logs the geometry loading process from ASSIMP as well as other different processes.
