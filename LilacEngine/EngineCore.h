@@ -4,7 +4,7 @@
 
 // Include in Editor when needed: #include "../TheOneEngine/EngineCore.h"
 #include "Camera.h"
-//#include "Scene.h"
+#include "Scene.h"
 class EngineCore
 {
 public:
@@ -22,7 +22,7 @@ public:
 
 public:
 	Camera camera;
-	//Scene scene;
+	Scene* scene;
 
 };
 

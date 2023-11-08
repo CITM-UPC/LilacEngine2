@@ -26,7 +26,6 @@ public:
 	vec3 direction;
 	vec3 cameraRight;
 	vec3 WorldUp;
-	vec3 forward;
 
 	// Euler angles, yaw pitch roll
 	double yaw, pitch;

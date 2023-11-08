@@ -98,20 +98,20 @@ void EngineCore::Render(RenderModes renderMode)
     drawGrid(100, 10);
     drawAxis();
 
-    static auto mesh_ptrs = Mesh::loadFromFile("Assets/BakerHouse.fbx");
-    
-    GraphicObject mesh1(mesh_ptrs.front());
-    GraphicObject mesh2(mesh_ptrs.back());
-    
-    GraphicObject house;
-    
-    house.addChild(std::move(mesh1));
-    house.addChild(std::move(mesh2));
-    
-    GraphicObject root;
-    root.addChild(std::move(house));
-    
-    root.paint();
+    //static auto mesh_ptrs = Mesh::loadFromFile("Assets/BakerHouse.fbx");
+    //
+    //GraphicObject mesh1(mesh_ptrs.front());
+    //GraphicObject mesh2(mesh_ptrs.back());
+    //
+    //GraphicObject house;
+    //
+    //house.addChild(std::move(mesh1));
+    //house.addChild(std::move(mesh2));
+    //
+    //GraphicObject root;
+    //root.addChild(std::move(house));
+    //
+    //root.paint();
      
     // JULS: This should be commented, if not catastrophic error (srly)
     //assert(glGetError() == GL_NONE);

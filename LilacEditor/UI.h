@@ -26,12 +26,16 @@ public:
 	void showConsole();
 	void showConfiguration(HardwareInfo hardware_info);
 	void showHierarchy();
+	void writeHierarchy(GameObject* gameObject);
 	void showInspector(GameObject* selected);
+	void showInspectorTransform(Component* component);
+	void showInspectorMesh(Component* component);
+	void showInspectorTexture(Component* component);
 	void showResources();
 	void showAbout(HardwareInfo hardware_info);
 	void showGame();
+	void showHardwareInfo(HardwareInfo hardware_info);	
 	void calculateFramerate();
-	void showHardwareInfo(HardwareInfo hardware_info);
 private:
 	//// General
 	bool console = true, configuration = true, hierarchy = true, inspector = true, shapes = true, menu = true, quit = false;
