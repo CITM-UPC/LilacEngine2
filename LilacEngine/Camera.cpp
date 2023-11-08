@@ -1,5 +1,4 @@
 #include "Camera.h"
-
 #include <glm/ext/matrix_transform.hpp>
 #include <glm/gtx/rotate_vector.hpp> // this is where we can find the function rotate, similar to the one we used last year in Physics
 
@@ -9,18 +8,19 @@ Camera::Camera() : fov(60), aspect(4.0/3.0), zNear(0.1), zFar(100), eye(0, 0, 0)
 	cameraUpdate();
 }
 
+Camera::~Camera()
+{
+}
+
 glm::dmat4 Camera::computeLookAt() const {
 	return glm::lookAt(eye, center, up);
 }
 
 void Camera::cameraUpdate() {
-    glm::vec3 direction;
     direction.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
     direction.y = sin(glm::radians(pitch));
     direction.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
     center = glm::normalize(direction);
-	//
-	forward = glm::normalize(eye - center);
 	//center = eye + forward;
     cameraRight = glm::normalize(glm::cross(center, WorldUp));
     up = glm::normalize(glm::cross(cameraRight, center));

@@ -4,7 +4,10 @@
 #include "Log.h"
 #include "Window.h"
 #include "Renderer3D.h"
-#include <imgui_impl_opengl3.h>
+#include "..\LilacEngine\Scene.h"
+#include "..\LilacEngine\ComponentTransform.h"
+#include "..\LilacEngine\ComponentMesh.h"
+#include "..\LilacEngine\ComponentTexture.h"
 
 UI::UI(Application* app) : Module(app)
 {
@@ -144,6 +147,7 @@ void UI::showMenu() {
 			ImGui::EndMenu();
 		}
 		if (ImGui::MenuItem("Github page")) {
+			LOG("Opening Github page!");
 			ShellExecute(0, 0, "https://github.com/CITM-UPC/LilacEngine2", 0, 0, SW_SHOW);
 		}
 		if (ImGui::MenuItem("About")) {
@@ -151,6 +155,28 @@ void UI::showMenu() {
 		}
 		if (ImGui::MenuItem("Quit")) {
 			quit = true;
+		}
+		ImGui::EndMenu();
+	}
+	if (ImGui::BeginMenu("Load")) {
+		if (ImGui::MenuItem("Cube")) {
+			LOG("Adding Cube to the scene");
+		}
+		if (ImGui::MenuItem("Sphere")) {
+			LOG("Adding Sphere to the scene");
+		}
+		if (ImGui::MenuItem("Teapot")) {
+			LOG("Adding Teapot to the scene");
+			GameObject* teapot = app->engine->scene->AddGameObject("Teapot");
+			auto mesh_ptrs = Mesh::loadFromFile("Assets\\teapot.fbx");
+			teapot->AddMeshWithTexture(mesh_ptrs);
+
+			ComponentMesh* meshComp = (ComponentMesh*)teapot->GetComponent(ComponentType::MESH);
+
+			ComponentTransform* transformHouse = (ComponentTransform*)teapot->GetComponent(ComponentType::TRANSFORM);
+			transformHouse->rotate(1, vec3(0, 1, 0));
+			transformHouse->translate(vec3(5, 0, 0));
+			transformHouse->scale(vec3(1, 1, 1));
 		}
 		ImGui::EndMenu();
 	}
@@ -197,7 +223,7 @@ void UI::showConfiguration(HardwareInfo hardware_info) {
 	ImGuiIO& io = ImGui::GetIO();
 	ImGui::Begin("Configuration");
 	if (ImGui::CollapsingHeader("Application")) {
-		// --- Title ---
+		// Title
 		static char titleName[100];
 		ImGui::Text("Name:");
 		if (app->GetTitle() != nullptr)
@@ -205,7 +231,7 @@ void UI::showConfiguration(HardwareInfo hardware_info) {
 		if (ImGui::InputText("", titleName, 100, ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
 			app->SetOrganization(titleName);
 		
-		// --- Organization name ---
+		// Organization name
 		static char orgName[100];
 		ImGui::Text("Name:");
 		if (app->GetOrganization() != nullptr)
@@ -213,7 +239,8 @@ void UI::showConfiguration(HardwareInfo hardware_info) {
 		if (ImGui::InputText("", orgName, 100, ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
 			app->SetOrganization(orgName);
 		
-		//calculateFramerate();
+		// FPS Graph
+		calculateFramerate();
 	}
 	if (ImGui::CollapsingHeader("Window")) {
 		if (ImGui::SliderFloat("Brightness", &v, 0.0, 1.0))
@@ -261,45 +288,62 @@ void UI::showConfiguration(HardwareInfo hardware_info) {
 }
 
 void UI::showHierarchy() {
+	
 	ImGui::Begin("Hierarchy");
-	if (ImGui::TreeNodeEx("")) {
+	if (app->engine->scene != nullptr) {
+		Scene* sceneToUI = app->engine->scene;
+		ImGui::SetNextItemOpen(true, ImGuiCond_Once);
+		if (ImGui::CollapsingHeader(sceneToUI->name.c_str())) {
+			for (std::list<GameObject*>::iterator it = sceneToUI->children.begin(); it != sceneToUI->children.end(); ++it) {
+				writeHierarchy(*it);
+			}
+		}
 
 	}
 	ImGui::EndMenu();
 	ImGui::End();
+}
+
+void UI::writeHierarchy(GameObject* gameObject) {
+	ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_SpanAvailWidth;
+	if (gameObject->children.empty()) {
+		flags |= ImGuiTreeNodeFlags_Leaf;
+	}
+	if (selected != NULL && selected == gameObject) {
+		flags |= ImGuiTreeNodeFlags_Selected;
+	}
+
+	bool nodeIsOpen = ImGui::TreeNodeEx(gameObject->name.c_str(), flags);
+
+	if (ImGui::IsItemClicked() && !ImGui::IsItemToggledOpen()) {
+		selected = gameObject;
+	}
+
+	if (nodeIsOpen) {
+		for (std::list<GameObject*>::iterator it = gameObject->children.begin(); it != gameObject->children.end(); ++it) {
+			writeHierarchy(*it);
+		}
+		ImGui::TreePop();
+	}
 }
 
 void UI::showInspector(GameObject* selected) {
 	ImGui::Begin("Inspector");
 	if (selected != nullptr) {
-		if (ImGui::TreeNode("Transform")) {
-			ImGui::SeparatorText("Position");
-			ImGui::DragFloat("X", &transform.x, 0.2f, 2.0f, 100.0f, "%.0f");
-			ImGui::DragFloat("Y", &transform.y, 0.2f, 2.0f, 100.0f, "%.0f");
-			ImGui::DragFloat("Z", &transform.z, 0.2f, 2.0f, 100.0f, "%.0f");
-			ImGui::SeparatorText("Rotate");
-			ImGui::DragFloat("X", &rotate.x, 0.2f, 2.0f, 100.0f, "%.0f");
-			ImGui::DragFloat("Y", &rotate.y, 0.2f, 2.0f, 100.0f, "%.0f");
-			ImGui::DragFloat("Z", &rotate.z, 0.2f, 2.0f, 100.0f, "%.0f");
-			ImGui::SeparatorText("Scale");
-			ImGui::DragFloat("X", &scale.x, 0.2f, 2.0f, 100.0f, "%.0f");
-			ImGui::DragFloat("Y", &scale.x, 0.2f, 2.0f, 100.0f, "%.0f");
-			ImGui::DragFloat("Z", &scale.x, 0.2f, 2.0f, 100.0f, "%.0f");
-			ImGui::TreePop();
-		}
-		if (ImGui::TreeNode("Mesh")) {
-			if (ImGui::Checkbox("Display normals per-triangle", &triangles)) {
-			
-			}
-			if (ImGui::Checkbox("Display normals per-face", &faces)) {
-
-			}
-			ImGui::TreePop();
-		}
-		if (ImGui::TreeNode("Texture")) {
-			ImGui::TreePop();
-			if (ImGui::Checkbox("View the checkers texture: ", &checkerstexture)) {
-
+		for (auto component = selected->components.begin(); component != selected->components.end(); ++component) {
+			switch ((*component)->componentType)
+			{
+			case ComponentType::TRANSFORM:
+				showInspectorTransform(*component);
+				break;
+			case ComponentType::MESH:
+				showInspectorMesh(*component);
+				break;
+			case ComponentType::TEXTURE:
+				showInspectorTexture(*component);
+				break;
+			default:
+				break;
 			}
 		}
 	}
@@ -307,7 +351,45 @@ void UI::showInspector(GameObject* selected) {
 	ImGui::End();
 }
 
-//void UI::
+void UI::showInspectorTransform(Component* component) {
+	if (ImGui::TreeNode("Transform")) {
+		ImGui::SeparatorText("Position");
+		ImGui::DragFloat("X", &transform.x, 0.2f, 2.0f, 100.0f, "%.0f");
+		ImGui::DragFloat("Y", &transform.y, 0.2f, 2.0f, 100.0f, "%.0f");
+		ImGui::DragFloat("Z", &transform.z, 0.2f, 2.0f, 100.0f, "%.0f");
+		ImGui::SeparatorText("Rotate");
+		ImGui::DragFloat("X", &rotate.x, 0.2f, 2.0f, 100.0f, "%.0f");
+		ImGui::DragFloat("Y", &rotate.y, 0.2f, 2.0f, 100.0f, "%.0f");
+		ImGui::DragFloat("Z", &rotate.z, 0.2f, 2.0f, 100.0f, "%.0f");
+		ImGui::SeparatorText("Scale");
+		ImGui::DragFloat("X", &scale.x, 0.2f, 2.0f, 100.0f, "%.0f");
+		ImGui::DragFloat("Y", &scale.x, 0.2f, 2.0f, 100.0f, "%.0f");
+		ImGui::DragFloat("Z", &scale.x, 0.2f, 2.0f, 100.0f, "%.0f");
+		ImGui::TreePop();
+	}
+}
+
+void UI::showInspectorMesh(Component* component) {
+	if (ImGui::TreeNode("Mesh")) {
+		if (ImGui::Checkbox("Display normals per-triangle", &triangles)) {
+			// Call function in Mesh
+		}
+		if (ImGui::Checkbox("Display normals per-face", &faces)) {
+			// Call function in Mesh
+		}
+		ImGui::TreePop();
+	}
+}
+
+void UI::showInspectorTexture(Component* component) {
+	if (ImGui::TreeNode("Texture")) {
+		ImGui::TreePop();
+		if (ImGui::Checkbox("View the checkers texture", &checkerstexture)) {
+			// Call the function or change the path
+			//
+		}
+	}
+}
 
 void UI::showResources() {
 	ImGui::Begin("Resources");

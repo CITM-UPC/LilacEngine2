@@ -4,10 +4,15 @@
 #include <IL/il.h>
 #include "Mesh.h"
 #include "GraphicObject.h"
+#include "Camera.h"
+#include "ComponentTransform.h"
+#include "ComponentMesh.h"
+#include "ComponentTexture.h"
+
 
 EngineCore::EngineCore()
 {
-
+    scene = new Scene;
 }
 
 void EngineCore::Awake()
@@ -17,7 +22,18 @@ void EngineCore::Awake()
 
 void EngineCore::Start()
 {
+    ilInit();
 
+    GameObject* house = scene->AddGameObject();
+    auto mesh_ptrs = Mesh::loadFromFile("Assets\\BakerHouse.fbx");
+    house->AddMeshWithTexture(mesh_ptrs);
+
+    ComponentMesh* meshComp = (ComponentMesh*)house->GetComponent(ComponentType::MESH);
+
+    ComponentTransform* transformHouse = (ComponentTransform*)house->GetComponent(ComponentType::TRANSFORM);
+    transformHouse->rotate(1, vec3(0, 1, 0));
+    transformHouse->translate(vec3(0, 0, 0));
+    transformHouse->scale(vec3(1, 1, 1));
 }
 
 void EngineCore::Update(double dt)
@@ -72,8 +88,6 @@ static void drawGrid(int grid_size, int grid_step)
 
 void EngineCore::Render(RenderModes renderMode)
 {
-    ilInit();
-
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
 
@@ -97,21 +111,9 @@ void EngineCore::Render(RenderModes renderMode)
     drawGrid(100, 10);
     drawAxis();
 
-    static auto mesh_ptrs = Mesh::loadFromFile("Assets/BakerHouse.fbx");
-    
-    GraphicObject mesh1(mesh_ptrs.front());
-    GraphicObject mesh2(mesh_ptrs.back());
-    
-    GraphicObject house;
-    
-    house.addChild(std::move(mesh1));
-    house.addChild(std::move(mesh2));
-    
-    GraphicObject root;
-    root.addChild(std::move(house));
-    
-    root.paint();
-     
+    // Render everything that is in Scene
+    scene->Render();
+
     // JULS: This should be commented, if not catastrophic error (srly)
     //assert(glGetError() == GL_NONE);
 }
