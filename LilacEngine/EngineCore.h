@@ -8,7 +8,6 @@
 class EngineCore
 {
 public:
-
 	enum class RenderModes { RELEASE, DEBUG };
 
 	EngineCore();

@@ -24,7 +24,7 @@ public:
 		return _transform;
 	}
 
-	inline vec3 getPosition() {
+	inline vec3f getPosition() {
 		vec3 ret;
 		ret.x = _transform[0][3];
 		ret.y = _transform[1][3];

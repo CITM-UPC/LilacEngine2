@@ -31,7 +31,11 @@ public:
 	static std::vector<Ptr> loadFromFile(const std::string& path);
 	static std::vector<Ptr> loadFromFile(const std::string& path, const std::string& texpath);
 
+	std::string path;
+
+	void loadTextureToMesh(const std::string& path);
 	Texture2D::Ptr texture;
+	//vector<Texture2D::Ptr> textures;
 
 	Mesh(Formats format, const void* vertex_data, unsigned int numVerts, const unsigned int* indexs_data=nullptr, unsigned int numIndexs=0);
 	Mesh(Mesh&& b) noexcept;
