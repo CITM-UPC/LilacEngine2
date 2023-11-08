@@ -151,8 +151,8 @@ void UI::showMenu() {
 				hierarchy = !hierarchy;
 			if (ImGui::MenuItem("Inspector"))
 				inspector = !inspector;
-			if (ImGui::MenuItem("Shapes"))
-				shapes = !shapes;
+			//if (ImGui::MenuItem("Shapes"))
+			//	shapes = !shapes;
 			ImGui::EndMenu();
 		}
 		if (ImGui::MenuItem("Github page")) {
@@ -168,11 +168,19 @@ void UI::showMenu() {
 		ImGui::EndMenu();
 	}
 	if (ImGui::BeginMenu("Load")) {
-		if (ImGui::MenuItem("Cube")) {
-			LOG("Adding Cube to the scene");
-		}
-		if (ImGui::MenuItem("Sphere")) {
-			LOG("Adding Sphere to the scene");
+		if (ImGui::MenuItem("House")) {
+			LOG("Adding BakerHouse to the scene");
+			GameObject* house = app->engine->scene->AddGameObject("BakerHouse");
+			auto mesh_ptrs = Mesh::loadFromFile("Assets\\BakerHouse.fbx", "Assets\\Baker_house.png");
+			//ComponentTexture* textureComponent = house->
+			house->AddMeshWithTexture(mesh_ptrs);
+
+			ComponentMesh* meshComponent = (ComponentMesh*)house->GetComponent(ComponentType::MESH);
+			//ComponentTexture
+			ComponentTransform* transformComponent = (ComponentTransform*)house->GetComponent(ComponentType::TRANSFORM);
+			transformComponent->rotate(0, vec3(0, 1, 0));
+			transformComponent->translate(vec3(0, 0, 0));
+			transformComponent->scale(vec3(1, 1, 1));
 		}
 		if (ImGui::MenuItem("Teapot")) {
 			LOG("Adding Teapot to the scene");

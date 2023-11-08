@@ -16,7 +16,15 @@ public:
 	};
 
 	GameObject* AddGameObject(std::string name) {
+		
 		GameObject* tempGO = new GameObject(name);
+		//int num = 0;
+		//for (auto gameObject = children.begin(); gameObject != children.end(); ++gameObject) {
+		//	if ((*gameObject)->name == tempGO->name) {
+		//		num++;
+		//	}
+		//}
+		//tempGO->se = name + " " + std::to_string(num);
 		children.push_back(tempGO);
 		return tempGO;
 	}

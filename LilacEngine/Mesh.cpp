@@ -102,8 +102,6 @@ std::vector<Mesh::Ptr> Mesh::loadFromFile(const std::string& path) {
 }
 
 std::vector<Mesh::Ptr> Mesh::loadFromFile(const std::string& path, const std::string& stringPath) {
-
-
     const auto scene_ptr = aiImportFile(path.c_str(), aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_ForceGenNormals);
     const aiSceneExt& scene = *(aiSceneExt*)scene_ptr;
 
@@ -318,7 +316,6 @@ void Mesh::draw() {
     glDisableClientState(GL_TEXTURE_COORD_ARRAY);
     glDisable(GL_TEXTURE_2D);
 }
-
 
 Mesh::~Mesh() {
     if (_vertex_buffer_id) glDeleteBuffers(1, &_vertex_buffer_id);
