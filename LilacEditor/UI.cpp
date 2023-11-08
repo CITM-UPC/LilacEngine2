@@ -213,7 +213,7 @@ void UI::showConfiguration(HardwareInfo hardware_info) {
 		if (ImGui::InputText("", orgName, 100, ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
 			app->SetOrganization(orgName);
 		
-		//calculateFramerate();
+		calculateFramerate();
 	}
 	if (ImGui::CollapsingHeader("Window")) {
 		if (ImGui::SliderFloat("Brightness", &v, 0.0, 1.0))
@@ -391,7 +391,7 @@ void UI::showGame() {
 
 void UI::calculateFramerate() {
 	
-	static float fps[50] = {};
+	static float fps[100] = {};
 	static int index = 0;
 
 	fps[index] = ImGui::GetIO().Framerate;

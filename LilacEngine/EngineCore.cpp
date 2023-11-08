@@ -4,6 +4,7 @@
 #include <IL/il.h>
 #include "Mesh.h"
 #include "GraphicObject.h"
+#include "Camera.h"
 
 EngineCore::EngineCore()
 {

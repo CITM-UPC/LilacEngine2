@@ -6,7 +6,7 @@
 Camera::Camera() : fov(60), aspect(4.0/3.0), zNear(0.1), zFar(100), eye(0, 0, 0), center(0, 0, 0), up(0, 1, 0), yaw(-90) 
 {
     WorldUp = up;
-	cameraUpdate();
+	//cameraUpdate();
 }
 
 glm::dmat4 Camera::computeLookAt() const {
