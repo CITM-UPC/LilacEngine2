@@ -24,16 +24,17 @@ void EngineCore::Start()
 {
     ilInit();
 
-    GameObject* house = scene->AddGameObject();
-    auto mesh_ptrs = Mesh::loadFromFile("Assets\\BakerHouse.fbx");
+    GameObject* house = scene->AddGameObject("BakerHouse");
+    auto mesh_ptrs = Mesh::loadFromFile("Assets\\BakerHouse.fbx", "Assets\\Baker_house.png");
+    //ComponentTexture* textureComponent = house->
     house->AddMeshWithTexture(mesh_ptrs);
-
-    ComponentMesh* meshComp = (ComponentMesh*)house->GetComponent(ComponentType::MESH);
-
-    ComponentTransform* transformHouse = (ComponentTransform*)house->GetComponent(ComponentType::TRANSFORM);
-    transformHouse->rotate(1, vec3(0, 1, 0));
-    transformHouse->translate(vec3(0, 0, 0));
-    transformHouse->scale(vec3(1, 1, 1));
+    
+    ComponentMesh* meshComponent = (ComponentMesh*)house->GetComponent(ComponentType::MESH);
+    //ComponentTexture
+    ComponentTransform* transformComponent = (ComponentTransform*)house->GetComponent(ComponentType::TRANSFORM);
+    transformComponent->rotate(0, vec3(0, 1, 0));
+    transformComponent->translate(vec3(0, 0, 0));
+    transformComponent->scale(vec3(1, 1, 1));
 }
 
 void EngineCore::Update(double dt)

@@ -3,6 +3,10 @@
 #include "Input.h"
 #include "Application.h"
 #include "UI.h"
+#include "..\LilacEngine\Mesh.h"
+#include "..\LilacEngine\ComponentTransform.h"
+#include "..\LilacEngine\ComponentMesh.h"
+#include "..\LilacEngine\ComponentTexture.h"
 
 #define MAX_KEYS 300
 #define NUM_MOUSE_BUTTONS 5
@@ -210,11 +214,22 @@ void Input::manageFileSystem(std::string dropped_filedir) {
         if (!ec) {
             if (dropped_filedir.ends_with(".fbx")) {
                 LOG("New mesh has been successfully copied: %s\n", dropped_filedir.c_str());
+                GameObject* newMesh = app->engine->scene->AddGameObject();
+                auto mesh_ptrs = Mesh::loadFromFile(dropped_filedir);
+                LOG("Mesh loaded from %s\n", dropped_filedir);
+                newMesh->AddMeshWithTexture(mesh_ptrs);
             }
             else if (dropped_filedir.ends_with(".png") || dropped_filedir.ends_with(".dds")) {
                 LOG("New texture has been successfully copied: %s\n", dropped_filedir.c_str());
-
-                // here should be applied to put the texture in the selected GameObject 
+                if (app->ui->selected != nullptr) {
+                    ComponentTexture* textureComponent = (ComponentTexture*)app->ui->selected->GetComponent(ComponentType::TEXTURE);
+                    ComponentMesh* meshComponent = (ComponentMesh*)app->ui->selected->GetComponent(ComponentType::MESH);
+                    if (meshComponent->getMesh() != nullptr) {
+                        meshComponent->getMesh()->loadTextureToMesh(dropped_filedir);
+                        textureComponent->setTexture(meshComponent->getMesh()->texture);
+                        LOG("Texture loaded from %s to %s\n", + (dropped_filedir).c_str(), meshComponent->getMesh()->path.c_str());
+                    }
+                }
             }
         }
         else {

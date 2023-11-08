@@ -50,6 +50,7 @@ bool UI::Start()
 	// JULS: COLORS IMGUI REMINDER => Values go from 0 - 1, not from 0 - 225
 	ImGui::StyleColorsDark();
 	selected = NULL;
+	checkers = false;
 	return ret;
 }
 
@@ -88,12 +89,20 @@ bool UI::Update(double dt)
 		showHierarchy();
 	if (inspector)
 		showInspector(selected);
-	if (shapes)
-		showResources();
+	//if (shapes)
+	//	showResources();
 	if (menu)
 		showMenu();
 	if (quit)
 		return false;
+
+	//if (selected != nullptr) {
+	//	if (checkers)
+	//		selected->changeTexture(selected, "checkers1.png");  //setCheckersTexture();
+	//	else
+	//		selected->changeTexture(selected, selected->defaultTexture);
+	//}
+	
 	//showGame();
 
 #pragma endregion
@@ -168,15 +177,28 @@ void UI::showMenu() {
 		if (ImGui::MenuItem("Teapot")) {
 			LOG("Adding Teapot to the scene");
 			GameObject* teapot = app->engine->scene->AddGameObject("Teapot");
-			auto mesh_ptrs = Mesh::loadFromFile("Assets\\teapot.fbx");
+			auto mesh_ptrs = Mesh::loadFromFile("Assets\\teapot.fbx", "Assets\\Baker_house.png");
 			teapot->AddMeshWithTexture(mesh_ptrs);
-
+			//defaultTexture =
 			ComponentMesh* meshComp = (ComponentMesh*)teapot->GetComponent(ComponentType::MESH);
 
-			ComponentTransform* transformHouse = (ComponentTransform*)teapot->GetComponent(ComponentType::TRANSFORM);
-			transformHouse->rotate(1, vec3(0, 1, 0));
-			transformHouse->translate(vec3(5, 0, 0));
-			transformHouse->scale(vec3(1, 1, 1));
+			ComponentTransform* meshtransform = (ComponentTransform*)teapot->GetComponent(ComponentType::TRANSFORM);
+			meshtransform->rotate(0, vec3(0, 1, 0));
+			meshtransform->translate(vec3(5, 0, 0));
+			meshtransform->scale(vec3(1, 1, 1));
+		}
+		if (ImGui::MenuItem("Mug")) {
+			LOG("Adding Tea Mug to the scene");
+			GameObject* mug = app->engine->scene->AddGameObject("Mug");
+			auto mesh_ptrs = Mesh::loadFromFile("Assets\\teamugfbx.fbx", "Assets\\checkers5.png");
+			mug->AddMeshWithTexture(mesh_ptrs);
+			//defaultTexture =
+			ComponentMesh* meshComp = (ComponentMesh*)mug->GetComponent(ComponentType::MESH);
+
+			ComponentTransform* meshtransform = (ComponentTransform*)mug->GetComponent(ComponentType::TRANSFORM);
+			meshtransform->rotate(0, vec3(0, 1, 0));
+			meshtransform->translate(vec3(5, 0, 0));
+			meshtransform->scale(vec3(1, 1, 1));
 		}
 		ImGui::EndMenu();
 	}
@@ -273,9 +295,9 @@ void UI::showConfiguration(HardwareInfo hardware_info) {
 		//if (ImGui::SliderFloat("Fx", &v, 0.0, 1.0))
 		//
 	}
-	if (ImGui::CollapsingHeader("Textures")) {
-
-	}
+	//if (ImGui::CollapsingHeader("Textures")) {
+	//
+	//}
 	if (ImGui::CollapsingHeader("Hardware")) {
 		//JULS: problems with hardware, debugging
 		showHardwareInfo(hardware_info);
@@ -298,7 +320,6 @@ void UI::showHierarchy() {
 				writeHierarchy(*it);
 			}
 		}
-
 	}
 	ImGui::EndMenu();
 	ImGui::End();
@@ -319,6 +340,7 @@ void UI::writeHierarchy(GameObject* gameObject) {
 		selected = gameObject;
 	}
 
+	//if (ImGui::Tre)
 	if (nodeIsOpen) {
 		for (std::list<GameObject*>::iterator it = gameObject->children.begin(); it != gameObject->children.end(); ++it) {
 			writeHierarchy(*it);
@@ -352,44 +374,106 @@ void UI::showInspector(GameObject* selected) {
 }
 
 void UI::showInspectorTransform(Component* component) {
+	ComponentTransform* s = (ComponentTransform*)component;
+	vec3f pos = { s->getPosition().x, s->getPosition().y, s->getPosition().z };
+	vec3f rot = { s->getRotation().x, s->getRotation().y, s->getRotation().z };
+	vec3f sca = { s->getScale().x, s->getScale().y, s->getScale().z };
+
 	if (ImGui::TreeNode("Transform")) {
 		ImGui::SeparatorText("Position");
-		ImGui::DragFloat("X", &transform.x, 0.2f, 2.0f, 100.0f, "%.0f");
-		ImGui::DragFloat("Y", &transform.y, 0.2f, 2.0f, 100.0f, "%.0f");
-		ImGui::DragFloat("Z", &transform.z, 0.2f, 2.0f, 100.0f, "%.0f");
+		ImGui::DragFloat("X", &pos.x, 0.2f, 2.0f, 100.0f, "%.0f");
+
+		ImGui::DragFloat("Y", &pos.y, 0.2f, 2.0f, 100.0f, "%.0f");
+		ImGui::DragFloat("Z", &pos.z, 0.2f, 2.0f, 100.0f, "%.0f");
 		ImGui::SeparatorText("Rotate");
-		ImGui::DragFloat("X", &rotate.x, 0.2f, 2.0f, 100.0f, "%.0f");
-		ImGui::DragFloat("Y", &rotate.y, 0.2f, 2.0f, 100.0f, "%.0f");
-		ImGui::DragFloat("Z", &rotate.z, 0.2f, 2.0f, 100.0f, "%.0f");
+		ImGui::DragFloat("X", &rot.x, 0.2f, 2.0f, 100.0f, "%.0f");
+		ImGui::DragFloat("Y", &rot.y, 0.2f, 2.0f, 100.0f, "%.0f");
+		ImGui::DragFloat("Z", &rot.z, 0.2f, 2.0f, 100.0f, "%.0f");
 		ImGui::SeparatorText("Scale");
-		ImGui::DragFloat("X", &scale.x, 0.2f, 2.0f, 100.0f, "%.0f");
-		ImGui::DragFloat("Y", &scale.x, 0.2f, 2.0f, 100.0f, "%.0f");
-		ImGui::DragFloat("Z", &scale.x, 0.2f, 2.0f, 100.0f, "%.0f");
+		ImGui::DragFloat("X", &sca.x, 0.2f, 2.0f, 100.0f, "%.0f");
+		ImGui::DragFloat("Y", &sca.x, 0.2f, 2.0f, 100.0f, "%.0f");
+		ImGui::DragFloat("Z", &sca.x, 0.2f, 2.0f, 100.0f, "%.0f");
 		ImGui::TreePop();
 	}
 }
 
 void UI::showInspectorMesh(Component* component) {
+	ComponentMesh* s = (ComponentMesh*)component;
 	if (ImGui::TreeNode("Mesh")) {
-		if (ImGui::Checkbox("Display normals per-triangle", &triangles)) {
-			// Call function in Mesh
+		if (s->getMesh() != nullptr) {
+			std::string path = s->getMesh()->path;
+			if (auto n = path.find_last_of("\\"); n != path.npos) {
+				path.erase(0, n + 1);
+			}
+			ImGui::Text("File:");
+			ImGui::SameLine();
+			ImGui::TextColored(ImVec4(1, 1, 0, 1), "%s", path.c_str());
+			//if (ImGui::IsItemHovered()) {
+			//	ImGui::SetTooltip("%s", (s->getMesh()->path).c_str());
+			//}
+			//ImGui::Text("Vertex:");
+			//ImGui::SameLine();
+			//ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d", s->getMesh()->getVertsNum());
+			//ImGui::Text("Faces:", s->getMesh()->getFacesNum());
+			//ImGui::SameLine();
+			//ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d", s->getMesh()->getFacesNum());
+			if (ImGui::Checkbox("Display normals per-triangle", &s->getMesh()->drawNormalsVerts)) {
+				// Call function in Mesh
+			}
+			if (ImGui::Checkbox("Display normals per-face", &s->getMesh()->drawNormalsFaces)) {
+				// Call function in Mesh
+			}
 		}
-		if (ImGui::Checkbox("Display normals per-face", &faces)) {
-			// Call function in Mesh
+			//ImGui::SliderFloat("Normal's Length", &s->getMesh()->normalLineLength, 0.1f, 2.0f);
+			//ImGui::SliderInt("Normal's Width", &s->getMesh()->normalLineWidth, 1, 4);
+		
+		else {
+			ImGui::Text("Mesh not found");
 		}
 		ImGui::TreePop();
 	}
 }
 
 void UI::showInspectorTexture(Component* component) {
+	ComponentTexture* s = (ComponentTexture*)component;
+	ComponentMesh* mesh = (ComponentMesh*)selected->GetComponent(ComponentType::MESH);
 	if (ImGui::TreeNode("Texture")) {
-		ImGui::TreePop();
-		if (ImGui::Checkbox("View the checkers texture", &checkerstexture)) {
-			// Call the function or change the path
+		if (s->getTexture() != nullptr) {
+			string path = s->getTexture()->path;
+			if (auto n = path.find_last_of("\\"); n != path.npos) {
+				path.erase(0, n + 1);
+			}
+			// Name file
+			ImGui::Text("File:");
+			ImGui::SameLine();
+			ImGui::TextColored(ImVec4(1, 1, 0, 1), "%s", path.c_str());
+
+			// Size
+			ImGui::Text("Size:");
+			ImGui::SameLine();
+			ImGui::TextColored(ImVec4(1, 1, 0, 1), "%dpx x %dpx", s->getTexture()->width, s->getTexture()->height);
+			
 			//
+			if (ImGui::Checkbox("View the checkers texture", &mesh->getMesh()->drawChecker)) {
+				// Call function in Mesh
+			}
 		}
+		else {
+			ImGui::Text("Texture not found");
+		}
+		ImGui::TreePop();
 	}
 }
+
+//void::UI::setCheckersTexture() {
+//	ComponentTexture* textureComponent = (ComponentTexture*)app->ui->selected->GetComponent(ComponentType::TEXTURE);
+//	ComponentMesh* meshComponent = (ComponentMesh*)app->ui->selected->GetComponent(ComponentType::MESH);
+//	if (meshComponent->getMesh() != nullptr) {
+//		meshComponent->getMesh()->loadTextureToMesh("checkers1.png");
+//		textureComponent->setTexture(meshComponent->getMesh()->texture);
+//		
+//	}LOG("Changed texture to checkers\n");
+//}
 
 void UI::showResources() {
 	ImGui::Begin("Resources");

@@ -36,10 +36,12 @@ public:
 	void showGame();
 	void showHardwareInfo(HardwareInfo hardware_info);	
 	void calculateFramerate();
+	
+	GameObject* selected;
 private:
 	//// General
 	bool console = true, configuration = true, hierarchy = true, inspector = true, shapes = true, menu = true, quit = false;
-	GameObject* selected;
+	
 	//// Console
 
 	//// Configuration
@@ -64,11 +66,12 @@ private:
 	bool vsync;
 
 	//// Hierarchy
-	bool triangles, faces, checkerstexture;
+	
 
 	//// Inspector
-	// JULS: Temporal -> this should be 
-	vec3f transform, rotate, scale;
+	//void setCheckersTexture();
+
+	bool triangles, faces, checkers;
 
 	//// Shapes
 
