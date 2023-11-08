@@ -253,6 +253,9 @@ void UI::showConfiguration(HardwareInfo hardware_info) {
 		//JULS: problems with hardware, debugging
 		showHardwareInfo(hardware_info);
 	}
+	if (ImGui::CollapsingHeader("FPS")) {
+		calculateFramerate();
+	}
 	ImGui::EndMenu();
 	ImGui::End();
 }
@@ -391,7 +394,7 @@ void UI::showGame() {
 
 void UI::calculateFramerate() {
 	
-	static float fps[50] = {};
+	static float fps[100] = {};
 	static int index = 0;
 
 	fps[index] = ImGui::GetIO().Framerate;
