@@ -28,9 +28,6 @@ struct aiSceneExt : aiScene {
 
 
 std::vector<Mesh::Ptr> Mesh::loadFromFile(const std::string& path) {
-
-
-
     const auto scene_ptr = aiImportFile(path.c_str(), aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_ForceGenNormals);
     const aiSceneExt& scene = *(aiSceneExt*)scene_ptr;
 
@@ -188,34 +185,6 @@ void Mesh::loadTextureToMesh(const std::string& path)
 
 }
 
-/*Mesh::Mesh(Cube cube) :
-    _format(F_V3C4),
-    _vertex_buffer_id(cube._vertex_buffer_id),
-    _numVerts(cube.NUM_VERTEXS),
-    _indexs_buffer_id(NULL),
-    _numIndexs(0)
-{
-    cube._vertex_buffer_id = 0;
-}
-
-Mesh::Mesh(Pyramid pyramid) :
-    _format(F_V3C4),
-    _vertex_buffer_id(pyramid._vertex_buffer_id),
-    _numVerts(pyramid.NUM_VERTEXS),
-    _indexs_buffer_id(NULL),
-    _numIndexs(0)
-{
-}
-
-Mesh::Mesh(Cylinder cylinder) :
-    _format(F_V3C4),
-    _vertex_buffer_id(cylinder._vertex_buffer_id),
-    _numVerts(cylinder.NUM_VERTEXS),
-    _indexs_buffer_id(NULL),
-    _numIndexs(0)
-{
-}*/
-
 Mesh::Mesh(Formats format, const void* vertex_data, unsigned int numVerts, unsigned int numFaces, const unsigned int* index_data, unsigned int numIndexs) :
     _format(format),
     _numVerts(numVerts),
@@ -313,7 +282,7 @@ void Mesh::draw() {
     if (drawNormalsVerts && !meshVerts.empty() && !meshNorms.empty()) {
         glLineWidth(normalLineWidth);
         glBegin(GL_LINES);
-        glColor3f(0.0f, 1.0f, 0.0f);
+        glColor3f(1.0f, 1.0f, 0.0f);
 
         for (int i = 0; i < _numVerts; i++) {
             glVertex3f(meshVerts[i].x, meshVerts[i].y, meshVerts[i].z);
@@ -329,7 +298,7 @@ void Mesh::draw() {
     if (drawNormalsFaces && !meshFaceCenters.empty() && !meshFaceNorms.empty()) {
         glLineWidth(normalLineWidth);
         glBegin(GL_LINES);
-        glColor3f(1.0f, 0.0f, 0.0f);
+        glColor3f(1.0f, 0.0f, 1.0f);
 
         for (int i = 0; i < _numFaces; i++) {
             glm::vec3 endPoint = meshFaceCenters[i] + normalLineLength * meshFaceNorms[i];
@@ -340,7 +309,6 @@ void Mesh::draw() {
         glColor3f(0.0f, 1.0f, 1.0f);
         glEnd();
     }
-
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);

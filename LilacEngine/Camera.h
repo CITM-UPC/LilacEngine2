@@ -36,6 +36,6 @@ public:
 	void cameraZoom(double amount);
 	void cameraOrbit(vec2 motion);
 	// JULS: Focus can only be done with GameObject
-	void cameraFocus(vec2 motion);
+	void cameraFocus(vec3 vector);
 };
 

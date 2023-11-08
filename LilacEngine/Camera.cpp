@@ -26,6 +26,7 @@ void Camera::cameraUpdate() {
     up = glm::normalize(glm::cross(cameraRight, center));
 }
 
+// Movement -> W and S
 void Camera::cameraMoveZ(vec3 vector) {
 	vec3 localZ = glm::normalize(eye - center);
 	vec3 localY = glm::normalize(up);
@@ -37,6 +38,7 @@ void Camera::cameraMoveZ(vec3 vector) {
 	eye += localTranslation;
 }
 
+// Movement -> A and D
 void Camera::cameraMoveX(vec3 vector) {
 	// Calculate local axes
 	vec3 localZ = glm::normalize(eye - center);
@@ -49,6 +51,7 @@ void Camera::cameraMoveX(vec3 vector) {
 	eye += localTranslation;
 }
 
+// Zoom -> Wheel
 void Camera::cameraZoom(double amount) {
     double distanceToCenter = glm::distance(eye, center);
     vec3 localZ = glm::normalize(eye - center);
@@ -56,6 +59,7 @@ void Camera::cameraZoom(double amount) {
     eye += localZ * amount * (distanceToCenter * 0.1f);
 }
 
+// Camera Orbit -> Alt + Left Click
 void Camera::cameraOrbit(vec2 motion) {
 	double sensibility = 0.001;
 
@@ -79,4 +83,11 @@ void Camera::cameraOrbit(vec2 motion) {
 
 		eye = center + newLocalZ;
 	}
+}
+
+// Focus -> F
+void Camera::cameraFocus(vec3 vector) {
+	vec3 localZ = eye - center;
+	center = vector;
+	eye = center + ((glm::normalize(localZ)) * 5.0 /*distance*/);
 }
