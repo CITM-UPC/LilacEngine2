@@ -11,9 +11,8 @@ class GameObject;
 
 class Component {
 public:
-	Component();
-	void Update();
-	ComponentType getType();
+	//Component();
+	//void Update();
 	
 	bool isActive = true;
 	GameObject* gameObject;

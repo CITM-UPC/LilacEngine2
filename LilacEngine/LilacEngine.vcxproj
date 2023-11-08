@@ -26,6 +26,7 @@
     <ClInclude Include="Graphic.h" />
     <ClInclude Include="GraphicObject.h" />
     <ClInclude Include="Mesh.h" />
+    <ClInclude Include="Scene.h" />
     <ClInclude Include="Texture2D.h" />
     <ClInclude Include="ComponentTransform.h" />
     <ClInclude Include="types.h" />

@@ -7,7 +7,6 @@
 #include "Mesh.h"
 #include "Texture2D.h"
 
-
 class Component;
 
 class GameObject {
@@ -19,7 +18,6 @@ public:
 	std::string name;
 	bool isActive = true;
 
-private:
 	// Components
 	Component* GetComponent(ComponentType componentType);
 	std::list<Component*> GetComponents();
@@ -33,4 +31,9 @@ private:
 	std::list<GameObject*> children;
 	void AddChild(GameObject* child);
 	void RemoveChild(GameObject* child);
+	GameObject* AddNewChildren();
+
+
+	void AddMeshWithTexture(std::vector<Mesh::Ptr> meshes);
+	void Render();
 };

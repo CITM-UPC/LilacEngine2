@@ -60,6 +60,7 @@ private:
 	bool vsync;
 
 	//// Hierarchy
+	bool triangles, faces, checkerstexture;
 
 	//// Inspector
 	// JULS: Temporal -> this should be 

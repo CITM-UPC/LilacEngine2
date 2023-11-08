@@ -9,6 +9,7 @@
 
 Application::Application(int argc, char* args[]) : argc(argc), args(args)
 {
+	LOG("Initializing Lilac Engine");
 	engine = new EngineCore();
 
 	window = new Window(this);
@@ -19,7 +20,7 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 
 	// Ordered for awake / Start / Update
 	// Reverse order for CleanUp
-
+	LOG("Initializing Modules");
 	AddModule(window, true);
 	AddModule(input, true);
 	AddModule(hardware, true);
@@ -35,6 +36,7 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 Application::~Application()
 {
 	// Release modules
+	LOG("Releasing Modules");
 	modules.clear();
 }
 

@@ -5,8 +5,9 @@
 #include "Component.h"
 #include <memory>
 #include <vector>
+#include <GL\glew.h>
 
-using namespace std;
+//using namespace std;
 
 GameObject::GameObject() 
 {
@@ -68,4 +69,49 @@ void GameObject::AddChild(GameObject* child) {
 void GameObject::RemoveChild(GameObject* child) {
 	children.remove(child);
 	child->_parent = nullptr;
+}
+
+GameObject* GameObject::AddNewChildren() {
+	std::string gameObjectName = name + " " + std::to_string(children.size());
+
+	GameObject* tempGO = new GameObject(gameObjectName);
+	AddChild(tempGO);
+	return tempGO;
+}
+
+void GameObject::AddMeshWithTexture(std::vector<Mesh::Ptr> meshes) {
+	if (meshes.size() == 1) {
+		ComponentMesh* mesh = (ComponentMesh*)GetComponent(ComponentType::MESH);
+		mesh->setMesh(*meshes.begin());
+		ComponentTexture* texture = (ComponentTexture*)GetComponent(ComponentType::TEXTURE);
+		texture->setTexture((*meshes.begin())->texture);
+	}
+	else {
+		for (auto i = meshes.begin(); i != meshes.end(); ++i) {
+			GameObject* GOPart = AddNewChildren();
+			ComponentMesh* meshPart = (ComponentMesh*)GOPart->GetComponent(ComponentType::MESH);
+			meshPart->setMesh(*i);
+			ComponentTexture* texturePart = (ComponentTexture*)GOPart->GetComponent(ComponentType::TEXTURE);
+			texturePart->setTexture((*i)->texture);
+		}
+	}
+}
+
+void GameObject::Render() {
+	// get necessary components
+	ComponentTransform* transform = (ComponentTransform*)GetComponent(ComponentType::TRANSFORM);
+	ComponentMesh* mesh = (ComponentMesh*)GetComponent(ComponentType::MESH);
+
+	// render
+	glPushMatrix();
+	glMultMatrixd(&transform->getTransform()[0].x);
+
+	if (mesh->getMesh()) mesh->getMesh()->draw();
+
+	for (auto childIt = children.begin(); childIt != children.end(); ++childIt) {
+		(*childIt)->Render();
+	}
+
+	glPopMatrix();
+
 }

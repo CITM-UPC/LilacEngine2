@@ -212,38 +212,8 @@ void UI::showConfiguration(HardwareInfo hardware_info) {
 			strcpy_s(orgName, 100, app->GetOrganization());
 		if (ImGui::InputText("", orgName, 100, ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
 			app->SetOrganization(orgName);
-
-		//	ImGui::Separator();
-		//	// --- Cap frames ---
-			//int maxFramerate = App->time->GetMaxFramerate();
-			//if (ImGui::SliderInt("Max FPS", &maxFramerate, 0, App->window->GetDisplayRefreshRate()))
-			//	App->time->SetMaxFramerate(maxFramerate);
-
-		//char title[25];
-		//sprintf_s(title, 25, "Framerate %.1f", FPS_Tracker[FPS_Tracker.size() - 1]);
-		//ImGui::PlotHistogram("##Framerate", &FPS_Tracker[0], FPS_Tracker.size(), 0, title, 0.0f, 100.0f, ImVec2(500, 75));
-		//sprintf_s(title, 25, "Milliseconds %0.1f", MS_Tracker[MS_Tracker.size() - 1]);
-		//ImGui::PlotHistogram("##Milliseconds", &MS_Tracker[0], MS_Tracker.size(), 0, title, 0.0f, 40.0f, ImVec2(500, 75));
-
-	//	sMStats MemoryStats = m_getMemoryStatistics(); // Using mmgr 
-	//	static int speed = 0;
-	//	static std::vector<float> Memory(100); // Hom many units/lines we want in the plot
-	//	if (++speed > 25) // How fast the plot is plotted :)
-	//	{
-	//		speed = 0;
-	//		if (Memory.size() == 100)
-	//		{
-	//			for (uint i = 0; i < 100 - 1; ++i)
-	//				Memory[i] = Memory[i + 1];
-
-	//			Memory[100 - 1] = (float)MemoryStats.totalReportedMemory;
-	//		}
-	//		else
-	//			Memory.push_back((float)MemoryStats.totalReportedMemory);
-	//	}
-
-	//	ImGui::PlotHistogram("##Memory", &Memory[0], Memory.size(), 0, "Memory Consumption", 0.0f, (float)MemoryStats.peakReportedMemory * 1.2f, ImVec2(500, 75));
-
+		
+		//calculateFramerate();
 	}
 	if (ImGui::CollapsingHeader("Window")) {
 		if (ImGui::SliderFloat("Brightness", &v, 0.0, 1.0))
@@ -283,9 +253,6 @@ void UI::showConfiguration(HardwareInfo hardware_info) {
 		//JULS: problems with hardware, debugging
 		showHardwareInfo(hardware_info);
 	}
-	if(ImGui::CollapsingHeader("FPS")) {
-		calculateFramerate();
-	}
 	ImGui::EndMenu();
 	ImGui::End();
 }
@@ -318,22 +285,29 @@ void UI::showInspector(GameObject* selected) {
 			ImGui::TreePop();
 		}
 		if (ImGui::TreeNode("Mesh")) {
-			//if (ImGui::Checkbox("")) {
-			//
-			//}
+			if (ImGui::Checkbox("Display normals per-triangle", &triangles)) {
+			
+			}
+			if (ImGui::Checkbox("Display normals per-face", &faces)) {
+
+			}
 			ImGui::TreePop();
 		}
 		if (ImGui::TreeNode("Texture")) {
 			ImGui::TreePop();
+			if (ImGui::Checkbox("View the checkers texture: ", &checkerstexture)) {
+
+			}
 		}
 	}
 	ImGui::EndMenu();
 	ImGui::End();
-	
 }
 
+//void UI::
+
 void UI::showResources() {
-	ImGui::Begin("Load");
+	ImGui::Begin("Resources");
 	if (ImGui::CollapsingHeader("Textures")) {
 
 	}
@@ -420,7 +394,6 @@ void UI::calculateFramerate() {
 	static float fps[50] = {};
 	static int index = 0;
 
-	
 	fps[index] = ImGui::GetIO().Framerate;
 	index = (index + 1) % 100;
 
