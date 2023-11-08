@@ -352,6 +352,7 @@ void UI::writeHierarchy(GameObject* gameObject) {
 void UI::showInspector(GameObject* selected) {
 	ImGui::Begin("Inspector");
 	if (selected != nullptr) {
+		if (ImGui::Checkbox("Active", &selected->isActive)) {} //Like this or if not gameobjects disappear
 		for (auto component = selected->components.begin(); component != selected->components.end(); ++component) {
 			switch ((*component)->componentType)
 			{

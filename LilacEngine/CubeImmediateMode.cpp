@@ -17,7 +17,7 @@ static void drawQuadFaceTriangles(vec3 a, vec3 b, vec3 c, vec3 d) {
     glVertex3dv(&a.x);
 }
 
-CubeImmediateMode::CubeImmediateMode() : texture("Lenna.png") {}
+CubeImmediateMode::CubeImmediateMode() : texture("Assets\\checkers3.png") {}
 
 void CubeImmediateMode::draw() {
 

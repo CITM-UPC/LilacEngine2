@@ -144,21 +144,6 @@ void Input::InputCamera(double dt) {
 
     if (GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT)
     {
-        ///* MOUSE CAMERA MOVEMENT */
-        //// Compute mouse input displacement
-        //float mouseSensitivity = 10.0f * dt;
-        //int deltaX = GetMouseXMotion();
-        //int deltaY = -GetMouseYMotion();
-        //
-        //app->engine->camera.yaw += deltaX * mouseSensitivity;
-        //app->engine->camera.pitch += deltaY * mouseSensitivity;
-        //
-        //// Limiting Camera Pitch to prevent flipping
-        //if (app->engine->camera.pitch > 89.0f)
-        //    app->engine->camera.pitch = 89.0f;
-        //if (app->engine->camera.pitch < -89.0f)
-        //    app->engine->camera.pitch = -89.0f;
-
         if (GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
             app->engine->camera.cameraMoveZ(vec3(0, 0, -speed));
         if (GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
@@ -181,10 +166,14 @@ void Input::InputCamera(double dt) {
     }
 
     // - F should focus the camera around the geometry
-    if (GetKey(SDL_SCANCODE_F) == KEY_REPEAT) {
-        vec3 localZ = app->engine->camera.eye - app->engine->camera.center;
-        //app->engine->camera.center = focusPoint;
-        //app->engine->camera.eye = app->engine->camera.center + ((glm::normalize(localZ)) * 10.0 /*distance*/);
+    if (GetKey(SDL_SCANCODE_F) == KEY_DOWN) {
+        if (app->ui->selected != nullptr) {
+            if (app->ui->selected->GetComponent(ComponentType::TRANSFORM) != nullptr) {
+                ComponentTransform* gameObjectTransform = (ComponentTransform*)app->ui->selected->GetComponent(ComponentType::TRANSFORM);
+                vec3 focusPoint = gameObjectTransform->getPosition();
+                app->engine->camera.cameraFocus(focusPoint);
+            }
+        }
     }
 
     // - Holding SHIFT duplicates movement speed

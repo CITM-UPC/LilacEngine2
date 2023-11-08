@@ -56,8 +56,11 @@ public:
 	void Update() {};
 
 	void Render() {
-		for (auto gameObjectI = children.begin(); gameObjectI != children.end(); ++gameObjectI) {
-			(*gameObjectI)->Render();
+		for (auto gameObject = children.begin(); gameObject != children.end(); ++gameObject) {
+			if ((*gameObject)->isActive) {
+				(*gameObject)->Render();
+			}
+
 		}
 
 	};
