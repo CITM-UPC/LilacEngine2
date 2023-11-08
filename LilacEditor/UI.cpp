@@ -417,7 +417,7 @@ void UI::showGame() {
 
 void UI::calculateFramerate() {
 	
-	static float fps[50] = {};
+	static float fps[100] = {};
 	static int index = 0;
 
 	
