@@ -4,7 +4,10 @@
 #include "Log.h"
 #include "Window.h"
 #include "Renderer3D.h"
-#include <imgui_impl_opengl3.h>
+#include "..\LilacEngine\Scene.h"
+#include "..\LilacEngine\ComponentTransform.h"
+#include "..\LilacEngine\ComponentMesh.h"
+#include "..\LilacEngine\ComponentTexture.h"
 
 UI::UI(Application* app) : Module(app)
 {
@@ -144,6 +147,7 @@ void UI::showMenu() {
 			ImGui::EndMenu();
 		}
 		if (ImGui::MenuItem("Github page")) {
+			LOG("Opening Github page!");
 			ShellExecute(0, 0, "https://github.com/CITM-UPC/LilacEngine2", 0, 0, SW_SHOW);
 		}
 		if (ImGui::MenuItem("About")) {
@@ -151,6 +155,28 @@ void UI::showMenu() {
 		}
 		if (ImGui::MenuItem("Quit")) {
 			quit = true;
+		}
+		ImGui::EndMenu();
+	}
+	if (ImGui::BeginMenu("Load")) {
+		if (ImGui::MenuItem("Cube")) {
+			LOG("Adding Cube to the scene");
+		}
+		if (ImGui::MenuItem("Sphere")) {
+			LOG("Adding Sphere to the scene");
+		}
+		if (ImGui::MenuItem("Teapot")) {
+			LOG("Adding Teapot to the scene");
+			GameObject* teapot = app->engine->scene->AddGameObject("Teapot");
+			auto mesh_ptrs = Mesh::loadFromFile("Assets\\teapot.fbx");
+			teapot->AddMeshWithTexture(mesh_ptrs);
+
+			ComponentMesh* meshComp = (ComponentMesh*)teapot->GetComponent(ComponentType::MESH);
+
+			ComponentTransform* transformHouse = (ComponentTransform*)teapot->GetComponent(ComponentType::TRANSFORM);
+			transformHouse->rotate(1, vec3(0, 1, 0));
+			transformHouse->translate(vec3(5, 0, 0));
+			transformHouse->scale(vec3(1, 1, 1));
 		}
 		ImGui::EndMenu();
 	}
@@ -283,6 +309,7 @@ void UI::writeHierarchy(GameObject* gameObject) {
 	if (selected != NULL && selected == gameObject) {
 		flags |= ImGuiTreeNodeFlags_Selected;
 	}
+
 	bool nodeIsOpen = ImGui::TreeNodeEx(gameObject->name.c_str(), flags);
 
 	if (ImGui::IsItemClicked() && !ImGui::IsItemToggledOpen()) {
