@@ -100,14 +100,14 @@ void GameObject::AddMeshWithTexture(std::vector<Mesh::Ptr> meshes) {
 	}
 }
 
-void GameObject::changeTexture(GameObject* GO, std::string path) {
-	ComponentTexture* textureComponent = (ComponentTexture*)GO->GetComponent(ComponentType::TEXTURE);
-	ComponentMesh* meshComponent = (ComponentMesh*)GO->GetComponent(ComponentType::MESH);
-	if (meshComponent->getMesh() != nullptr) {
-		meshComponent->getMesh()->loadTextureToMesh(path);
-		textureComponent->setTexture(meshComponent->getMesh()->texture);
-	}
-}
+//void GameObject::changeTexture(GameObject* GO, std::string path) {
+//	ComponentTexture* textureComponent = (ComponentTexture*)GO->GetComponent(ComponentType::TEXTURE);
+//	ComponentMesh* meshComponent = (ComponentMesh*)GO->GetComponent(ComponentType::MESH);
+//	if (meshComponent->getMesh() != nullptr) {
+//		meshComponent->getMesh()->loadTextureToMesh(path);
+//		textureComponent->setTexture(meshComponent->getMesh()->texture);
+//	}
+//}
 
 void GameObject::Render() {
 	// get necessary components

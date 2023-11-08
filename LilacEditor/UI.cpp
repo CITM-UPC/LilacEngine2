@@ -96,12 +96,12 @@ bool UI::Update(double dt)
 	if (quit)
 		return false;
 
-	if (selected != nullptr) {
-		if (checkers)
-			selected->changeTexture(selected, "checkers1.png");  //setCheckersTexture();
-		else
-			selected->changeTexture(selected, selected->defaultTexture);
-	}
+	//if (selected != nullptr) {
+	//	if (checkers)
+	//		selected->changeTexture(selected, "checkers1.png");  //setCheckersTexture();
+	//	else
+	//		selected->changeTexture(selected, selected->defaultTexture);
+	//}
 	
 	//showGame();
 
@@ -190,13 +190,13 @@ void UI::showMenu() {
 		if (ImGui::MenuItem("Mug")) {
 			LOG("Adding Tea Mug to the scene");
 			GameObject* mug = app->engine->scene->AddGameObject("Mug");
-			auto mesh_ptrs = Mesh::loadFromFile("Assets\\mug.fbx", "Assets\\");
+			auto mesh_ptrs = Mesh::loadFromFile("Assets\\teamugfbx.fbx", "Assets\\checkers5.png");
 			mug->AddMeshWithTexture(mesh_ptrs);
 			//defaultTexture =
 			ComponentMesh* meshComp = (ComponentMesh*)mug->GetComponent(ComponentType::MESH);
 
 			ComponentTransform* meshtransform = (ComponentTransform*)mug->GetComponent(ComponentType::TRANSFORM);
-			meshtransform->rotate(1.5708, vec3(1, 0, 0));
+			meshtransform->rotate(0, vec3(0, 1, 0));
 			meshtransform->translate(vec3(5, 0, 0));
 			meshtransform->scale(vec3(1, 1, 1));
 		}
@@ -414,10 +414,10 @@ void UI::showInspectorMesh(Component* component) {
 			//ImGui::Text("Faces:", s->getMesh()->getFacesNum());
 			//ImGui::SameLine();
 			//ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d", s->getMesh()->getFacesNum());
-			if (ImGui::Checkbox("Display normals per-triangle", &triangles)) {
-			// Call function in Mesh
+			if (ImGui::Checkbox("Display normals per-triangle", &s->getMesh()->drawNormalsVerts)) {
+				// Call function in Mesh
 			}
-			if (ImGui::Checkbox("Display normals per-face", &faces)) {
+			if (ImGui::Checkbox("Display normals per-face", &s->getMesh()->drawNormalsFaces)) {
 				// Call function in Mesh
 			}
 		}
@@ -433,6 +433,7 @@ void UI::showInspectorMesh(Component* component) {
 
 void UI::showInspectorTexture(Component* component) {
 	ComponentTexture* s = (ComponentTexture*)component;
+	ComponentMesh* mesh = (ComponentMesh*)selected->GetComponent(ComponentType::MESH);
 	if (ImGui::TreeNode("Texture")) {
 		if (s->getTexture() != nullptr) {
 			string path = s->getTexture()->path;
@@ -450,8 +451,8 @@ void UI::showInspectorTexture(Component* component) {
 			ImGui::TextColored(ImVec4(1, 1, 0, 1), "%dpx x %dpx", s->getTexture()->width, s->getTexture()->height);
 			
 			//
-			if (ImGui::Checkbox("View the checkers texture", &checkers)) {
-				checkers = !checkers;
+			if (ImGui::Checkbox("View the checkers texture", &mesh->getMesh()->drawChecker)) {
+				// Call function in Mesh
 			}
 		}
 		else {

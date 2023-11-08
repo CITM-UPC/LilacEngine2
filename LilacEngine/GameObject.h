@@ -36,6 +36,6 @@ public:
 
 
 	void AddMeshWithTexture(std::vector<Mesh::Ptr> meshes);
-	void changeTexture(GameObject* GO, std::string path);
+	//void changeTexture(GameObject* GO, std::string path);
 	void Render();
 };
