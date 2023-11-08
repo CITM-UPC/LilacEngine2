@@ -51,10 +51,8 @@ public:
 		}
 	};
 
-	// --TODO--
 	void Start() {};
 
-	// --TODO--
 	void Update() {};
 
 	void Render() {

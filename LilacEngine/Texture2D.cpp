@@ -8,6 +8,8 @@ using namespace std;
 
 Texture2D::Texture2D(const std::string& path) {
 
+    this->path = path.c_str();
+
     //load image data using devil
     auto img = ilGenImage();
     ilBindImage(img);
@@ -16,6 +18,9 @@ Texture2D::Texture2D(const std::string& path) {
     auto height = ilGetInteger(IL_IMAGE_HEIGHT);
     auto channels = ilGetInteger(IL_IMAGE_CHANNELS);
     auto data = ilGetData();
+
+    this->width = width;
+    this->height = height;
 
     //load image as a texture in VRAM
     glGenTextures(1, &_id);

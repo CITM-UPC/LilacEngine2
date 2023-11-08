@@ -66,10 +66,12 @@ private:
 	bool vsync;
 
 	//// Hierarchy
-	bool triangles, faces, checkerstexture;
+	
 
 	//// Inspector
+	//void setCheckersTexture();
 
+	bool triangles, faces, checkers;
 
 	//// Shapes
 

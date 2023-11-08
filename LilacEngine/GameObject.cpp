@@ -85,6 +85,7 @@ void GameObject::AddMeshWithTexture(std::vector<Mesh::Ptr> meshes) {
 		mesh->setMesh(*meshes.begin());
 		ComponentTexture* texture = (ComponentTexture*)GetComponent(ComponentType::TEXTURE);
 		texture->setTexture((*meshes.begin())->texture);
+		defaultTexture = texture->getTexture()->path;
 	}
 	else {
 		for (auto i = meshes.begin(); i != meshes.end(); ++i) {
@@ -93,7 +94,18 @@ void GameObject::AddMeshWithTexture(std::vector<Mesh::Ptr> meshes) {
 			meshPart->setMesh(*i);
 			ComponentTexture* texturePart = (ComponentTexture*)GOPart->GetComponent(ComponentType::TEXTURE);
 			texturePart->setTexture((*i)->texture);
+			defaultTexture = texturePart->getTexture()->path;
+
 		}
+	}
+}
+
+void GameObject::changeTexture(GameObject* GO, std::string path) {
+	ComponentTexture* textureComponent = (ComponentTexture*)GO->GetComponent(ComponentType::TEXTURE);
+	ComponentMesh* meshComponent = (ComponentMesh*)GO->GetComponent(ComponentType::MESH);
+	if (meshComponent->getMesh() != nullptr) {
+		meshComponent->getMesh()->loadTextureToMesh(path);
+		textureComponent->setTexture(meshComponent->getMesh()->texture);
 	}
 }
 

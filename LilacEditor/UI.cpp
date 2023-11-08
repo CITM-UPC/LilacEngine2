@@ -50,6 +50,7 @@ bool UI::Start()
 	// JULS: COLORS IMGUI REMINDER => Values go from 0 - 1, not from 0 - 225
 	ImGui::StyleColorsDark();
 	selected = NULL;
+	checkers = false;
 	return ret;
 }
 
@@ -94,6 +95,14 @@ bool UI::Update(double dt)
 		showMenu();
 	if (quit)
 		return false;
+
+	if (selected != nullptr) {
+		if (checkers)
+			selected->changeTexture(selected, "checkers1.png");  //setCheckersTexture();
+		else
+			selected->changeTexture(selected, selected->defaultTexture);
+	}
+	
 	//showGame();
 
 #pragma endregion
@@ -168,9 +177,9 @@ void UI::showMenu() {
 		if (ImGui::MenuItem("Teapot")) {
 			LOG("Adding Teapot to the scene");
 			GameObject* teapot = app->engine->scene->AddGameObject("Teapot");
-			auto mesh_ptrs = Mesh::loadFromFile("Assets\\teapot.fbx", "Assets\\checkers1.png");
+			auto mesh_ptrs = Mesh::loadFromFile("Assets\\teapot.fbx", "Assets\\Baker_house.png");
 			teapot->AddMeshWithTexture(mesh_ptrs);
-
+			//defaultTexture =
 			ComponentMesh* meshComp = (ComponentMesh*)teapot->GetComponent(ComponentType::MESH);
 
 			ComponentTransform* meshtransform = (ComponentTransform*)teapot->GetComponent(ComponentType::TRANSFORM);
@@ -357,6 +366,7 @@ void UI::showInspectorTransform(Component* component) {
 	if (ImGui::TreeNode("Transform")) {
 		ImGui::SeparatorText("Position");
 		ImGui::DragFloat("X", &pos.x, 0.2f, 2.0f, 100.0f, "%.0f");
+
 		ImGui::DragFloat("Y", &pos.y, 0.2f, 2.0f, 100.0f, "%.0f");
 		ImGui::DragFloat("Z", &pos.z, 0.2f, 2.0f, 100.0f, "%.0f");
 		ImGui::SeparatorText("Rotate");
@@ -386,7 +396,7 @@ void UI::showInspectorMesh(Component* component) {
 			//	ImGui::SetTooltip("%s", (s->getMesh()->path).c_str());
 			//}
 			//ImGui::Text("Vertex:");
-			ImGui::SameLine();
+			//ImGui::SameLine();
 			//ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d", s->getMesh()->getVertsNum());
 			//ImGui::Text("Faces:", s->getMesh()->getFacesNum());
 			//ImGui::SameLine();
@@ -416,19 +426,19 @@ void UI::showInspectorTexture(Component* component) {
 			if (auto n = path.find_last_of("\\"); n != path.npos) {
 				path.erase(0, n + 1);
 			}
+			// Name file
 			ImGui::Text("File:");
 			ImGui::SameLine();
 			ImGui::TextColored(ImVec4(1, 1, 0, 1), "%s", path.c_str());
-			if (ImGui::IsItemHovered()) {
-				ImGui::SetTooltip("%s", s->getTexture()->path.c_str());
-			}
+
+			// Size
 			ImGui::Text("Size:");
 			ImGui::SameLine();
 			ImGui::TextColored(ImVec4(1, 1, 0, 1), "%dpx x %dpx", s->getTexture()->width, s->getTexture()->height);
 			
-			if (ImGui::Checkbox("View the checkers texture", &checkerstexture)) {
-				// Call the function or change the path
-				//
+			//
+			if (ImGui::Checkbox("View the checkers texture", &checkers)) {
+				checkers = !checkers;
 			}
 		}
 		else {
@@ -437,6 +447,16 @@ void UI::showInspectorTexture(Component* component) {
 		ImGui::TreePop();
 	}
 }
+
+//void::UI::setCheckersTexture() {
+//	ComponentTexture* textureComponent = (ComponentTexture*)app->ui->selected->GetComponent(ComponentType::TEXTURE);
+//	ComponentMesh* meshComponent = (ComponentMesh*)app->ui->selected->GetComponent(ComponentType::MESH);
+//	if (meshComponent->getMesh() != nullptr) {
+//		meshComponent->getMesh()->loadTextureToMesh("checkers1.png");
+//		textureComponent->setTexture(meshComponent->getMesh()->texture);
+//		
+//	}LOG("Changed texture to checkers\n");
+//}
 
 void UI::showResources() {
 	ImGui::Begin("Resources");

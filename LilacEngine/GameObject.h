@@ -17,6 +17,7 @@ public:
 	~GameObject();
 	std::string name;
 	bool isActive = true;
+	std::string defaultTexture;
 
 	// Components
 	Component* GetComponent(ComponentType componentType);
@@ -35,5 +36,6 @@ public:
 
 
 	void AddMeshWithTexture(std::vector<Mesh::Ptr> meshes);
+	void changeTexture(GameObject* GO, std::string path);
 	void Render();
 };
