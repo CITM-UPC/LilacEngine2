@@ -87,6 +87,30 @@ static void drawGrid(int grid_size, int grid_step)
     glEnd();
 }
 
+static void drawStencil() {
+    //glEnable(GL_DEPTH_TEST);
+    glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+
+    glStencilMask(0x00); // make sure we don't update the stencil buffer while drawing the floor
+    //normalShader.use();
+    //DrawFloor()
+
+        glStencilFunc(GL_ALWAYS, 1, 0xFF);
+    glStencilMask(0xFF);
+    DrawTwoContainers();
+
+    glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
+    glStencilMask(0x00);
+    glDisable(GL_DEPTH_TEST);
+    shaderSingleColor.use();
+    DrawTwoScaledUpContainers();
+    glStencilMask(0xFF);
+    glStencilFunc(GL_ALWAYS, 1, 0xFF);
+    glEnable(GL_DEPTH_TEST);
+}
+
 void EngineCore::Render(RenderModes renderMode)
 {
     glMatrixMode(GL_PROJECTION);
@@ -101,6 +125,7 @@ void EngineCore::Render(RenderModes renderMode)
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
     glEnable(GL_COLOR_MATERIAL);
+    glEnable(GL_STENCIL_TEST);
     //glEnable(GL_LIGHTING);
 
     gluPerspective(camera.fov, camera.aspect, camera.zNear, camera.zFar);

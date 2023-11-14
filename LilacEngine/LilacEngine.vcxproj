@@ -26,6 +26,7 @@
     <ClInclude Include="Graphic.h" />
     <ClInclude Include="GraphicObject.h" />
     <ClInclude Include="Mesh.h" />
+    <ClInclude Include="QuadTree.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Texture2D.h" />
     <ClInclude Include="ComponentTransform.h" />
@@ -43,6 +44,7 @@
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GraphicObject.cpp" />
     <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="QuadTree.cpp" />
     <ClCompile Include="Texture2D.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
